@@ -7,17 +7,61 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
+      component: () => import('../views/AboutView.vue'),
+    },
+    {
+      path: '/auth',
+      name: 'login',
+      children: [
+        {
+          path: 'login',
+          component: () => import('../views/Auth/LoginView.vue'),
+        },
+        {
+          path: 'signup',
+          component: () => import('../views/Auth/SignUpView.vue'),
+        },
+      ],
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: () => import('../views/MyPageView.vue'),
+    },
+    {
+      path: '/play',
+      name: 'play',
+      component: () => import('../views/PlayView.vue'),
+    },
+    {
+      path: '/ranking',
+      name: 'ranking',
+      component: () => import('../views/RankingView.vue'),
+    },
+    {
+      path: '/board',
+      name: 'board',
+      children: [
+        {
+          path: 'list',
+          component: () => import('../views/Board/ListView.vue'),
+        },
+        {
+          path: 'write',
+          component: () => import('../views/Board/WriteView.vue'),
+        },
+        {
+          path: ':id',
+          component: () => import('../views/Board/DetailView.vue'),
+        },
+      ],
+    },
+  ],
 })
 
 export default router
