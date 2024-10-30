@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import LoginForm from '@/components/LoginForm.vue'
+import SignUpForm from '@/components/Auth/SignUpForm.vue'
 </script>
 
 <template>
-  <main>
-    <LoginForm />
+  <main class="flex flex-col justify-center items-center h-full">
+    <h1 class="h-20 flex items-center">회원가입</h1>
+    <SignUpForm />
   </main>
 </template>
