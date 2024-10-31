@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/accordion'
 
 const isAccordionOpen = ref(false)
+const activeItem = ref('') // 현재 열려 있는 아이템의 value를 저장
 
 const accordionItems = [
   {
@@ -30,8 +31,14 @@ const accordionItems = [
   },
 ]
 
+// 햄버거 버튼으로 아코디언 열고 닫기
 function toggleAccordion() {
   isAccordionOpen.value = !isAccordionOpen.value
+}
+
+// 특정 아이템을 열 때 activeItem 업데이트
+function setActiveItem(value) {
+  activeItem.value = value
 }
 </script>
 
@@ -54,7 +61,13 @@ function toggleAccordion() {
           :key="item.value"
           :value="item.value"
         >
-          <AccordionTrigger>{{ item.title }}</AccordionTrigger>
+          <!-- 열려 있는 항목의 value가 activeItem과 같으면 보라색 클래스 적용 -->
+          <AccordionTrigger
+            :class="{ 'bg-[#5C3AD9] text-white': activeItem === item.value }"
+            @click="setActiveItem(item.value)"
+          >
+            {{ item.title }}
+          </AccordionTrigger>
           <AccordionContent>
             <ul
               v-if="item.children"
@@ -65,7 +78,8 @@ function toggleAccordion() {
                 :key="child.value"
                 :to="child.path"
               >
-                <li>{{ child.title }}</li>
+                <li :class="{ 'hover:underline': activeItem === item.value }">{{ child.title }}</li>
+
               </RouterLink>
             </ul>
           </AccordionContent>
@@ -73,8 +87,4 @@ function toggleAccordion() {
       </Accordion>
     </nav>
   </header>
-
-  <RouterLink to="/mypage">MyPage</RouterLink>
-  <RouterLink to="/board/write">Write</RouterLink>
-  <RouterLink to="/board/0">Detail</RouterLink>
 </template>
