@@ -6,3 +6,10 @@ export enum gameInfoKey {
   drawCount = '무',
   playCount = 'play 횟수',
 }
+
+export enum MyInfoKey {
+  profilePic = '프로필 사진',
+  name = '이름',
+  id = '아이디',
+  nickname = '닉네임',
+}
