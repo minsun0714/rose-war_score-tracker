@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PostCard from '../common/PostCard.vue'
+import Search from '../../assets/Search.svg'
 
 const cardData = [
   {
@@ -21,6 +22,10 @@ const cardData = [
 
 <template>
   <div>
+    <div class="p-4 flex flex-row">
+      <img :src="Search" alt="">
+      <input type="text" placeholder="검색어를 입력해주세요." class="border-b w-full p-2" />
+    </div>
     <ul class="p-4 flex flex-col gap-y-4">
       <li v-for="(card, index) in cardData" :key="index">
         <PostCard :card="card" />
