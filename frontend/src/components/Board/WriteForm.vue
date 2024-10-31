@@ -31,25 +31,21 @@ const onSubmit = form.handleSubmit(values => {
 
 <template>
   <form @submit="onSubmit" class="w-5/6 flex flex-col justify-center">
-    <div class="border">
+    <div class="border py-8">
       <FormField v-slot="{ componentField }" name="title">
         <FormItem class="flex flex-col items-center justify-center w-full h-28">
           <FormLabel class="flex items-start w-4/5">제목</FormLabel>
           <FormControl>
-            <Input
-              type="text"
-              v-bind="componentField"
-              class="border w-4/5 h-12 p-2"
-            />
+            <Textarea v-bind="componentField" class="border w-4/5 h-12 p-2" />
           </FormControl>
           <FormMessage class="w-4/5 flex justify-end" />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="content">
-        <FormItem class="flex flex-col items-center justify-center w-full h-52">
+        <FormItem class="flex flex-col items-center justify-center w-full h-80">
           <FormLabel class="flex items-start w-4/5">내용</FormLabel>
           <FormControl>
-            <Textarea v-bind="componentField" class="border w-4/5 h-24 p-2" />
+            <Textarea v-bind="componentField" class="border w-4/5 h-48 p-2" />
           </FormControl>
           <FormMessage class="w-4/5 flex justify-end" />
         </FormItem>

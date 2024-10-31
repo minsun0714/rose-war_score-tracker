@@ -4,7 +4,7 @@ import LoginForm from '@/components/Auth/LoginForm.vue'
 
 <template>
   <main
-    class="flex flex-col justify-center items-center h-full"
+    class="flex flex-col justify-center items-center"
   >
     <h1 class="h-20 flex items-center">로그인</h1>
     <LoginForm />

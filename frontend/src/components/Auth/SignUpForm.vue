@@ -32,54 +32,54 @@ const onSubmit = form.handleSubmit(values => {
 
 <template>
   <form @submit="onSubmit" class="w-5/6 flex flex-col justify-center">
-    <div class="border">
+    <div class="border py-8">
       <FormField v-slot="{ componentField }" name="id">
-        <FormItem class="flex flex-col items-center justify-center w-full h-28">
+        <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">아이디</FormLabel>
           <FormControl>
             <Input
               type="text"
               v-bind="componentField"
-              class="border w-4/5 h-12 p-2"
+              class="border w-4/5 h-8 p-2"
             />
           </FormControl>
           <FormMessage class="w-4/5 flex justify-end" />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="password">
-        <FormItem class="flex flex-col items-center justify-center w-full h-28">
+        <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">비밀번호</FormLabel>
           <FormControl>
             <Input
               type="password"
               v-bind="componentField"
-              class="border w-4/5 h-12 p-2"
+              class="border w-4/5 h-8 p-2"
             />
           </FormControl>
           <FormMessage class="w-4/5 flex justify-end" />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="passwordConfirm">
-        <FormItem class="flex flex-col items-center justify-center w-full h-28">
+        <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">비밀번호 확인</FormLabel>
           <FormControl>
             <Input
               type="text"
               v-bind="componentField"
-              class="border w-4/5 h-12 p-2"
+              class="border w-4/5 h-8 p-2"
             />
           </FormControl>
           <FormMessage class="w-4/5 flex justify-end" />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="name">
-        <FormItem class="flex flex-col items-center justify-center w-full h-28">
+        <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">이름</FormLabel>
           <FormControl>
             <Input
               type="text"
               v-bind="componentField"
-              class="border w-4/5 h-12 p-2"
+              class="border w-4/5 h-8 p-2"
             />
           </FormControl>
           <FormMessage class="w-4/5 flex justify-end" />
