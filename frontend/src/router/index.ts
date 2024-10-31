@@ -32,6 +32,25 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: () => import('../views/MyPageView.vue'),
+      children: [
+        {
+          path: 'myinfo',
+          name: 'myinfo',
+          component: () => import('../components/MyPage/MyInfo.vue'),
+          children: [
+            {
+              path: 'edit',
+              name: 'editMyInfo',
+              component: () => import('../components/MyPage/EditMyInfo.vue'),
+            },
+          ],
+        },
+        {
+          path: 'gameinfo',
+          name: 'gameInfo',
+          component: () => import('../components/MyPage/GameInfo.vue'),
+        },
+      ],
     },
     {
       path: '/play',

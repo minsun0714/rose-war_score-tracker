@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MenuTab from '@/components/Info/MenuTab.vue'
+import MenuTab from '@/components/MyPage/MenuTab.vue'
 </script>
 
 <template>
