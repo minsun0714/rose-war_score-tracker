@@ -1,28 +1,29 @@
 <script setup lang="ts">
+import { useCountUp } from '@/lib/hooks/useCountUp'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import { useCountUp } from '@/lib/hooks/useCountUp'
+import carouselItems from '@/assets/carousel'
 
 const playCount = useCountUp(2475, 500)
 </script>
 
 <template>
   <Carousel class="relative w-full border">
-    <CarouselContent>
-      <CarouselItem v-for="(_, index) in 3" :key="index">
-        <div class="p-1">
+    <CarouselContent class="flex items-center">
+      <CarouselItem v-for="(item, index) in carouselItems" :key="index">
+        <ul>
           <Card>
-            <CardContent
-              class="flex aspect-square items-center justify-center p-6"
-            >
-              <img src="../assets/Male User.svg" />
+            <CardContent class="flex items-center justify-center">
+              <li>
+                <img :src="item" alt="carousel item" class="h-44" />
+              </li>
             </CardContent>
           </Card>
-        </div>
+        </ul>
       </CarouselItem>
     </CarouselContent>
     <CarouselPrevious />
