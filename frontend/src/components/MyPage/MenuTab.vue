@@ -3,8 +3,8 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const navigateTo = (route: string) => {
-  router.push(route)
+const navigateTo = (name: string) => {
+  router.push({name})
 }
 </script>
 
@@ -13,7 +13,7 @@ const navigateTo = (route: string) => {
     <h1 class="text-xl text-center">마이페이지</h1>
     <div class="flex justify-start gap-4 border-b">
       <button
-        @click="navigateTo('/mypage/gameinfo')"
+        @click="navigateTo('gameInfo')"
         class="p-2 border border-transparent"
         :class="{
           'border-t-purple font-bold': $route.path === '/mypage/gameinfo',
@@ -22,10 +22,10 @@ const navigateTo = (route: string) => {
         게임
       </button>
       <button
-        @click="navigateTo('/mypage/myinfo')"
+        @click="navigateTo('myInfo')"
         class="p-2 border border-transparent"
         :class="{
-          'border-t-purple font-bold': $route.path === '/mypage/myinfo',
+          'border-t-purple font-bold': $route.path.startsWith('/mypage/myinfo'),
         }"
       >
         내 정보

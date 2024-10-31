@@ -11,23 +11,11 @@ const myInfo = {
 </script>
 
 <template>
-  <div class="flex justify-center flex-col border p-4">
-    <ul class="grid grid-cols-2 gap-y-4 text-sm">
-      <template v-for="(value, key) in myInfo" :key="key">
-        <li
-          class="flex justify-center items-center text-slate-700 text-sm text-center"
-        >
-          {{ MyInfoKey[key] }}
-        </li>
-        <li class="flex justify-center">
-          <img :src="value" alt="프로필 사진" v-if="key === 'profilePic'" />
-          <span v-else>{{ value }}</span>
-        </li>
-      </template>
-    </ul>
-  </div>
-  <div class="flex flex-row justify-between items-start py-6">
+  수정 페이지 입니다.
+  <div class="flex flex-col justify-between items-start py-6">
+    <div class="flex flex-row justify-center gap-2">
+      <SignatureBtn text="취소" /> <SignatureBtn text="완료" />
+    </div>
     <p class="text-sm text-slate-500">회원탈퇴</p>
-    <SignatureBtn text="완료" />
   </div>
 </template>

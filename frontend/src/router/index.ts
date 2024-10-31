@@ -35,7 +35,7 @@ const router = createRouter({
       children: [
         {
           path: 'myinfo',
-          name: 'myinfo',
+          name: 'myInfo',
           component: () => import('../components/MyPage/MyInfo.vue'),
           children: [
             {
