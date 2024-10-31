@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { MyInfoKey } from '@/lib/types'
 import ProfilePic from '../../assets/Male User.svg'
 import SignatureBtn from '../common/SignatureBtn.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -14,7 +14,15 @@ const myInfo = {
   nickname: 'minsun',
 }
 
-const isEditing = ref(route.path.endsWith('edit'))
+const isEditing = ref(false)
+
+watch(
+  () => route.path,
+  newPath => {
+    isEditing.value = newPath.endsWith('edit')
+  },
+  { immediate: true },
+)
 
 const navigateTo = (name: string) => {
   if (name === 'editMyInfo') {

@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 const navigateTo = (name: string) => {
-  router.push({name})
+  if (route.path.endsWith('/edit') && name === "myInfo") {
+    return
+  }
+  router.push({ name })
 }
 </script>
 
