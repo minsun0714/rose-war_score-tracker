@@ -28,7 +28,7 @@ const postData = {
         {
           user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
           content:
-            '대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.',
+            '대댓글입니다대댓글입니다대댓글입니다대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.',
           createdAt: new Date(),
           likeCount: 0,
         },
@@ -74,11 +74,14 @@ const postData = {
               comment.createdAt.toDateString()
             }}</span>
             <p class="text-xs flex items-center">{{ comment.content }}</p>
-            <span class="flex justify-end gap-2 text-slate-400"
-              ><button>수정</button> <button>삭제</button></span
-            >
           </span>
         </div>
+        <span class="py-2 flex justify-between gap-2 text-xs"
+          ><button class="text-purple">+ 답글 달기</button
+          ><span class="text-slate-400"
+            ><button>수정</button> <button>삭제</button></span
+          ></span
+        >
         <ul>
           <li
             v-for="(childComment, index) in comment.children"
@@ -101,7 +104,7 @@ const postData = {
               <p class="text-xs flex items-center">
                 {{ childComment.content }}
               </p>
-              <span class="flex justify-end gap-2 text-slate-400"
+              <span class="text-slate-400 flex justify-end gap-1"
                 ><button>수정</button> <button>삭제</button></span
               >
             </span>
