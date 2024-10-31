@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { MyInfoKey } from '@/lib/types'
 import ProfilePic from '../../assets/Male User.svg'
 import SignatureBtn from '../common/SignatureBtn.vue'
 import { ref } from 'vue'
 
 const router = useRouter()
-
+const route = useRoute()
 const myInfo = {
   profilePic: ProfilePic,
   name: '이민선',
@@ -14,7 +14,7 @@ const myInfo = {
   nickname: 'minsun',
 }
 
-const isEditing = ref(false)
+const isEditing = ref(route.path.endsWith('edit'))
 
 const navigateTo = (name: string) => {
   if (name === 'editMyInfo') {
