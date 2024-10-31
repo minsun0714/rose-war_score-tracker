@@ -1,82 +1,80 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+
+const isAccordionOpen = ref(false)
+
+const accordionItems = [
+  {
+    value: 'item-1',
+    title: 'Play',
+    children: [{ value: 'item-1-1', title: '점수계산', path: '/play' }],
+  },
+  {
+    value: 'item-2',
+    title: 'Ranking',
+    children: [{ value: 'item-2-1', title: '랭킹', path: '/ranking' }],
+  },
+  {
+    value: 'item-3',
+    title: 'Talk',
+    children: [
+      { value: 'item-3-1', title: '전체글', path: '/board/list' },
+      { value: 'item-3-2', title: '글쓰기', path: '/board/write' },
+    ],
+  },
+]
+
+function toggleAccordion() {
+  isAccordionOpen.value = !isAccordionOpen.value
+}
+</script>
+
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/auth/signup">SignUp</RouterLink>
-        <RouterLink to="/auth/login">Login</RouterLink>
-        <RouterLink to="/mypage">MyPage</RouterLink>
-        <RouterLink to="/play">Play</RouterLink>
-        <RouterLink to="/ranking">Ranking</RouterLink>
-        <RouterLink to="/board/list">board</RouterLink>
-        <RouterLink to="/board/write">Write</RouterLink>
-        <RouterLink to="/board/0">Detail</RouterLink>
-      </nav>
-    </div>
+  <header class="border-b">
+    <nav class="h-16 flex flex-row justify-between">
+      <div class="flex flex-row items-center justify-center gap-4 p-4">
+        <img src="../assets/Menu.svg" @click="toggleAccordion" />
+        <RouterLink to="/"><img src="../assets/Tudor Rose.svg" /></RouterLink>
+      </div>
+      <div class="flex flex-row items-center justify-center gap-4 p-4">
+        <RouterLink to="/auth/signup">회원가입</RouterLink>
+        <RouterLink to="/auth/login">로그인</RouterLink>
+      </div>
+    </nav>
+    <nav v-if="isAccordionOpen" class="flex flex-col">
+      <Accordion type="single" class="w-full" collapsible>
+        <AccordionItem
+          v-for="item in accordionItems"
+          :key="item.value"
+          :value="item.value"
+        >
+          <AccordionTrigger>{{ item.title }}</AccordionTrigger>
+          <AccordionContent>
+            <ul
+              v-if="item.children"
+              class="h-12 flex flex-col justify-around gap-y-3"
+            >
+              <RouterLink
+                v-for="child in item.children"
+                :key="child.value"
+                :to="child.path"
+              >
+                <li>{{ child.title }}</li>
+              </RouterLink>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </nav>
   </header>
+
+  <RouterLink to="/mypage">MyPage</RouterLink>
+  <RouterLink to="/board/write">Write</RouterLink>
+  <RouterLink to="/board/0">Detail</RouterLink>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
