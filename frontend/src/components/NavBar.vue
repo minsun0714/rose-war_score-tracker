@@ -31,13 +31,11 @@ const accordionItems = [
   },
 ]
 
-// 햄버거 버튼으로 아코디언 열고 닫기
 function toggleAccordion() {
   isAccordionOpen.value = !isAccordionOpen.value
 }
 
-// 특정 아이템을 열 때 activeItem 업데이트
-function setActiveItem(value) {
+function setActiveItem(value: string) {
   activeItem.value = value
 }
 </script>
@@ -61,9 +59,8 @@ function setActiveItem(value) {
           :key="item.value"
           :value="item.value"
         >
-          <!-- 열려 있는 항목의 value가 activeItem과 같으면 보라색 클래스 적용 -->
           <AccordionTrigger
-            :class="{ 'bg-[#5C3AD9] text-white': activeItem === item.value }"
+            :class="{ 'bg-purple text-white': activeItem === item.value }"
             @click="setActiveItem(item.value)"
           >
             {{ item.title }}
@@ -78,8 +75,9 @@ function setActiveItem(value) {
                 :key="child.value"
                 :to="child.path"
               >
-                <li :class="{ 'hover:underline': activeItem === item.value }">{{ child.title }}</li>
-
+                <li :class="{ 'hover:underline': activeItem === item.value }">
+                  {{ child.title }}
+                </li>
               </RouterLink>
             </ul>
           </AccordionContent>
