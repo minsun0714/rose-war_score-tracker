@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoginForm from '@/components/LoginForm.vue'
+import PostDetail from '@/components/Board/PostDetail.vue'
 </script>
 
 <template>
-  <main>
-    <LoginForm />
+  <main class="p-4">
+    <PostDetail />
   </main>
 </template>
