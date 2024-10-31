@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoginForm from '@/components/LoginForm.vue'
+import PlayBoard from '@/components/Play/PlayBoard.vue'
 </script>
 
 <template>
   <main>
-    <LoginForm />
+    <PlayBoard />
   </main>
 </template>
