@@ -6,30 +6,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { accordionItems } from '@/lib/constants'
 
 const isAccordionOpen = ref(false)
 const activeItem = ref('') // 현재 열려 있는 아이템의 value를 저장
-
-const accordionItems = [
-  {
-    value: 'item-1',
-    title: 'Play',
-    children: [{ value: 'item-1-1', title: '점수계산', path: '/play' }],
-  },
-  {
-    value: 'item-2',
-    title: 'Ranking',
-    children: [{ value: 'item-2-1', title: '랭킹', path: '/ranking' }],
-  },
-  {
-    value: 'item-3',
-    title: 'Talk',
-    children: [
-      { value: 'item-3-1', title: '전체글', path: '/board/list' },
-      { value: 'item-3-2', title: '글쓰기', path: '/board/write' },
-    ],
-  },
-]
 
 function toggleAccordion() {
   isAccordionOpen.value = !isAccordionOpen.value
