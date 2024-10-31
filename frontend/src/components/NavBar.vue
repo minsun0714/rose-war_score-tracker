@@ -27,7 +27,7 @@ function setActiveItem(value: string) {
         <img src="../assets/Menu.svg" @click="toggleAccordion" />
         <RouterLink to="/"><img src="../assets/Tudor Rose.svg" /></RouterLink>
       </div>
-      <div class="flex flex-row items-center justify-center gap-4 p-4">
+      <div class="flex flex-row items-center justify-center gap-4 p-4 text-xs">
         <RouterLink to="/auth/signup">회원가입</RouterLink>
         <RouterLink to="/auth/login">로그인</RouterLink>
       </div>
@@ -48,7 +48,7 @@ function setActiveItem(value: string) {
           <AccordionContent>
             <ul
               v-if="item.children"
-              class="h-12 flex flex-col justify-around gap-y-3"
+              class="h-full flex flex-col justify-end gap-y-1 mt-3"
             >
               <RouterLink
                 v-for="child in item.children"
