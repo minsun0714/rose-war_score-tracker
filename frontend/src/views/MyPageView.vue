@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoginForm from '@/components/LoginForm.vue'
+import MenuTab from '@/components/Info/MenuTab.vue'
 </script>
 
 <template>
   <main>
-    <LoginForm />
+    <MenuTab />
   </main>
 </template>
