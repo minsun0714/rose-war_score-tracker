@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoginForm from '@/components/LoginForm.vue'
+import RankingCardList from '@/components/Ranking/RankingCardList.vue'
 </script>
 
 <template>
-  <main>
-    <LoginForm />
+  <main class="p-4">
+    <RankingCardList />
   </main>
 </template>
