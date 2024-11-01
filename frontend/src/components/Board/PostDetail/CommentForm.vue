@@ -12,7 +12,7 @@ const postData = {
   title: '이민선이라고 합니다. 잘 부탁드립니다.',
   content:
     '이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.',
-  createdAt: new Date()
+  createdAt: new Date(),
   likeCount: 0,
   commentCount: 2,
   commentList: [
