@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import { MyInfoKey } from '@/lib/types'
 import ProfilePic from '../../assets/Male User.svg'
 import SignatureBtn from '../common/SignatureBtn.vue'
 import { ref } from 'vue'
-
-const myInfo = {
-  profilePic: ProfilePic,
-  name: '이민선',
-  id: 'minsun',
-  nickname: 'minsun',
-}
 
 const imageFile = ref<File | null>(null)
 const imageUrl = ref<string>(ProfilePic) // 이미지 URL 상태 추가
