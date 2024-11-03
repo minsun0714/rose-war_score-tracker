@@ -43,9 +43,10 @@ public class GameService {
         game.setScore1(scores[0]);
         game.setScore2(scores[1]);
 
-        Game savedGame = gameRepository.save(game);
         statService.updateStat(player1.getUserId(), scores[0], scores[0] > scores[1]);
-        statService.updateStat(player2.getUserId(), scores[1], scores[1] > scores[0]);
+        statService.updateStat(player2.getUserId(), scores[0], scores[0] > scores[1]);
+
+        Game savedGame = gameRepository.save(game);
         return toGameResponseDTO(savedGame);
     }
 
@@ -60,6 +61,8 @@ public class GameService {
         guestPlayer.setUserId("guest-" + UUID.randomUUID()); // 랜덤 ID 생성
         guestPlayer.setName("Guest");
         guestPlayer.setNickname("Guest-" + UUID.randomUUID().toString().substring(0, 5)); // 랜덤 닉네임
+        userRepository.save(guestPlayer);
+        statService.createStat(guestPlayer.getUserId());
 
         return guestPlayer;
     }
