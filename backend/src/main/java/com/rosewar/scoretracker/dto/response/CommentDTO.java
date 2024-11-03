@@ -1,4 +1,4 @@
-package com.rosewar.scoretracker.dto;
+package com.rosewar.scoretracker.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

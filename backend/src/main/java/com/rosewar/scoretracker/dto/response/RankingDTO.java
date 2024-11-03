@@ -1,4 +1,4 @@
-package com.rosewar.scoretracker.dto;
+package com.rosewar.scoretracker.dto.response;
 
 public class RankingDTO {
     private UserInfoDTO userInfo;
