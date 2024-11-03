@@ -3,7 +3,7 @@ package com.rosewar.scoretracker.dto.request;
 import lombok.Data;
 
 @Data
-public class GameResultDTO {
+public class GameResultRequestDTO {
 
     private String player1Id; // player1의 사용자 정보
     private String player2Id; // player2의 사용자 정보

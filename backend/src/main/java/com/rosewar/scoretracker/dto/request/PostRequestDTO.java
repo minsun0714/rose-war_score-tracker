@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class PostDTO {
+public class PostRequestDTO {
 
     @NotBlank(message = "Title is required")
     @Size(max = 100, message = "Title must be less than 100 characters")
