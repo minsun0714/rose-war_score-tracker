@@ -1,15 +1,22 @@
 package com.rosewar.scoretracker.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Post {
     @Id
-    private String postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략
+    private Long postId;  // 숫자형 기본 키
 
     private String title;
 
@@ -25,4 +32,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     private int likeCount;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments; // 댓글 리스트
 }
