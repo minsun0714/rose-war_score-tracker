@@ -41,8 +41,9 @@ public class CommentService {
         comment.setPlayer(player);
         comment.setContent(commentDTO.getContent());
 
-        if (commentDTO.getParentCommentId() != null) {
-            Comment parentComment = commentRepository.findById(commentDTO.getParentCommentId())
+        if (commentDTO.getParentId() != null) {
+
+            Comment parentComment = commentRepository.findById(commentDTO.getParentId())
                     .orElseThrow(() -> new IllegalArgumentException("Parent comment not found"));
             comment.setParent(parentComment); // 부모 설정
             parentComment.getChildren().add(comment); // 부모의 children에 추가
