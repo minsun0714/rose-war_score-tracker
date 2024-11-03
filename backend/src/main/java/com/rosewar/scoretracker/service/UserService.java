@@ -58,6 +58,9 @@ public class UserService {
         if (userRequestDTO.getProfileImg() != null) {
             player.setProfileImg(userRequestDTO.getProfileImg());
         }
+        player.setPassword(userRequestDTO.getPassword());
+        player.setNickname(userRequestDTO.getNickname());
+        player.setProfileImg(userRequestDTO.getProfileImg());
 
         Player updatedPlayer = userRepository.save(player);
         return toUserInfoDTO(updatedPlayer);

@@ -17,4 +17,7 @@ public class MyInfoUpdateDTO {
 
     @NotBlank(message = "Password confirmation is required")
     private String confirmPassword;
+
+    @Nullable
+    private String nickname;
 }

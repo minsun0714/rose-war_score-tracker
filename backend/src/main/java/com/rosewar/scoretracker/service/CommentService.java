@@ -54,7 +54,9 @@ public class CommentService {
 
     // 특정 게시물의 모든 댓글 조회
     public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPostId(postId).stream()
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+        return commentRepository.findByPost(post).stream()
                 .map(this::toCommentResponseDTO)
                 .collect(Collectors.toList());
     }
