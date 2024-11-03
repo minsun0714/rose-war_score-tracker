@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
 public class Post {
     @Id
-    private String postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략
+    private Long postId;  // 숫자형 기본 키
 
     private String title;
 
@@ -25,4 +27,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     private int likeCount;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments; // 댓글 리스트
 }

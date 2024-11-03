@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 public class Comment {
     @Id
-    private String commentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략
+    private Long commentId;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false) // Post 테이블의 postId를 참조하는 외래 키

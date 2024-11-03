@@ -1,16 +1,14 @@
 package com.rosewar.scoretracker.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 public class Game {
     @Id
-    private String gameId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략
+    private Long gameId;
 
     @ManyToOne
     @JoinColumn(name = "player1_id", nullable = false) // User 테이블의 userId를 참조하는 외래 키
