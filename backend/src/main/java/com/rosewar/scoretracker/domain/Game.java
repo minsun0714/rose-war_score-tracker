@@ -2,9 +2,14 @@ package com.rosewar.scoretracker.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략
@@ -21,4 +26,7 @@ public class Game {
     private int score1;
 
     private int score2;
+
+    @CreationTimestamp
+    private LocalDateTime playedAt;
 }
