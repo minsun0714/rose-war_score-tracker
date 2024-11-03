@@ -34,6 +34,6 @@ public class Comment {
     @JoinColumn(name = "parent_id") // 자기 자신을 참조하는 외래 키
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> children; // 답글 리스트
 }
