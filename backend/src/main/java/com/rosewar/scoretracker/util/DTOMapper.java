@@ -1,7 +1,7 @@
 package com.rosewar.scoretracker.util;
 
 import com.rosewar.scoretracker.domain.Stat;
-import com.rosewar.scoretracker.domain.User;
+import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.domain.Post;
 import com.rosewar.scoretracker.domain.Comment;
 import com.rosewar.scoretracker.dto.response.StatResponseDTO;
@@ -14,12 +14,12 @@ public class DTOMapper {
     private DTOMapper() {} // 인스턴스화 방지
 
     // User -> UserInfoDTO 변환
-    public static UserInfoDTO toUserInfoDTO(User user) {
+    public static UserInfoDTO toUserInfoDTO(Player player) {
         return UserInfoDTO.builder()
-                .userId(user.getUserId())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .profileImg(user.getProfileImg())
+                .userId(player.getUserId())
+                .name(player.getName())
+                .nickname(player.getNickname())
+                .profileImg(player.getProfileImg())
                 .build();
     }
 
@@ -29,7 +29,7 @@ public class DTOMapper {
                 .postId(post.getPostId().toString())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .writer(toUserInfoDTO(post.getUser())) // 중첩된 변환
+                .writer(toUserInfoDTO(post.getPlayer())) // 중첩된 변환
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .likeCount(post.getLikeCount())
@@ -41,7 +41,7 @@ public class DTOMapper {
         return CommentResponseDTO.builder()
                 .commentId(comment.getCommentId())
                 .postId(comment.getPost().getPostId())
-                .writer(toUserInfoDTO(comment.getUser())) // 중첩된 변환
+                .writer(toUserInfoDTO(comment.getPlayer())) // 중첩된 변환
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
@@ -53,7 +53,7 @@ public class DTOMapper {
     // Stat을 StatResponseDTO로 변환하는 헬퍼 메서드
     public static StatResponseDTO toStatResponseDTO(Stat stat) {
         return StatResponseDTO.builder()
-                .userId(stat.getUser().getUserId())
+                .userId(stat.getPlayer().getUserId())
                 .maxScore(stat.getMaxScore())
                 .totalPlayCount(stat.getTotalPlayCount())
                 .winCount(stat.getWinCount())

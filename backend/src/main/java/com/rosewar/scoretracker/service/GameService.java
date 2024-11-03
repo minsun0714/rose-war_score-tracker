@@ -1,7 +1,7 @@
 package com.rosewar.scoretracker.service;
 
 import com.rosewar.scoretracker.domain.Game;
-import com.rosewar.scoretracker.domain.User;
+import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.GameResultRequestDTO;
 import com.rosewar.scoretracker.dto.response.GameResultResponseDTO;
 import com.rosewar.scoretracker.repository.GameRepository;
@@ -30,8 +30,8 @@ public class GameService {
     // 게임 생성
     @Transactional
     public GameResultResponseDTO createResult(GameResultRequestDTO gameRequestDTO) {
-        User player1 = getUserOrCreateGuest(gameRequestDTO.getPlayer1Id());
-        User player2 = getUserOrCreateGuest(gameRequestDTO.getPlayer2Id());
+        Player player1 = getUserOrCreateGuest(gameRequestDTO.getPlayer1Id());
+        Player player2 = getUserOrCreateGuest(gameRequestDTO.getPlayer2Id());
 
         Game game = new Game();
         game.setPlayer1(player1);
@@ -50,18 +50,18 @@ public class GameService {
     }
 
     // 회원 여부를 확인하고 비회원인 경우 임시 User 객체 생성하는 헬퍼 메서드
-    private User getUserOrCreateGuest(String playerId) {
+    private Player getUserOrCreateGuest(String playerId) {
         return userRepository.findById(playerId).orElseGet(this::createGuestUser);
     }
 
     // 비회원(게스트) 사용자를 위한 임시 User 생성 메서드
-    private User createGuestUser() {
-        User guestUser = new User();
-        guestUser.setUserId("guest-" + UUID.randomUUID()); // 랜덤 ID 생성
-        guestUser.setName("Guest");
-        guestUser.setNickname("Guest-" + UUID.randomUUID().toString().substring(0, 5)); // 랜덤 닉네임
+    private Player createGuestUser() {
+        Player guestPlayer = new Player();
+        guestPlayer.setUserId("guest-" + UUID.randomUUID()); // 랜덤 ID 생성
+        guestPlayer.setName("Guest");
+        guestPlayer.setNickname("Guest-" + UUID.randomUUID().toString().substring(0, 5)); // 랜덤 닉네임
 
-        return guestUser;
+        return guestPlayer;
     }
 
     // Game을 GameResponseDTO로 변환하는 헬퍼 메서드

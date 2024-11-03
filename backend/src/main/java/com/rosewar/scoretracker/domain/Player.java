@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class User {
+public class Player {
 
     @Id
     private String userId;

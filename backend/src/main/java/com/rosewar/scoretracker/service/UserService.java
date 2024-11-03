@@ -1,6 +1,6 @@
 package com.rosewar.scoretracker.service;
 
-import com.rosewar.scoretracker.domain.User;
+import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
@@ -27,40 +27,40 @@ public class UserService {
     // 사용자 생성
     @Transactional
     public UserInfoDTO createUser(SignUpFormDTO userRequestDTO) {
-        User user = new User();
-        user.setUserId(userRequestDTO.getUserId());
-        user.setPassword(userRequestDTO.getPassword());  // 보안상 해시 처리 필요
-        user.setName(userRequestDTO.getName());
-        user.setNickname(userRequestDTO.getNickname());
+        Player player = new Player();
+        player.setUserId(userRequestDTO.getUserId());
+        player.setPassword(userRequestDTO.getPassword());  // 보안상 해시 처리 필요
+        player.setName(userRequestDTO.getName());
+        player.setNickname(userRequestDTO.getNickname());
 
-        User savedUser = userRepository.save(user);
-        statService.createStat(user.getUserId());
-        return toUserInfoDTO(savedUser);
+        Player savedPlayer = userRepository.save(player);
+        statService.createStat(player.getUserId());
+        return toUserInfoDTO(savedPlayer);
     }
 
     // 사용자 조회
     public UserInfoDTO getUserById(String userId) {
-        User user = userRepository.findById(userId)
+        Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return toUserInfoDTO(user);
+        return toUserInfoDTO(player);
     }
 
     // 사용자 정보 업데이트
     @Transactional
     public UserInfoDTO updateUser(String userId, MyInfoUpdateDTO userRequestDTO) {
-        User user = userRepository.findById(userId)
+        Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if (userRequestDTO.getPassword() != null) {
             validatePasswordMatch(userRequestDTO.getPassword(), userRequestDTO.getConfirmPassword());
-            user.setPassword(userRequestDTO.getPassword()); // 보안상 해시 처리 필요
+            player.setPassword(userRequestDTO.getPassword()); // 보안상 해시 처리 필요
         }
         if (userRequestDTO.getProfileImg() != null) {
-            user.setProfileImg(userRequestDTO.getProfileImg());
+            player.setProfileImg(userRequestDTO.getProfileImg());
         }
 
-        User updatedUser = userRepository.save(user);
-        return toUserInfoDTO(updatedUser);
+        Player updatedPlayer = userRepository.save(player);
+        return toUserInfoDTO(updatedPlayer);
     }
 
     // 사용자 삭제

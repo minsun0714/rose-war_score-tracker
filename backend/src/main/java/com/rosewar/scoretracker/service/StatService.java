@@ -1,7 +1,7 @@
 package com.rosewar.scoretracker.service;
 
 import com.rosewar.scoretracker.domain.Stat;
-import com.rosewar.scoretracker.domain.User;
+import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.response.StatResponseDTO;
 import com.rosewar.scoretracker.repository.StatRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
@@ -33,11 +33,11 @@ public class StatService {
     // 특정 사용자의 통계 초기 생성
     @Transactional
     public StatResponseDTO createStat(String userId) {
-        User user = userRepository.findById(userId)
+        Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
 
         Stat stat = new Stat();
-        stat.setUser(user);
+        stat.setPlayer(player);
         stat.setMaxScore(0);
         stat.setTotalPlayCount(0);
         stat.setWinCount(0);

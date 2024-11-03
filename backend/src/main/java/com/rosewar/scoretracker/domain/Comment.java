@@ -19,7 +19,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // User 테이블의 userId를 참조하는 외래 키
-    private User user;
+    private Player player;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;

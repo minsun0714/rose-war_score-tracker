@@ -2,7 +2,6 @@ package com.rosewar.scoretracker.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +21,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // User 테이블의 userId를 참조하는 외래 키
-    private User user;
+    private Player player;
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;

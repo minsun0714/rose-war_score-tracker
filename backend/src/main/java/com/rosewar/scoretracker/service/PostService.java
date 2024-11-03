@@ -1,7 +1,7 @@
 package com.rosewar.scoretracker.service;
 
 import com.rosewar.scoretracker.domain.Post;
-import com.rosewar.scoretracker.domain.User;
+import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.PostRequestDTO;
 import com.rosewar.scoretracker.dto.response.PostResponseDTO;
 import com.rosewar.scoretracker.repository.PostRepository;
@@ -30,13 +30,13 @@ public class PostService {
     // 게시물 생성
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO postDTO) {
-        User user = userRepository.findById(postDTO.getUserId())
+        Player player = userRepository.findById(postDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Post post = new Post();
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
-        post.setUser(user);
+        post.setPlayer(player);
 
         Post savedPost = postRepository.save(post);
         return toPostResponseDTO(savedPost);

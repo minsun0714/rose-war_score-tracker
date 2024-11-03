@@ -2,7 +2,7 @@ package com.rosewar.scoretracker.service;
 
 import com.rosewar.scoretracker.domain.Comment;
 import com.rosewar.scoretracker.domain.Post;
-import com.rosewar.scoretracker.domain.User;
+import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.CommentRequestDTO;
 import com.rosewar.scoretracker.dto.response.CommentResponseDTO;
 import com.rosewar.scoretracker.repository.CommentRepository;
@@ -33,12 +33,12 @@ public class CommentService {
     public CommentResponseDTO createComment(CommentRequestDTO commentDTO) {
         Post post = postRepository.findById(commentDTO.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        User user = userRepository.findById(commentDTO.getUserId())
+        Player player = userRepository.findById(commentDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Comment comment = new Comment();
         comment.setPost(post);
-        comment.setUser(user);
+        comment.setPlayer(player);
         comment.setContent(commentDTO.getContent());
 
         if (commentDTO.getParentCommentId() != null) {
@@ -84,7 +84,7 @@ public class CommentService {
         return CommentResponseDTO.builder()
                 .commentId(comment.getCommentId())
                 .postId(comment.getPost().getPostId())
-                .writer(toUserInfoDTO(comment.getUser()))
+                .writer(toUserInfoDTO(comment.getPlayer()))
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
