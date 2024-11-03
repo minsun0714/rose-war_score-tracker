@@ -11,6 +11,7 @@ import com.rosewar.scoretracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,14 +54,36 @@ public class CommentService {
         return toCommentResponseDTO(savedComment);
     }
 
-    // 특정 게시물의 모든 댓글 조회
     public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        return commentRepository.findByPost(post).stream()
+
+        // 모든 댓글을 조회
+        List<Comment> allComments = commentRepository.findByPost(post);
+
+        // Comment 객체를 CommentResponseDTO로 변환
+        List<CommentResponseDTO> responseDTOs = allComments.stream()
                 .map(this::toCommentResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
+
+        // 부모-자식 관계 매칭
+        for (CommentResponseDTO parent : responseDTOs) {
+            for (CommentResponseDTO child : responseDTOs) {
+                if (child.getParentCommentId() != null && child.getParentCommentId().equals(parent.getCommentId())) {
+                    if (parent.getChildrenComments() == null) {
+                        parent.setChildrenComments(new ArrayList<>());
+                    }
+                    parent.getChildrenComments().add(child);
+                }
+            }
+        }
+
+        // 최상위 댓글만 반환
+        return responseDTOs.stream()
+                .filter(comment -> comment.getParentCommentId() == null)
+                .toList();
     }
+
 
     // 댓글 수정
     @Transactional
