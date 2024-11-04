@@ -31,8 +31,8 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDTO createComment(CommentRequestDTO commentDTO) {
-        Post post = postRepository.findById(commentDTO.getPostId())
+    public CommentResponseDTO createComment(Long postId, CommentRequestDTO commentDTO) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
         Player player = userRepository.findById(commentDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));

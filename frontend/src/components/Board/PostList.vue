@@ -2,27 +2,13 @@
 import PostCard from '../common/PostCard.vue'
 import Search from '../../assets/Search.svg'
 import { useRouter } from 'vue-router'
+import PostApiFacade from '@/api/apiFacade/PostApiFacade';
 
 const router = useRouter()
 
-const cardData = [
-  {
-    id: 0,
-    writer: 'minsun',
-    title: '이민선이라고 합니다. 잘 부탁드립니다.',
-    createdAt: new Date(),
-    likeCount: 0,
-    commentCount: 0,
-  },
-  {
-    id: 1,
-    writer: 'minsun',
-    title: '또 다른 게시물입니다. 잘 부탁드립니다.',
-    createdAt: new Date(),
-    likeCount: 5,
-    commentCount: 2,
-  },
-]
+const { data: cardData } = PostApiFacade.useFetchPostList()
+console.log()
+
 </script>
 
 <template>
@@ -38,8 +24,8 @@ const cardData = [
     <ul class="p-4 flex flex-col gap-y-4">
       <li
         v-for="card in cardData"
-        :key="card.id"
-        @click="router.push(`/board/${card.id}`)"
+        :key="card.postId"
+        @click="router.push(`/board/${card.postId}`)"
       >
         <PostCard :card="card" />
       </li>

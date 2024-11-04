@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/posts/{postId}/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -21,13 +21,13 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping
-    public ResponseEntity<CommentResponseDTO> createComment(@RequestBody CommentRequestDTO commentRequestDTO) {
-        CommentResponseDTO createdComment = commentService.createComment(commentRequestDTO);
+    public ResponseEntity<CommentResponseDTO> createComment(@PathVariable Long postId, @RequestBody CommentRequestDTO commentRequestDTO) {
+        CommentResponseDTO createdComment = commentService.createComment(postId, commentRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
     // 특정 게시물의 모든 댓글 조회
-    @GetMapping("/post/{postId}")
+    @GetMapping
     public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable Long postId) {
         List<CommentResponseDTO> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
@@ -36,6 +36,7 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(
+            @PathVariable Long postId,
             @PathVariable Long commentId,
             @RequestBody CommentRequestDTO commentRequestDTO) {
         CommentResponseDTO updatedComment = commentService.updateComment(commentId, commentRequestDTO);
@@ -44,7 +45,7 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
         commentService.deleteComment(commentId);
         return ResponseEntity.noContent().build();
     }
