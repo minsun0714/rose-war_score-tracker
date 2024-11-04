@@ -44,7 +44,7 @@ public class GameService {
         game.setScore2(scores[1]);
 
         statService.updateStat(player1.getUserId(), scores[0], scores[0] > scores[1]);
-        statService.updateStat(player2.getUserId(), scores[0], scores[0] > scores[1]);
+        statService.updateStat(player2.getUserId(), scores[0], scores[0] < scores[1]);
 
         Game savedGame = gameRepository.save(game);
         return toGameResponseDTO(savedGame);
