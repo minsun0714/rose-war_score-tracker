@@ -2,16 +2,8 @@
 import Like from '../../assets/Like.svg'
 import Comments from '../../assets/Comments.svg'
 
-type CardDataProps = {
-  writer: string
-  title: string
-  createdAt: Date
-  likeCount: number
-  commentCount: number
-}
-
 const { card } = defineProps<{
-  card: CardDataProps
+  card: PostResponse
 }>()
 </script>
 
@@ -33,7 +25,7 @@ const { card } = defineProps<{
       </span>
       <span class="flex items-center">
         <img :src="Comments" alt="Comments" class="w-8 h-8" />
-        {{ card.commentCount }}
+        {{ card.likeCount }}
       </span>
     </div>
   </div>

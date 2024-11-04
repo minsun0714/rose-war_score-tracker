@@ -9,6 +9,7 @@ class PostService {
 
     static async _fetchPostList(): Promise<PostResponse[]> {
         const response = await api.get('/api/posts');
+        console.log(response.data)
         return response.data;
     }
 
@@ -31,7 +32,7 @@ class PostService {
         return this._createPost(newPost);
     }
 
-    static fetchPosts(): Promise<PostResponse[]> {
+    static fetchPostList(): Promise<PostResponse[]> {
         return this._fetchPostList();
     }
 
