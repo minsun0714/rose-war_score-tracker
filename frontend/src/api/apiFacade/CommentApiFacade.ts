@@ -1,24 +1,28 @@
-import { useQuery, useMutation } from 'vue-query';
+import { useQuery, useMutation } from '@tanstack/vue-query';
 import CommentService from '../services/CommentService';
 
 class CommentApiFacade {
     // 게시물 관련 메서드
     static useFetchCommentList(postId: number) {
-        return useQuery(['commentList', postId], () => CommentService.fetchCommentList(postId));
+        return useQuery({ queryKey: ['commentList', postId], queryFn: () => CommentService.fetchCommentList(postId) });
     }
 
     static useCreatePost(postId: number, newComment: CommentRequest) {
-        return useMutation(() => CommentService.createComment(postId, newComment));
+        return useMutation({ mutationFn: () => CommentService.createComment(postId, newComment) });
     }
 
     static useUpdatePost(postId: number, commentId: number, updatedComment: CommentRequest) {
-        return useMutation(() => 
-            CommentService.updateComment(postId, commentId, updatedComment)
-        );
+        return useMutation({
+            mutationFn: () =>
+                CommentService.updateComment(postId, commentId, updatedComment)
+        });
     }
 
     static useDeletePost(postId: number, commentId: number) {
-        return useMutation(()=> CommentService.deleteComment(postId, commentId));
+        return useMutation({
+            mutationFn: () =>
+                CommentService.deleteComment(postId, commentId)
+        })
     }
 }
 
