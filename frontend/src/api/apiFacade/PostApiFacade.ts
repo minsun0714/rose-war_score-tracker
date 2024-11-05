@@ -5,15 +5,15 @@ import PostService from '../services/PostService';
 class PostApiFacade {
     // 게시물 관련 메서드
     static useFetchPostList() {
-        return useQuery({ queryKey:['posts'], queryFn: PostService.fetchPostList });
+        return useQuery({ queryKey:['posts'], queryFn: () => PostService.fetchPostList() });
     }
 
     static useFetchPost(postId: number) {
         return useQuery({queryKey: ['post', postId],queryFn: () => PostService.fetchPost(postId)});
     }
 
-    static useCreatePost() {
-        return useMutation({ mutationFn: PostService.createPost });
+    static useCreatePost(newPost: PostRequest) {
+        return useMutation({ mutationFn: () => PostService.createPost(newPost) });
     }
 
     static useUpdatePost(postId: number, updatedPost: PostRequest) {
@@ -23,8 +23,8 @@ class PostApiFacade {
         });
     }
 
-    static useDeletePost() {
-        return useMutation({ mutationFn: PostService.deletePost });
+    static useDeletePost(postId: number) {
+        return useMutation({ mutationFn: () => PostService.deletePost(postId) });
     }
 }
 
