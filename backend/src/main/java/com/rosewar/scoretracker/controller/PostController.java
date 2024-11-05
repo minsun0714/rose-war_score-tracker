@@ -3,6 +3,7 @@ package com.rosewar.scoretracker.controller;
 import com.rosewar.scoretracker.dto.request.PostRequestDTO;
 import com.rosewar.scoretracker.dto.response.PostResponseDTO;
 import com.rosewar.scoretracker.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class PostController {
 
     // 게시물 생성
     @PostMapping
-    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequestDTO) {
+    public ResponseEntity<PostResponseDTO> createPost(@Valid @RequestBody PostRequestDTO postRequestDTO) {
         PostResponseDTO createdPost = postService.createPost(postRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
@@ -43,6 +44,7 @@ public class PostController {
     // 게시물 수정
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDTO> updatePost(
+            @Valid
             @PathVariable Long postId,
             @RequestBody PostRequestDTO postRequestDTO) {
         PostResponseDTO updatedPost = postService.updatePost(postId, postRequestDTO);
