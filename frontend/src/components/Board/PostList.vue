@@ -7,7 +7,6 @@ import PostApiFacade from '@/api/apiFacade/PostApiFacade';
 const router = useRouter()
 
 const { data: cardData } = PostApiFacade.useFetchPostList()
-console.log()
 
 </script>
 
