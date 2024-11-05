@@ -36,12 +36,13 @@ public class StatService {
         Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
 
-        Stat stat = new Stat();
-        stat.setPlayer(player);
-        stat.setMaxScore(0);
-        stat.setTotalPlayCount(0);
-        stat.setWinCount(0);
-        stat.setFailCount(0);
+        Stat stat = Stat.builder()
+                .player(player)
+                .maxScore(0)
+                .totalPlayCount(0)
+                .winCount(0)
+                .failCount(0)
+                .build();
 
         Stat savedStat = statRepository.save(stat);
         return toStatResponseDTO(savedStat);
@@ -54,10 +55,10 @@ public class StatService {
                 .orElseThrow(() -> new IllegalArgumentException("Stat not found for user: " + userId));
 
         stat.setTotalPlayCount(stat.getTotalPlayCount() + 1);
+        stat.setMaxScore(Math.max(stat.getMaxScore(), newScore));
 
         if (isWin) {
             stat.setWinCount(stat.getWinCount() + 1);
-            stat.setMaxScore(Math.max(stat.getMaxScore(), newScore));
         } else {
             stat.setFailCount(stat.getFailCount() + 1);
         }

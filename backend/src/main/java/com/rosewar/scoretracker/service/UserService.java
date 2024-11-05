@@ -27,14 +27,15 @@ public class UserService {
     // 사용자 생성
     @Transactional
     public UserInfoDTO createUser(SignUpFormDTO userRequestDTO) {
-        Player player = new Player();
-        player.setUserId(userRequestDTO.getUserId());
-        player.setPassword(userRequestDTO.getPassword());  // 보안상 해시 처리 필요
-        player.setName(userRequestDTO.getName());
-        player.setNickname(userRequestDTO.getNickname());
+        Player player = Player.builder()
+                .userId(userRequestDTO.getUserId())
+                .password(userRequestDTO.getPassword())  // 보안상 해시 처리 필요
+                .name(userRequestDTO.getName())
+                .nickname(userRequestDTO.getNickname())
+                .build();
 
         Player savedPlayer = userRepository.save(player);
-        statService.createStat(player.getUserId());
+        statService.createStat(player.getUserId()); // 결합도 낮출 필요
         return toUserInfoDTO(savedPlayer);
     }
 
@@ -55,12 +56,10 @@ public class UserService {
             validatePasswordMatch(userRequestDTO.getPassword(), userRequestDTO.getConfirmPassword());
             player.setPassword(userRequestDTO.getPassword()); // 보안상 해시 처리 필요
         }
-        if (userRequestDTO.getProfileImg() != null) {
-            player.setProfileImg(userRequestDTO.getProfileImg());
-        }
-        player.setPassword(userRequestDTO.getPassword());
-        player.setNickname(userRequestDTO.getNickname());
-        player.setProfileImg(userRequestDTO.getProfileImg());
+
+        Player.builder()
+                .profileImg(userRequestDTO.getProfileImg())
+                .nickname(userRequestDTO.getNickname());
 
         Player updatedPlayer = userRepository.save(player);
         return toUserInfoDTO(updatedPlayer);

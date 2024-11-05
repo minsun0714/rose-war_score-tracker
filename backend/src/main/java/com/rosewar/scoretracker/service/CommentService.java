@@ -8,14 +8,14 @@ import com.rosewar.scoretracker.dto.response.CommentResponseDTO;
 import com.rosewar.scoretracker.repository.CommentRepository;
 import com.rosewar.scoretracker.repository.PostRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
+import com.rosewar.scoretracker.util.DTOMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
+import static com.rosewar.scoretracker.util.DTOMapper.toCommentResponseDTO;
 
 @Service
 public class CommentService {
@@ -37,13 +37,13 @@ public class CommentService {
         Player player = userRepository.findById(commentDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        Comment comment = new Comment();
-        comment.setPost(post);
-        comment.setPlayer(player);
-        comment.setContent(commentDTO.getContent());
+        Comment comment = Comment.builder()
+                .post(post)
+                .player(player)
+                .content(commentDTO.getContent())
+                .build();
 
         if (commentDTO.getParentId() != null) {
-
             Comment parentComment = commentRepository.findById(commentDTO.getParentId())
                     .orElseThrow(() -> new IllegalArgumentException("Parent comment not found"));
             comment.setParent(parentComment); // 부모 설정
@@ -63,7 +63,7 @@ public class CommentService {
 
         // Comment 객체를 CommentResponseDTO로 변환
         List<CommentResponseDTO> responseDTOs = allComments.stream()
-                .map(this::toCommentResponseDTO)
+                .map(DTOMapper::toCommentResponseDTO)
                 .toList();
 
         // 부모-자식 관계 매칭
@@ -103,19 +103,5 @@ public class CommentService {
             throw new IllegalArgumentException("Comment not found");
         }
         commentRepository.deleteById(commentId);
-    }
-
-    // Comment를 CommentResponseDTO로 변환하는 헬퍼 메서드
-    private CommentResponseDTO toCommentResponseDTO(Comment comment) {
-        return CommentResponseDTO.builder()
-                .commentId(comment.getCommentId())
-                .postId(comment.getPost().getPostId())
-                .writer(toUserInfoDTO(comment.getPlayer()))
-                .content(comment.getContent())
-                .createdAt(comment.getCreatedAt())
-                .updatedAt(comment.getUpdatedAt())
-                .likeCount(comment.getLikeCount())
-                .parentCommentId(comment.getParent() != null ? comment.getParent().getCommentId() : null)
-                .build();
     }
 }
