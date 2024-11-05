@@ -1,9 +1,8 @@
 package com.rosewar.scoretracker.repository;
 
 import com.rosewar.scoretracker.domain.Post;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
+
+    Page<Post> findAll(Pageable pageable); // 페이징된 결과 반환
 
     // 게시글과 댓글을 함께 조회
 //    @EntityGraph(attributePaths = {"comments"})

@@ -36,8 +36,11 @@ public class PostController {
 
     // 모든 게시물 조회
     @GetMapping
-    public ResponseEntity<List<PostResponseDTO>> getAllPosts() {
-        List<PostResponseDTO> posts = postService.getAllPosts();
+    public ResponseEntity<List<PostResponseDTO>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        List<PostResponseDTO> posts = postService.getAllPosts(page, size);
         return ResponseEntity.ok(posts);
     }
 
