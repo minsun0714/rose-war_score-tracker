@@ -13,8 +13,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 게시글과 댓글을 함께 조회
-    @EntityGraph(attributePaths = {"comments"})
-    Post findByPostId(Long postId);
+//    @EntityGraph(attributePaths = {"comments"})
+//    Post findByPostId(Long postId);
 
     // 최신 5개의 글 조회 (생성일 기준 내림차순 정렬)
     List<Post> findTop5ByOrderByCreatedAtDesc();
