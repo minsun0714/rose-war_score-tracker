@@ -4,6 +4,7 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
 import com.rosewar.scoretracker.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
 
     // 유저 생성 (회원가입)
     @PostMapping
-    public ResponseEntity<UserInfoDTO> createUser(@RequestBody SignUpFormDTO signUpFormDTO) {
+    public ResponseEntity<UserInfoDTO> createUser(@Valid @RequestBody SignUpFormDTO signUpFormDTO) {
         UserInfoDTO createdUser = userService.createUser(signUpFormDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
@@ -35,6 +36,7 @@ public class UserController {
     // 유저 정보 업데이트
     @PutMapping("/{userId}")
     public ResponseEntity<UserInfoDTO> updateUser(
+            @Valid
             @PathVariable String userId,
             @RequestBody MyInfoUpdateDTO myInfoUpdateDTO) {
         UserInfoDTO updatedUser = userService.updateUser(userId, myInfoUpdateDTO);

@@ -8,9 +8,10 @@ import com.rosewar.scoretracker.repository.PostRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
 import com.rosewar.scoretracker.util.DTOMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +52,11 @@ public class PostService {
     }
 
     // 모든 게시물 조회
-    public List<PostResponseDTO> getAllPosts() {
-        return postRepository.findAll().stream()
+    public List<PostResponseDTO> getAllPosts(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Post> postPage = postRepository.findAll(pageRequest);
+
+        return postPage.stream()
                 .map(DTOMapper::toPostResponseDTO)
                 .collect(Collectors.toList());
     }

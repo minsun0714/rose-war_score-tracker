@@ -3,6 +3,7 @@ package com.rosewar.scoretracker.controller;
 import com.rosewar.scoretracker.dto.request.CommentRequestDTO;
 import com.rosewar.scoretracker.dto.response.CommentResponseDTO;
 import com.rosewar.scoretracker.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping
-    public ResponseEntity<CommentResponseDTO> createComment(@PathVariable Long postId, @RequestBody CommentRequestDTO commentRequestDTO) {
+    public ResponseEntity<CommentResponseDTO> createComment(@Valid @PathVariable Long postId, @RequestBody CommentRequestDTO commentRequestDTO) {
         CommentResponseDTO createdComment = commentService.createComment(postId, commentRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
@@ -36,6 +37,7 @@ public class CommentController {
     // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(
+            @Valid
             @PathVariable Long postId,
             @PathVariable Long commentId,
             @RequestBody CommentRequestDTO commentRequestDTO) {
