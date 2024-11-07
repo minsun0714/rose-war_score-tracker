@@ -1,6 +1,7 @@
 package com.rosewar.scoretracker.controller;
 
 import com.rosewar.scoretracker.dto.request.PostRequestDTO;
+import com.rosewar.scoretracker.dto.response.PageResponseDTO;
 import com.rosewar.scoretracker.dto.response.PostResponseDTO;
 import com.rosewar.scoretracker.service.PostService;
 import jakarta.validation.Valid;
@@ -36,12 +37,12 @@ public class PostController {
 
     // 모든 게시물 조회
     @GetMapping
-    public ResponseEntity<List<PostResponseDTO>> getAllPosts(
+    public ResponseEntity<PageResponseDTO<PostResponseDTO>> getAllPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        List<PostResponseDTO> posts = postService.getAllPosts(page, size);
-        return ResponseEntity.ok(posts);
+        PageResponseDTO<PostResponseDTO> response = postService.getAllPosts(page, size);
+        return ResponseEntity.ok(response);
     }
 
     // 게시물 수정
