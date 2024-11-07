@@ -53,9 +53,15 @@ public class PostService {
     }
 
     // 모든 게시물 조회
-    public PageResponseDTO<PostResponseDTO> getAllPosts(int page, int size) {
+    public PageResponseDTO<PostResponseDTO> getAllPosts(int page, int size, String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Post> postPage = postRepository.findAll(pageRequest);
+
+        Page<Post> postPage;
+        if (keyword.isEmpty()){
+            postPage = postRepository.findAll(pageRequest);
+        } else {
+            postPage = postRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageRequest);
+        }
 
         List<PostResponseDTO> posts = postPage.stream()
                 .map(DTOMapper::toPostResponseDTO)

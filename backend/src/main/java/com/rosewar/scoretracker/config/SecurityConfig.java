@@ -38,8 +38,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/users", "/api/games").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/users", "/api/users/*", "/api/games").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts", "/api/posts/*").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

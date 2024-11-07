@@ -39,9 +39,10 @@ public class PostController {
     @GetMapping
     public ResponseEntity<PageResponseDTO<PostResponseDTO>> getAllPosts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String keyword
     ) {
-        PageResponseDTO<PostResponseDTO> response = postService.getAllPosts(page, size);
+        PageResponseDTO<PostResponseDTO> response = postService.getAllPosts(page, size, keyword);
         return ResponseEntity.ok(response);
     }
 
