@@ -1,11 +1,19 @@
 
-import { useMutation, useQuery } from '@tanstack/vue-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/vue-query';
 import PostService from '../services/PostService';
 
 class PostApiFacade {
     // 게시물 관련 메서드
     static useFetchPostList() {
-        return useQuery({ queryKey:['posts'], queryFn: () => PostService.fetchPostList() });
+        return useInfiniteQuery({
+          queryKey: ['posts'],
+          queryFn: ({ pageParam = 0 }) => PostService.fetchPostList(pageParam),
+          getNextPageParam: (lastPage: PagedPostResponse) => {
+            console.log(lastPage.currentPage)
+              return lastPage.isLast ? undefined : lastPage.currentPage + 1;
+          },
+          initialPageParam: 0
+        });
     }
 
     static useFetchPost(postId: number) {

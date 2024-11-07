@@ -10,6 +10,15 @@ interface PostResponse extends Post{
     likeCount: number
 }
 
+interface PagedPostResponse {
+  content: PostResponse[];
+  currentPage: number
+  pageSize: number
+  totalElements: number
+  totalPages: number
+  isLast: boolean
+}
+
 interface CommentResponse extends Comment{
     commentId: number
     postId: number
