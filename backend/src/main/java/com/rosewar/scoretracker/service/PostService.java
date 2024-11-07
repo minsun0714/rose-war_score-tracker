@@ -3,6 +3,7 @@ package com.rosewar.scoretracker.service;
 import com.rosewar.scoretracker.domain.Post;
 import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.PostRequestDTO;
+import com.rosewar.scoretracker.dto.response.PageResponseDTO;
 import com.rosewar.scoretracker.dto.response.PostResponseDTO;
 import com.rosewar.scoretracker.repository.PostRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
@@ -52,13 +53,23 @@ public class PostService {
     }
 
     // 모든 게시물 조회
-    public List<PostResponseDTO> getAllPosts(int page, int size) {
+    public PageResponseDTO<PostResponseDTO> getAllPosts(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Post> postPage = postRepository.findAll(pageRequest);
 
-        return postPage.stream()
+        List<PostResponseDTO> posts = postPage.stream()
                 .map(DTOMapper::toPostResponseDTO)
                 .collect(Collectors.toList());
+
+        PageResponseDTO<PostResponseDTO> response = new PageResponseDTO<>();
+        response.setContent(posts);
+        response.setCurrentPage(postPage.getNumber());
+        response.setPageSize(postPage.getSize());
+        response.setTotalElements(postPage.getTotalElements());
+        response.setTotalPages(postPage.getTotalPages());
+        response.setLast(postPage.isLast());
+
+        return response;
     }
 
     // 게시물 수정

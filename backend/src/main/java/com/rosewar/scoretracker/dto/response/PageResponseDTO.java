@@ -1,14 +1,18 @@
 package com.rosewar.scoretracker.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class PagedResponseDTO<T> {
+@Builder
+public class PageResponseDTO<T> {
 
     private List<T> content;       // 현재 페이지의 데이터 목록
     private int currentPage;       // 현재 페이지 번호
@@ -18,7 +22,7 @@ public class PagedResponseDTO<T> {
     private boolean isLast;          // 마지막 페이지 여부
 
     // Spring Data JPA의 Page 객체를 사용하여 쉽게 PagedResponseDTO 생성
-    public PagedResponseDTO(Page<T> page) {
+    public PageResponseDTO(Page<T> page) {
         this.content = page.getContent();
         this.currentPage = page.getNumber();
         this.pageSize = page.getSize();

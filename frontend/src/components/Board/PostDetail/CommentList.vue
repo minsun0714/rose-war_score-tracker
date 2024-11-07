@@ -1,53 +1,18 @@
 <script setup lang="ts">
-import ProfileImg from '@/assets/Male User.svg'
 import CommentChildrenList from './CommentChildrenList.vue'
+import CommentApiFacade from '@/api/apiFacade/CommentApiFacade';
+import { useRoute } from 'vue-router';
 
-const postData = {
-  writer: 'minsun',
-  title: '이민선이라고 합니다. 잘 부탁드립니다.',
-  content:
-    '이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.',
-  createdAt: new Date(),
-  likeCount: 0,
-  commentCount: 2,
-  commentList: [
-    {
-      user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-      content:
-        '댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.',
-      createdAt: new Date(),
-      likeCount: 0,
-      children: [
-        {
-          user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-          content: '대댓글입니다.',
-          createdAt: new Date(),
-          likeCount: 0,
-        },
-        {
-          user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-          content:
-            '대댓글입니다대댓글입니다대댓글입니다대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.',
-          createdAt: new Date(),
-          likeCount: 0,
-        },
-      ],
-    },
-    {
-      user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-      content: '댓글입니다.',
-      createdAt: new Date(),
-      likeCount: 0,
-      commentList: [],
-    },
-  ],
-}
+const route = useRoute();
+const id = Number(route.params.id)
+const { data: commentList } = CommentApiFacade.useFetchCommentList(id)
+
 </script>
 
 <template>
   <ul>
     <li
-      v-for="(comment, index) in postData.commentList"
+      v-for="(comment, index) in commentList"
       :key="index"
       class="border-t py-2 flex flex-col justify-between"
     >
@@ -55,12 +20,12 @@ const postData = {
         <span
           class="flex flex-col items-center justify-center text-xs text-slate-400 w-20"
         >
-          <img :src="comment.user.profileImg" />
-          <span> {{ comment.user.nickname }}</span>
+          <img :src="comment.writer.profileImg" />
+          <span> {{ comment.writer.nickname }}</span>
         </span>
         <span class="text-xs w-full flex flex-col gap-2">
           <span class="text-end text-slate-500">{{
-            comment.createdAt.toDateString()
+            comment.createdAt
           }}</span>
           <p class="text-xs flex items-center">{{ comment.content }}</p>
         </span>
@@ -72,8 +37,8 @@ const postData = {
         ></span
       >
       <CommentChildrenList
-        v-if="comment.children"
-        :commentChildren="comment.children"
+        v-if="comment.childrenComments"
+        :commentChildren="comment.childrenComments"
       />
     </li>
   </ul>
