@@ -7,6 +7,7 @@ import com.rosewar.scoretracker.dto.response.UserInfoDTO;
 import com.rosewar.scoretracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
@@ -17,11 +18,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final StatService statService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, StatService statService) {
+    public UserService(UserRepository userRepository, StatService statService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.statService = statService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // 사용자 생성
@@ -29,7 +32,7 @@ public class UserService {
     public UserInfoDTO createUser(SignUpFormDTO userRequestDTO) {
         Player player = Player.builder()
                 .userId(userRequestDTO.getUserId())
-                .password(userRequestDTO.getPassword())  // 보안상 해시 처리 필요
+                .password(passwordEncoder.encode(userRequestDTO.getPassword()))  // 보안상 해시 처리 필요
                 .name(userRequestDTO.getName())
                 .nickname(userRequestDTO.getNickname())
                 .build();
