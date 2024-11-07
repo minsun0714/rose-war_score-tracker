@@ -9,7 +9,6 @@ class PostApiFacade {
           queryKey: ['posts'],
           queryFn: ({ pageParam = 0 }) => PostService.fetchPostList(pageParam),
           getNextPageParam: (page: PagedPostResponse) => {
-            console.log(page.last)
               return page.last ? undefined : page.currentPage + 1;
           },
           initialPageParam: 0
