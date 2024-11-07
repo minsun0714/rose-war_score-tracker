@@ -26,7 +26,7 @@ const loadMorePosts = async () => {
   if (hasNextPage && !loading.value) {
     loading.value = true
     showLoading.value = true
-    setTimeout(() => showLoading.value = false, 20000)
+    setTimeout(() => showLoading.value = false, 3000)
 
     await fetchNextPage()
     loading.value = false
