@@ -4,7 +4,6 @@ import PostApiFacade from '@/api/apiFacade/PostApiFacade'
 export const useInfiniteScroll = () => {
   const { data: cardData, fetchNextPage, hasNextPage } = PostApiFacade.useFetchPostList()
 
-  const showLoading = ref(false)
   const mergedCardData = ref<Array<PostResponse>>([])
 
   watchEffect(() => {
@@ -16,21 +15,12 @@ export const useInfiniteScroll = () => {
     }
   })
 
-  const loadMorePosts = async () => {
-    if (hasNextPage) {
-      showLoading.value = true
-      setTimeout(() => showLoading.value = false, 3000)
-
-      await fetchNextPage()
-    }
-  }
-
-  const onScroll = () => {
+  const onScroll = async () => {
     const { scrollY, innerHeight } = window
     const documentHeight = document.documentElement.scrollHeight
 
     if (scrollY + innerHeight >= documentHeight) {
-      loadMorePosts()
+      await fetchNextPage()
     }
   }
 
