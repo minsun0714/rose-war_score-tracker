@@ -8,9 +8,9 @@ class PostApiFacade {
         return useInfiniteQuery({
           queryKey: ['posts'],
           queryFn: ({ pageParam = 0 }) => PostService.fetchPostList(pageParam),
-          getNextPageParam: (lastPage: PagedPostResponse) => {
-            console.log(lastPage.last)
-              return lastPage.last ? undefined : lastPage.currentPage + 1;
+          getNextPageParam: (page: PagedPostResponse) => {
+            console.log(page.last)
+              return page.last ? undefined : page.currentPage + 1;
           },
           initialPageParam: 0
         });
