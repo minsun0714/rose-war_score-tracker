@@ -16,7 +16,7 @@ interface PagedPostResponse {
   pageSize: number
   totalElements: number
   totalPages: number
-  isLast: boolean
+  last: boolean
 }
 
 interface CommentResponse extends Comment{

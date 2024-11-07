@@ -4,7 +4,6 @@ import Search from '../../assets/Search.svg'
 import { useRouter } from 'vue-router'
 import { onMounted, ref, watchEffect } from 'vue'
 import PostApiFacade from '@/api/apiFacade/PostApiFacade'
-
 const router = useRouter()
 
 const { data: cardData, fetchNextPage, hasNextPage } = PostApiFacade.useFetchPostList()
@@ -25,7 +24,7 @@ watchEffect(() => {
 
 // 더 많은 포스트를 가져오는 함수
 const loadMorePosts = async () => {
-  if (hasNextPage.value && !loading.value) {
+  if (!cardData.value?.pages[0].isLast && !loading.value) {
     loading.value = true
     showLoading.value = true // 로딩 시작 시 표시
 
@@ -78,10 +77,10 @@ onMounted(() => {
         <PostCard :card="card" />
       </li>
       <div v-if="showLoading && hasNextPage" class="text-center">
-  <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 border-solid rounded-full border-t-transparent border-gray-600" role="status">
-    <span class="sr-only">로딩 중...</span>
-  </div>
-</div>
+        <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 border-solid rounded-full border-t-transparent border-gray-600" role="status">
+        <span class="sr-only">로딩 중...</span>
+        </div>
+      </div>
     </ul>
   </div>
 </template>
