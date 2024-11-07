@@ -78,8 +78,10 @@ onMounted(() => {
         <PostCard :card="card" />
       </li>
       <div v-if="showLoading && hasNextPage" class="text-center">
-      로딩 중...
-    </div>
+  <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 border-solid rounded-full border-t-transparent border-gray-600" role="status">
+    <span class="sr-only">로딩 중...</span>
+  </div>
+</div>
     </ul>
   </div>
 </template>
