@@ -14,13 +14,30 @@ import SignatureBtn from '../common/SignatureBtn.vue'
 import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 
 const formSchema = toTypedSchema(
-  z.object({
-    userId: z.string().min(2).max(50),
-    password: z.string().min(2).max(50),
-    passwordConfirm: z.string().min(2).max(50),
-    name: z.string().min(2).max(50),
-    nickname: z.string().min(2).max(50),
-  }),
+  z
+    .object({
+      userId: z.string().min(2).max(50),
+      password: z
+        .string()
+        .min(8)
+        .max(50)
+        .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
+          message: 'Password must contain at least one letter and one number',
+        }),
+      passwordConfirm: z
+        .string()
+        .min(8)
+        .max(50)
+        .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
+          message: 'Password must contain at least one letter and one number',
+        }),
+      name: z.string().min(2).max(50),
+      nickname: z.string().min(2).max(50),
+    })
+    .refine(data => data.password === data.passwordConfirm, {
+      message: 'Passwords do not match',
+      path: ['passwordConfirm'],
+    }),
 )
 
 const form = useForm({
