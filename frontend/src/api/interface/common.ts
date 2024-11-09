@@ -1,18 +1,24 @@
 // 리소스 단위
 interface User {
-    userId: string,
-    name: string,
-    nickname: string
+  name: string
+  nickname: string
+  profileImage: string
+}
+
+interface Auth {
+  userId: string
+  password: string
+  passwordConfirm: string
 }
 
 // Post
 interface Post {
-    title: string,
-    content: string
+  title: string
+  content: string
 }
 
 // Comment
 interface Comment {
-    content: string
-    parentId?: number
+  content: string
+  parentId?: number
 }
