@@ -31,11 +31,9 @@ public class JwtTokenProvider {
     }
 
     public JwtToken generateToken(Authentication authentication) {
-        System.out.println(authentication);
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(",")); // 권한을 문자열로 결합
-        System.out.println("authorities" + authorities);
 
         long now = System.currentTimeMillis();
         Date accessTokenExpiresIn = new Date(now + 3600 * 1000); // 1시간
@@ -48,11 +46,11 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        System.out.println("accessToken" + accessToken);
-
         // Refresh Token 생성
         Date refreshTokenExpiresIn = new Date(now + 3600 * 1000 * 24); // 24시간
         String refreshToken = Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim("auth", authorities) // 권한 정보를 추가
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -79,7 +77,10 @@ public class JwtTokenProvider {
                 .collect(Collectors.toList());
         System.out.println(authorities);
 
+        System.out.println("claims.getSubject()" + claims.getSubject());
+
         UserDetails principal = new User(claims.getSubject(), "", authorities);
+
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
