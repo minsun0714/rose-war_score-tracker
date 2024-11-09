@@ -2,38 +2,32 @@ package com.rosewar.scoretracker.controller;
 
 import com.rosewar.scoretracker.dto.request.SignInFormDTO;
 import com.rosewar.scoretracker.dto.response.JwtTokenDTO;
+import com.rosewar.scoretracker.security.AuthService;
 import com.rosewar.scoretracker.security.JwtToken;
 import com.rosewar.scoretracker.security.JwtTokenProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+    public AuthController(AuthService authService, JwtTokenProvider jwtTokenProvider) {
+        this.authService = authService;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.authenticationManager = authenticationManager;
     }
 
     // 로그인 엔드포인트
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDTO> login(@RequestBody SignInFormDTO loginRequest, HttpServletResponse response) {
-        System.out.println(loginRequest + " " + authenticationManager);
         // 유저 인증 처리
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword())
-        );
         // 인증에 성공하면 토큰 생성
-        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+        JwtToken jwtToken = authService.authenticateAndGenerateToken(loginRequest.getUserId(), loginRequest.getPassword());
 
         setRefreshTokenCookie(response, jwtToken.getRefreshToken());
 
@@ -45,8 +39,7 @@ public class AuthController {
         String refreshToken = jwtTokenProvider.getRefreshTokenFromCookie(request);
         // Refresh Token을 검증하고 새로운 Access Token 발급
         if (jwtTokenProvider.validateToken(refreshToken)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
-            JwtToken newToken = jwtTokenProvider.generateToken(authentication);
+            JwtToken newToken = authService.refreshAccessToken(refreshToken);
 
             setRefreshTokenCookie(response, newToken.getRefreshToken());
 

@@ -3,25 +3,33 @@ package com.rosewar.scoretracker.service;
 import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
+import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
 import com.rosewar.scoretracker.repository.UserRepository;
+import com.rosewar.scoretracker.security.AuthService;
+import com.rosewar.scoretracker.security.JwtToken;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
 import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
 
 @Service
 @Transactional
 public class UserService {
 
+    private final AuthService authService;
     private final UserRepository userRepository;
     private final StatService statService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, StatService statService, PasswordEncoder passwordEncoder) {
+    public UserService(AuthService authService, UserRepository userRepository, StatService statService, PasswordEncoder passwordEncoder) {
+        this.authService = authService;
         this.userRepository = userRepository;
         this.statService = statService;
         this.passwordEncoder = passwordEncoder;
@@ -29,7 +37,7 @@ public class UserService {
 
     // 사용자 생성
     @Transactional
-    public UserInfoDTO createUser(SignUpFormDTO userRequestDTO) {
+    public SignUpResponseDTO createUser(SignUpFormDTO userRequestDTO, HttpServletResponse response) {
         Player player = Player.builder()
                 .userId(userRequestDTO.getUserId())
                 .password(passwordEncoder.encode(userRequestDTO.getPassword()))  // 보안상 해시 처리 필요
@@ -38,9 +46,17 @@ public class UserService {
                 .build();
 
         Player savedPlayer = userRepository.save(player);
-        statService.createStat(player.getUserId()); // 결합도 낮출 필요
-        return toUserInfoDTO(savedPlayer);
+
+        // 통계 생성 (의존성 낮추는 방법 검토 가능)
+        statService.createStat(savedPlayer.getUserId());
+
+        JwtToken jwtToken = authService.authenticateAndGenerateToken(userRequestDTO.getUserId(), userRequestDTO.getPassword());
+
+        setRefreshTokenCookie(response, jwtToken.getRefreshToken());
+
+        return toSignUpResponseDTO(savedPlayer, jwtToken.getAccessToken());
     }
+
 
     // 사용자 조회
     public UserInfoDTO getUserById(String userId) {
@@ -82,5 +98,17 @@ public class UserService {
         if (!password.equals(confirmPassword)) {
             throw new IllegalArgumentException("Passwords do not match");
         }
+    }
+
+    private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true); // HTTPS에서만 전송되도록 설정
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 24시간
+        response.addCookie(refreshTokenCookie);
+
+        // SameSite 설정 추가 (직접 헤더로 추가)
+        response.setHeader("Set-Cookie", "refreshToken=" + refreshToken + "; HttpOnly; Secure; Path=/; Max-Age=" + (24 * 60 * 60) + "; SameSite=Lax");
     }
 }

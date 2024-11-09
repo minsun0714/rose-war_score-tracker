@@ -4,10 +4,7 @@ import com.rosewar.scoretracker.domain.Stat;
 import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.domain.Post;
 import com.rosewar.scoretracker.domain.Comment;
-import com.rosewar.scoretracker.dto.response.StatResponseDTO;
-import com.rosewar.scoretracker.dto.response.UserInfoDTO;
-import com.rosewar.scoretracker.dto.response.PostResponseDTO;
-import com.rosewar.scoretracker.dto.response.CommentResponseDTO;
+import com.rosewar.scoretracker.dto.response.*;
 
 public class DTOMapper {
 
@@ -20,6 +17,17 @@ public class DTOMapper {
                 .name(player.getName())
                 .nickname(player.getNickname())
                 .profileImg(player.getProfileImg())
+                .build();
+    }
+
+    // Player와 accessToken을 이용해 SignUpResponseDTO로 변환
+    public static SignUpResponseDTO toSignUpResponseDTO(Player player, String accessToken) {
+        return SignUpResponseDTO.builder()
+                .name(player.getName())
+                .userId(player.getUserId())
+                .nickname(player.getNickname())
+                .profileImg(player.getProfileImg())
+                .accessToken(accessToken)
                 .build();
     }
 
