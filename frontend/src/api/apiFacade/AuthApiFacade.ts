@@ -36,8 +36,17 @@ class AuthApiFacade {
     })
   }
 
-  static useLogin(loginInfo: LoginRequest) {
-    return useMutation({ mutationFn: () => AuthService.login(loginInfo) })
+  static useLogin() {
+    const router = useRouter()
+    return useMutation({
+      mutationFn: ({ userId, password }: LoginRequest) =>
+        AuthService.login({ userId, password }),
+      onSuccess: response => {
+        const accessToken = response.accessToken
+        localStorage.setItem('token', accessToken)
+        router.push('/')
+      },
+    })
   }
 
   static useUpdateUser(userId: string, updatedUserInfo: UpdateUserInfoRequest) {
