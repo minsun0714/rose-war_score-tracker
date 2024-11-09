@@ -71,13 +71,10 @@ public class JwtTokenProvider {
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
-        System.out.println(claims);
         Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
         System.out.println(authorities);
-
-        System.out.println("claims.getSubject()" + claims.getSubject());
 
         UserDetails principal = new User(claims.getSubject(), "", authorities);
 

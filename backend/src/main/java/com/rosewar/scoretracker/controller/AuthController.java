@@ -39,9 +39,7 @@ public class AuthController {
     public ResponseEntity<JwtToken> refresh(@RequestBody JwtToken jwtTokenRequest) {
         // Refresh Token을 검증하고 새로운 Access Token 발급
         if (jwtTokenProvider.validateToken(jwtTokenRequest.getRefreshToken())) {
-            System.out.println("validation enter");
             Authentication authentication = jwtTokenProvider.getAuthentication(jwtTokenRequest.getRefreshToken());
-            System.out.println("authentication" + authentication.getName());
             JwtToken newToken = jwtTokenProvider.generateToken(authentication);
             return ResponseEntity.ok(newToken);
         } else {
