@@ -6,6 +6,11 @@ interface SignUpResponse extends UserResponse {
   accessToken: string
 }
 
+interface LoginResponse {
+  grantType: 'bearer'
+  accessToken: string
+}
+
 interface UpdateUserInfoResponse extends UserResponse {}
 
 interface PostResponse extends Post {

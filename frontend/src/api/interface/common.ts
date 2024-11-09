@@ -2,7 +2,7 @@
 interface User {
   name: string
   nickname: string
-  profileImage: string
+  profileImg: string
 }
 
 interface Auth {

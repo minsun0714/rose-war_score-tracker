@@ -3,7 +3,7 @@ interface SignUpRequest extends Omit<User, 'profileImg'>, Auth {}
 
 interface LoginRequest extends Omit<Auth, 'passwordConfirm'> {}
 
-interface UpdateMyInfoRequest
+interface UpdateUserInfoRequest
   extends Omit<User, 'name'>,
     Omit<Auth, 'userId'> {}
 
