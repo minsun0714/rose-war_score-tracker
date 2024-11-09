@@ -23,13 +23,6 @@ const formSchema = toTypedSchema(
       .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
         message: 'Password must contain at least one letter and one number',
       }),
-    passwordConfirm: z
-      .string()
-      .min(8)
-      .max(50)
-      .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
-        message: 'Password must contain at least one letter and one number',
-      }),
   }),
 )
 
