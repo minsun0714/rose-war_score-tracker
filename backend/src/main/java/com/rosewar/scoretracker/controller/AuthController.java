@@ -5,11 +5,14 @@ import com.rosewar.scoretracker.dto.response.JwtTokenDTO;
 import com.rosewar.scoretracker.security.AuthService;
 import com.rosewar.scoretracker.security.JwtToken;
 import com.rosewar.scoretracker.security.JwtTokenProvider;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.rosewar.scoretracker.util.CookieUtils.setRefreshTokenCookie;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,19 +48,7 @@ public class AuthController {
 
             return ResponseEntity.ok(new JwtTokenDTO("Bearer", newToken.getAccessToken()));
         } else {
-            return ResponseEntity.status(403).body(null); // 유효하지 않은 Refresh Token
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 유효하지 않은 Refresh Token
         }
-    }
-
-    private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true); // HTTPS에서만 전송되도록 설정
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 24시간
-        response.addCookie(refreshTokenCookie);
-
-        // SameSite 설정 추가 (직접 헤더로 추가)
-        response.setHeader("Set-Cookie", "refreshToken=" + refreshToken + "; HttpOnly; Secure; Path=/; Max-Age=" + (24 * 60 * 60) + "; SameSite=Lax");
     }
 }

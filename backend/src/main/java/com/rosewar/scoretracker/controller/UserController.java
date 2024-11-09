@@ -4,14 +4,11 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
-import com.rosewar.scoretracker.security.JwtToken;
 import com.rosewar.scoretracker.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +24,6 @@ public class UserController {
     // 유저 생성 (회원가입)
     @PostMapping
     public ResponseEntity<SignUpResponseDTO> createUser(@Valid @RequestBody SignUpFormDTO signUpFormDTO, HttpServletResponse response) {
-        System.out.println(signUpFormDTO);
         SignUpResponseDTO createdUser = userService.createUser(signUpFormDTO, response);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);

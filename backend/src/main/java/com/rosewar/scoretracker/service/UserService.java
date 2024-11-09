@@ -8,13 +8,13 @@ import com.rosewar.scoretracker.dto.response.UserInfoDTO;
 import com.rosewar.scoretracker.repository.UserRepository;
 import com.rosewar.scoretracker.security.AuthService;
 import com.rosewar.scoretracker.security.JwtToken;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.rosewar.scoretracker.util.CookieUtils.setRefreshTokenCookie;
 import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
 import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
 
@@ -73,7 +73,7 @@ public class UserService {
 
         if (userRequestDTO.getPassword() != null) {
             validatePasswordMatch(userRequestDTO.getPassword(), userRequestDTO.getConfirmPassword());
-            player.setPassword(userRequestDTO.getPassword()); // 보안상 해시 처리 필요
+            player.setPassword(passwordEncoder.encode(userRequestDTO.getPassword())); // 보안상 해시 처리 필요
         }
 
         Player.builder()
@@ -100,15 +100,5 @@ public class UserService {
         }
     }
 
-    private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true); // HTTPS에서만 전송되도록 설정
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 24시간
-        response.addCookie(refreshTokenCookie);
 
-        // SameSite 설정 추가 (직접 헤더로 추가)
-        response.setHeader("Set-Cookie", "refreshToken=" + refreshToken + "; HttpOnly; Secure; Path=/; Max-Age=" + (24 * 60 * 60) + "; SameSite=Lax");
-    }
 }
