@@ -5,12 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtToken {
+@Builder
+public class JwtTokenDTO {
     private String grantType;
     private String accessToken;
-    private String refreshToken;
 }
