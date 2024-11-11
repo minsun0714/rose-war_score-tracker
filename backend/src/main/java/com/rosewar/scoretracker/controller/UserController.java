@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,30 +35,25 @@ public class UserController {
     }
 
     // 특정 유저 조회
-    @GetMapping("/me")
-    public ResponseEntity<UserInfoDTO> getUserById(@RequestHeader("Authorization") String token) {
-        String jwt = token.replace("Bearer ", "");
-        String userId = jwtTokenProvider.extractUserId(jwt);
-        System.out.println(userId);
-        UserInfoDTO user = userService.getUserById(userId);
-        System.out.println(user);
+    @GetMapping
+    public ResponseEntity<UserInfoDTO> getUserById() {
+        UserInfoDTO user = userService.getUserById();
         return ResponseEntity.ok(user);
     }
 
     // 유저 정보 업데이트
-    @PutMapping("/{userId}")
+    @PutMapping
     public ResponseEntity<UserInfoDTO> updateUser(
             @Valid
-            @PathVariable String userId,
             @RequestBody MyInfoUpdateDTO myInfoUpdateDTO) {
-        UserInfoDTO updatedUser = userService.updateUser(userId, myInfoUpdateDTO);
+        UserInfoDTO updatedUser = userService.updateUser(myInfoUpdateDTO);
         return ResponseEntity.ok(updatedUser);
     }
 
     // 유저 삭제
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
-        userService.deleteUser(userId);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser() {
+        userService.deleteUser();
         return ResponseEntity.noContent().build();
     }
 }
