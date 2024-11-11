@@ -7,7 +7,7 @@ interface SignUpResponse extends UserResponse {
 }
 
 interface LoginResponse {
-  grantType: 'bearer'
+  grantType: 'Bearer'
   accessToken: string
 }
 
