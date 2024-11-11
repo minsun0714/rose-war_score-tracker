@@ -5,14 +5,20 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
+import com.rosewar.scoretracker.exception.UserExceptionHandler;
+import com.rosewar.scoretracker.exception.UserNotAuthenticatedException;
 import com.rosewar.scoretracker.repository.UserRepository;
 import com.rosewar.scoretracker.security.AuthService;
 import com.rosewar.scoretracker.security.JwtToken;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 import static com.rosewar.scoretracker.util.CookieUtils.setRefreshTokenCookie;
 import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
@@ -59,7 +65,8 @@ public class UserService {
 
 
     // 사용자 조회
-    public UserInfoDTO getUserById(String userId) {
+    public UserInfoDTO getUserById() {
+        String userId = getAuthenticatedUserId();
         Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return toUserInfoDTO(player);
@@ -67,7 +74,8 @@ public class UserService {
 
     // 사용자 정보 업데이트
     @Transactional
-    public UserInfoDTO updateUser(String userId, MyInfoUpdateDTO userRequestDTO) {
+    public UserInfoDTO updateUser(MyInfoUpdateDTO userRequestDTO) {
+        String userId = getAuthenticatedUserId();
         Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -86,7 +94,8 @@ public class UserService {
 
     // 사용자 삭제
     @Transactional
-    public void deleteUser(String userId) {
+    public void deleteUser() {
+        String userId = getAuthenticatedUserId();
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("User not found");
         }
@@ -100,5 +109,11 @@ public class UserService {
         }
     }
 
-
+    public String getAuthenticatedUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof String)) {
+            throw new UserNotAuthenticatedException("User not authenticated");
+        }
+        return (String) authentication.getPrincipal();
+    }
 }
