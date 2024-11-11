@@ -5,7 +5,6 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
-import com.rosewar.scoretracker.exception.UserExceptionHandler;
 import com.rosewar.scoretracker.exception.UserNotAuthenticatedException;
 import com.rosewar.scoretracker.repository.UserRepository;
 import com.rosewar.scoretracker.security.AuthService;
@@ -17,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 import static com.rosewar.scoretracker.util.CookieUtils.setRefreshTokenCookie;
 import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
