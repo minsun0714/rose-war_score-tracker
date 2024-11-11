@@ -36,6 +36,8 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(",")); // 권한을 문자열로 결합
 
+        System.out.println(authorities + " " + authentication);
+
         long now = System.currentTimeMillis();
         Date accessTokenExpiresIn = new Date(now + 3600 * 1000); // 1시간
 
@@ -122,5 +124,13 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    // 토큰에서 사용자 ID를 추출하는 메서드
+    public String extractUserId(String token) {
+        Claims claims = parseClaims(token);
+        System.out.println("claims" + " " + claims);
+        // 예를 들어, 유저 ID가 "userId"라는 클레임에 저장된 경우
+        return claims.get("sub", String.class);
     }
 }

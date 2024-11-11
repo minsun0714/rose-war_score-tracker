@@ -4,11 +4,13 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
+import com.rosewar.scoretracker.security.JwtTokenProvider;
 import com.rosewar.scoretracker.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider) {
+
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     // 유저 생성 (회원가입)
@@ -30,9 +35,13 @@ public class UserController {
     }
 
     // 특정 유저 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserInfoDTO> getUserById(@PathVariable String userId) {
+    @GetMapping("/me")
+    public ResponseEntity<UserInfoDTO> getUserById(@RequestHeader("Authorization") String token) {
+        String jwt = token.replace("Bearer ", "");
+        String userId = jwtTokenProvider.extractUserId(jwt);
+        System.out.println(userId);
         UserInfoDTO user = userService.getUserById(userId);
+        System.out.println(user);
         return ResponseEntity.ok(user);
     }
 
