@@ -37,4 +37,4 @@ out/
 .vscode/
 
 .env
-minsun.pem
+third.pem
