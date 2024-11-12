@@ -11,11 +11,18 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import SignatureBtn from '../common/SignatureBtn.vue'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 
 const formSchema = toTypedSchema(
   z.object({
-    id: z.string().min(2).max(50),
-    password: z.string().min(2).max(50),
+    userId: z.string().min(2).max(50),
+    password: z
+      .string()
+      .min(8)
+      .max(50)
+      .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
+        message: 'Password must contain at least one letter and one number',
+      }),
   }),
 )
 
@@ -23,15 +30,17 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
+const { mutate } = AuthApiFacade.useLogin()
+
 const onSubmit = form.handleSubmit(values => {
-  console.log('Form submitted!', values)
+  mutate(values)
 })
 </script>
 
 <template>
   <form @submit="onSubmit" class="w-5/6 flex flex-col justify-center">
     <div class="border py-8">
-      <FormField v-slot="{ componentField }" name="id">
+      <FormField v-slot="{ componentField }" name="userId">
         <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">아이디</FormLabel>
           <FormControl>

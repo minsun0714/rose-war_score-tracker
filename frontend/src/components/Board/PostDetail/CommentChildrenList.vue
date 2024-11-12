@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import CurvedArrow from '@/assets/Curved Arrow.svg'
 
-type CommentChildrenType = {
-  user: { nickname: string; id: string; profileImg: string }
-  content: string
-  createdAt: Date
-  likeCount: number
-}
 
 const { commentChildren } = defineProps<{
-  commentChildren?: CommentChildrenType[]
+  commentChildren?: CommentResponse[]
 }>()
 </script>
 
@@ -25,13 +19,13 @@ const { commentChildren } = defineProps<{
       >
         <img :src="CurvedArrow" alt="대댓글" />
         <span>
-          <img :src="childComment.user.profileImg" />
-          <span> {{ childComment.user.nickname }}</span></span
+          <img :src="childComment.writer.profileImg" />
+          <span> {{ childComment.writer.nickname }}</span></span
         >
       </span>
       <span class="text-xs w-full flex flex-col gap-2">
         <span class="text-end text-slate-500">{{
-          childComment.createdAt.toDateString()
+          childComment.createdAt
         }}</span>
         <p class="text-xs flex items-center">
           {{ childComment.content }}

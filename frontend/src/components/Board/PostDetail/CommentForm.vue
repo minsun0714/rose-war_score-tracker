@@ -5,47 +5,12 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import SignatureBtn from '@/components/common/SignatureBtn.vue'
-import ProfileImg from '@/assets/Male User.svg'
+import CommentApiFacade from '@/api/apiFacade/CommentApiFacade'
+import { useRoute } from 'vue-router'
 
-const postData = {
-  writer: 'minsun',
-  title: '이민선이라고 합니다. 잘 부탁드립니다.',
-  content:
-    '이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.이민선이라고 합니다. 잘 부탁드립니다.',
-  createdAt: new Date(),
-  likeCount: 0,
-  commentCount: 2,
-  commentList: [
-    {
-      user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-      content:
-        '댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.댓글입니다.',
-      createdAt: new Date(),
-      likeCount: 0,
-      children: [
-        {
-          user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-          content: '대댓글입니다.',
-          createdAt: new Date(),
-          likeCount: 0,
-        },
-        {
-          user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-          content:
-            '대댓글입니다대댓글입니다대댓글입니다대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.대댓글입니다.',
-          createdAt: new Date(),
-          likeCount: 0,
-        },
-      ],
-    },
-    {
-      user: { nickname: 'minsun', id: 'minsun', profileImg: ProfileImg },
-      content: '댓글입니다.',
-      createdAt: new Date(),
-      likeCount: 0,
-    },
-  ],
-}
+const route = useRoute()
+const id = Number(route.params.id)
+const { data: commentData } = CommentApiFacade.useFetchCommentList(id);
 
 const formSchema = toTypedSchema(
   z.object({
@@ -63,7 +28,7 @@ const onSubmit = form.handleSubmit(values => {
 </script>
 
 <template>
-  <h2 class="h-8">댓글 총 {{ postData.commentCount }}개</h2>
+  <h2 class="h-8">댓글 총 {{ commentData?.length }}개</h2>
   <form @submit="onSubmit">
     <FormField v-slot="{ componentField }" name="comment">
       <FormItem>

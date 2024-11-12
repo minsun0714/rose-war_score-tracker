@@ -11,29 +11,50 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import SignatureBtn from '../common/SignatureBtn.vue'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 
 const formSchema = toTypedSchema(
-  z.object({
-    id: z.string().min(2).max(50),
-    password: z.string().min(2).max(50),
-    passwordConfirm: z.string().min(2).max(50),
-    name: z.string().min(2).max(50),
-  }),
+  z
+    .object({
+      userId: z.string().min(2).max(50),
+      password: z
+        .string()
+        .min(8)
+        .max(50)
+        .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
+          message: 'Password must contain at least one letter and one number',
+        }),
+      passwordConfirm: z
+        .string()
+        .min(8)
+        .max(50)
+        .regex(/^(?=.*[A-Za-z])(?=.*\d)/, {
+          message: 'Password must contain at least one letter and one number',
+        }),
+      name: z.string().min(2).max(50),
+      nickname: z.string().min(2).max(50),
+    })
+    .refine(data => data.password === data.passwordConfirm, {
+      message: 'Passwords do not match',
+      path: ['passwordConfirm'],
+    }),
 )
 
 const form = useForm({
   validationSchema: formSchema,
 })
 
+const { mutate } = AuthApiFacade.useSignUp()
+
 const onSubmit = form.handleSubmit(values => {
-  console.log('Form submitted!', values)
+  mutate(values)
 })
 </script>
 
 <template>
   <form @submit="onSubmit" class="w-5/6 flex flex-col justify-center">
     <div class="border py-8">
-      <FormField v-slot="{ componentField }" name="id">
+      <FormField v-slot="{ componentField }" name="userId">
         <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">아이디</FormLabel>
           <FormControl>
@@ -64,7 +85,7 @@ const onSubmit = form.handleSubmit(values => {
           <FormLabel class="flex items-start w-4/5">비밀번호 확인</FormLabel>
           <FormControl>
             <Input
-              type="text"
+              type="password"
               v-bind="componentField"
               class="border w-4/5 h-8 p-2"
             />
@@ -75,6 +96,19 @@ const onSubmit = form.handleSubmit(values => {
       <FormField v-slot="{ componentField }" name="name">
         <FormItem class="flex flex-col items-center justify-center w-full h-20">
           <FormLabel class="flex items-start w-4/5">이름</FormLabel>
+          <FormControl>
+            <Input
+              type="text"
+              v-bind="componentField"
+              class="border w-4/5 h-8 p-2"
+            />
+          </FormControl>
+          <FormMessage class="w-4/5 flex justify-end" />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="nickname">
+        <FormItem class="flex flex-col items-center justify-center w-full h-20">
+          <FormLabel class="flex items-start w-4/5">닉네임</FormLabel>
           <FormControl>
             <Input
               type="text"

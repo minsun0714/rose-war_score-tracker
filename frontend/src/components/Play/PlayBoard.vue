@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ProfileImg from '../../assets/Male User.svg'
-import SignatureBtn from '../common/SignatureBtn.vue'
+import GameResultChckButton from './GameResultChckButton.vue';
 
-const user1 = { profileImg: ProfileImg, nickname: 'minsun' }
-const user2 = { profileImg: ProfileImg, nickname: 'kangmin' }
+const user1 = { profileImg: ProfileImg, nickname: 'minsun', userId: "guest" }
+const user2 = { profileImg: ProfileImg, nickname: 'kangmin', userId: "guest" }
 
 const board = ref(
   Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => 0)),
@@ -77,7 +77,9 @@ const clickCell = (user: 1 | 2, rowIdx: number, colIdx: number) => {
       {{ user2.nickname }}
     </button>
   </div>
-  <div class="h-24 flex justify-end items-center">
-    <SignatureBtn text="결과 확인" />
-  </div>
+  <GameResultChckButton
+  :player1Id="user1.userId"
+  :player2Id="user2.userId"
+  :gameBoard="board"
+  />
 </template>
