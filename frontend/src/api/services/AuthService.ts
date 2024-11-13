@@ -12,21 +12,20 @@ class AuthService {
     return response.data
   }
 
-  static async _fetchUserInfo(userId: string): Promise<UserResponse> {
-    const response = await api.get(`/api/users/${userId}`, {})
+  static async _fetchUserInfo(): Promise<UserResponse> {
+    const response = await api.get(`/api/users`)
     return response.data
   }
 
   static async _updateUserInfo(
-    userId: string,
     updatedUserInfo: UpdateUserInfoRequest,
   ): Promise<UpdateUserInfoResponse> {
-    const response = await api.put(`/api/users/${userId}`, updatedUserInfo)
+    const response = await api.put(`/api/users`, updatedUserInfo)
     return response.data
   }
 
-  static async _deleteUserInfo(userId: string): Promise<void> {
-    await api.delete(`/api/users/${userId}`)
+  static async _deleteUserInfo(): Promise<void> {
+    await api.delete(`/api/users`)
   }
 
   // Public 메서드로 외부에서 사용할 수 있도록 제공
@@ -38,19 +37,18 @@ class AuthService {
     return this._login(loginInfo)
   }
 
-  static fetchUserInfo(userId: string): Promise<UserResponse> {
-    return this._fetchUserInfo(userId)
+  static fetchUserInfo(): Promise<UserResponse> {
+    return this._fetchUserInfo()
   }
 
   static updateUserInfo(
-    userId: string,
     updatedUserInfo: UpdateUserInfoRequest,
   ): Promise<UpdateUserInfoResponse> {
-    return this._updateUserInfo(userId, updatedUserInfo)
+    return this._updateUserInfo(updatedUserInfo)
   }
 
-  static deleteUserInfo(userId: string): Promise<void> {
-    return this._deleteUserInfo(userId)
+  static deleteUserInfo(): Promise<void> {
+    return this._deleteUserInfo()
   }
 }
 
