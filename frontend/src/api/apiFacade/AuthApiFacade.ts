@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { QueryClient, useMutation, useQuery } from '@tanstack/vue-query'
 import AuthService from '../services/AuthService'
 import { useRouter } from 'vue-router'
+import { queryClient } from '@/main'
 
 class AuthApiFacade {
   // 유저, 인증 관련 메서드
@@ -32,6 +33,7 @@ class AuthApiFacade {
         const accessToken = response.accessToken
         localStorage.setItem('token', accessToken)
         router.push('/')
+        queryClient.invalidateQueries({queryKey: ["user"]})
       },
     })
   }

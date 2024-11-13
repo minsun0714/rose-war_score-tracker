@@ -9,7 +9,7 @@ import './assets/main.css'
 const app = createApp(App)
 
 // QueryClient 인스턴스 생성 및 기본 옵션 설정
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: true,

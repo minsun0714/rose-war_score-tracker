@@ -22,6 +22,11 @@ function toggleAccordion() {
 function setActiveItem(value: string) {
   activeItem.value = value
 }
+
+function logout() {
+  localStorage.removeItem('token')
+}
+
 </script>
 
 <template>
@@ -30,13 +35,13 @@ function setActiveItem(value: string) {
       <div class="flex flex-row items-center justify-center gap-2 p-4 text-xs">
         <img src="../assets/Menu.svg" @click="toggleAccordion" />
         <RouterLink to="/"><img src="../assets/Tudor Rose.svg" /></RouterLink>
-        <span v-text="userInfo.nickname + '님'"></span>
+        <span v-text="userInfo?.nickname + '님'" v-if="isSuccess"></span>
       </div>
       <div class="flex justify-center items-center p-2 text-xs" v-if="isSuccess">
-        <span>로그아웃</span>
-        <span><img :src="userInfo.profileImg || ProfileImg"/></span>
+        <span @click="logout">로그아웃</span>
+        <span><img :src="userInfo?.profileImg || ProfileImg"/></span>
       </div>
-    <div class="flex flex-row items-center justify-center gap-x-2 p-2 text-xs" v-else>
+      <div class="flex flex-row items-center justify-center gap-x-2 p-2 text-xs" v-else>
         <RouterLink to="/auth/signup">회원가입</RouterLink>
         <RouterLink to="/auth/login">로그인</RouterLink>
       </div>

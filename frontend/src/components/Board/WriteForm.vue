@@ -2,7 +2,7 @@
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-
+import PostApiFacade from "@/api/apiFacade/PostApiFacade.ts"
 import {
   FormControl,
   FormField,
@@ -24,8 +24,10 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
+const { mutate } = PostApiFacade.useCreatePost()
+
 const onSubmit = form.handleSubmit(values => {
-  console.log('Form submitted!', values)
+  mutate(values)
 })
 </script>
 
