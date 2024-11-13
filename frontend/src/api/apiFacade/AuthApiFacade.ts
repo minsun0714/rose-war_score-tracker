@@ -4,10 +4,10 @@ import { useRouter } from 'vue-router'
 
 class AuthApiFacade {
   // 유저, 인증 관련 메서드
-  static useFetchUserInfo(userId: string) {
+  static useFetchUserInfo() {
     return useQuery({
-      queryKey: ['user', userId],
-      queryFn: () => AuthService.fetchUserInfo(userId),
+      queryKey: ['user'],
+      queryFn: () => AuthService.fetchUserInfo(),
     })
   }
 
@@ -49,14 +49,14 @@ class AuthApiFacade {
     })
   }
 
-  static useUpdateUser(userId: string, updatedUserInfo: UpdateUserInfoRequest) {
+  static useUpdateUser(updatedUserInfo: UpdateUserInfoRequest) {
     return useMutation({
-      mutationFn: () => AuthService.updateUserInfo(userId, updatedUserInfo),
+      mutationFn: () => AuthService.updateUserInfo(updatedUserInfo),
     })
   }
 
-  static useDeleteUser(userId: string) {
-    return useMutation({ mutationFn: () => AuthService.deleteUserInfo(userId) })
+  static useDeleteUser() {
+    return useMutation({ mutationFn: () => AuthService.deleteUserInfo() })
   }
 }
 

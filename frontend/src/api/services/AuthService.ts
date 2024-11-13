@@ -14,6 +14,7 @@ class AuthService {
 
   static async _fetchUserInfo(): Promise<UserResponse> {
     const response = await api.get(`/api/users`)
+
     return response.data
   }
 

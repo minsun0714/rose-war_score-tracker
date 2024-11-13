@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import AuthApiFacade from "@/api/apiFacade/AuthApiFacade.ts"
 import {
   Accordion,
   AccordionContent,
@@ -7,6 +8,9 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { accordionItems } from '@/lib/constants'
+import ProfileImg from "@/assets/Male User.svg"
+
+const { data: userInfo, isSuccess } = AuthApiFacade.useFetchUserInfo()
 
 const isAccordionOpen = ref(false)
 const activeItem = ref('') // 현재 열려 있는 아이템의 value를 저장
@@ -27,7 +31,11 @@ function setActiveItem(value: string) {
         <img src="../assets/Menu.svg" @click="toggleAccordion" />
         <RouterLink to="/"><img src="../assets/Tudor Rose.svg" /></RouterLink>
       </div>
-      <div class="flex flex-row items-center justify-center gap-4 p-4 text-xs">
+      <div class="flex items-center p-4" v-if="isSuccess">
+        <span><img :src="userInfo.profileImg || ProfileImg"/></span>
+        <span v-text="userInfo.nickname + '님'"></span>
+      </div>
+    <div class="flex flex-row items-center justify-center gap-4 p-4 text-xs" v-else>
         <RouterLink to="/auth/signup">회원가입</RouterLink>
         <RouterLink to="/auth/login">로그인</RouterLink>
       </div>
