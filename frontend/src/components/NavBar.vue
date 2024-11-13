@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { accordionItems } from '@/lib/constants'
+import { LocalStorageTokenUtil } from "@/lib/utils.ts"
 import ProfileImg from "@/assets/Male User.svg"
 
 const { data: userInfo, isSuccess } = AuthApiFacade.useFetchUserInfo()
@@ -23,10 +24,6 @@ function setActiveItem(value: string) {
   activeItem.value = value
 }
 
-function logout() {
-  localStorage.removeItem('token')
-}
-
 </script>
 
 <template>
@@ -38,7 +35,7 @@ function logout() {
         <span v-text="userInfo?.nickname + '님'" v-if="isSuccess"></span>
       </div>
       <div class="flex justify-center items-center p-2 text-xs" v-if="isSuccess">
-        <span @click="logout">로그아웃</span>
+        <span @click="LocalStorageTokenUtil.removeToken()">로그아웃</span>
         <span><img :src="userInfo?.profileImg || ProfileImg"/></span>
       </div>
       <div class="flex flex-row items-center justify-center gap-x-2 p-2 text-xs" v-else>
