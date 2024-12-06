@@ -3,7 +3,7 @@ import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 import ProfileImg from '@/assets/Male User.svg'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
-import { useAccordionStore } from '@/stores/counter'
+import { useAccordionStore } from '@/stores/accordion'
 import NavAccordion from './common/NavAccordion.vue'
 
 const router = useRouter()
