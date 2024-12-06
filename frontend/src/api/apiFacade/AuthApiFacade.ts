@@ -4,10 +4,10 @@ import { useRouter } from 'vue-router'
 
 class AuthApiFacade {
   // 유저, 인증 관련 메서드
-  static useFetchUserInfo(userId: string) {
+  static useFetchUserInfo() {
     return useQuery({
-      queryKey: ['user', userId],
-      queryFn: () => AuthService.fetchUserInfo(userId),
+      queryKey: ['user'],
+      queryFn: () => AuthService.fetchUserInfo(),
     })
   }
 

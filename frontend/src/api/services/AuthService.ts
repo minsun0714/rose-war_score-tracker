@@ -12,8 +12,8 @@ class AuthService {
     return response.data
   }
 
-  static async _fetchUserInfo(userId: string): Promise<UserResponse> {
-    const response = await api.get(`/api/users/${userId}`, {})
+  static async _fetchUserInfo(): Promise<UserResponse> {
+    const response = await api.get(`/api/users`)
     return response.data
   }
 
@@ -38,8 +38,8 @@ class AuthService {
     return this._login(loginInfo)
   }
 
-  static fetchUserInfo(userId: string): Promise<UserResponse> {
-    return this._fetchUserInfo(userId)
+  static fetchUserInfo(): Promise<UserResponse> {
+    return this._fetchUserInfo()
   }
 
   static updateUserInfo(

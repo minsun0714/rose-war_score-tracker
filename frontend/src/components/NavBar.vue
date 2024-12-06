@@ -7,6 +7,9 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { accordionItems } from '@/lib/constants'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
+
+const { data: userInfo } = AuthApiFacade.useFetchUserInfo()
 
 const isAccordionOpen = ref(false)
 const activeItem = ref('') // 현재 열려 있는 아이템의 value를 저장
@@ -28,6 +31,7 @@ function setActiveItem(value: string) {
         <RouterLink to="/"><img src="../assets/Tudor Rose.svg" /></RouterLink>
       </div>
       <div class="flex flex-row items-center justify-center gap-4 p-4 text-xs">
+        {{ userInfo?.nickname }}
         <RouterLink to="/auth/signup">회원가입</RouterLink>
         <RouterLink to="/auth/login">로그인</RouterLink>
       </div>
