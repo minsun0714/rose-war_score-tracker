@@ -14,7 +14,7 @@ const { card } = defineProps<{
       <h2
         class="font-bold text-sm overflow-hidden text-ellipsis whitespace-nowrap"
       >
-        {{ card.postId }}
+        {{ card.title }}
       </h2>
     </div>
     <div class="flex justify-start items-center text-gray-500">
