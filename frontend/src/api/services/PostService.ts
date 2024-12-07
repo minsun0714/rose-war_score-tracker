@@ -7,10 +7,11 @@ class PostService {
         return response.data;
     }
 
-    static async _fetchPostList(page: number): Promise<PagedPostResponse> {
+    static async _fetchPostList(page: number, keyword: string): Promise<PagedPostResponse> {
       const response = await api.get('/api/posts', {
         params: {
-            page
+            page,
+            keyword
           }
         });
         return response.data;
@@ -35,8 +36,8 @@ class PostService {
         return this._createPost(newPost);
     }
 
-    static fetchPostList(page: number): Promise<PagedPostResponse> {
-        return this._fetchPostList(page);
+    static fetchPostList(page: number, keyword: string): Promise<PagedPostResponse> {
+        return this._fetchPostList(page, keyword);
     }
 
     static fetchPost(postId: number): Promise<PostResponse> {
