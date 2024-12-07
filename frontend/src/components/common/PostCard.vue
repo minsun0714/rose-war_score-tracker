@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import Like from '../../assets/Like.svg'
 import Comments from '../../assets/Comments.svg'
+import { computed } from 'vue';
 
 const { card } = defineProps<{
   card: PostResponse
 }>()
+
+const elapsedTime = computed(() => {
+  return formatDistanceToNow(new Date(card.createdAt), { addSuffix: true, locale: ko });
+});
+
 </script>
 
 <template>
@@ -18,7 +26,7 @@ const { card } = defineProps<{
       </h2>
     </div>
     <div class="flex justify-start items-center text-gray-500">
-      <p>{{ card.createdAt }}분전</p>
+      <p>{{ elapsedTime }}</p>
       <span class="flex items-center">
         <img :src="Like" alt="Like" class="w-5 h-5" />
         {{ card.likeCount }}
