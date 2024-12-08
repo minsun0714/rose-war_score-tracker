@@ -26,7 +26,11 @@ const { mutate } = CommentApiFacade.useCreateComment()
 
 const onSubmit = form.handleSubmit(values => {
   console.log(postId)
-  mutate({ postId, content: values.comment })
+  mutate({ postId, content: values.comment }, {
+    onSuccess: () => {
+      form.resetForm()
+    },
+  })
 })
 </script>
 
