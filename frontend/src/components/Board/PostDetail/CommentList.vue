@@ -5,10 +5,12 @@ import CommentChildrenList from './CommentChildrenList.vue'
 import CommentApiFacade from '@/api/apiFacade/CommentApiFacade'
 import { useRoute } from 'vue-router'
 import ProfileImg from '@/assets/Male User.svg'
-import { ref } from 'vue'
 import ChildCommentForm from './ChildCommentForm.vue'
 import CommentDeleteBtn from './CommentDeleteBtn.vue'
 import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
+import CommentModifyForm from './CommentModifyForm.vue'
+import { useModifyCommentStore } from '@/stores/modifyComment'
+import { useCreateChildCommentStore } from '@/stores/createChildComment'
 
 const { data: userInfo } = AuthApiFacade.useFetchUserInfo()
 
@@ -16,15 +18,8 @@ const route = useRoute()
 const postId = Number(route.params.id)
 const { data: commentList } = CommentApiFacade.useFetchCommentList(postId)
 
-const isChildCommentOpen = ref(new Set<number>())
-
-const toggleChildComment = (commentId: number) => {
-  if (isChildCommentOpen.value.has(commentId)) {
-    isChildCommentOpen.value.delete(commentId)
-    return
-  }
-  isChildCommentOpen.value.add(commentId)
-}
+const commentToggleStore = useModifyCommentStore()
+const createChildCommentStore = useCreateChildCommentStore()
 </script>
 
 <template>
@@ -48,16 +43,28 @@ const toggleChildComment = (commentId: number) => {
               locale: ko,
             })
           }}</span>
-          <p class="text-xs flex items-center">{{ comment.content }}</p>
+          <template
+            v-if="commentToggleStore.isModifying.has(comment.commentId)"
+          >
+            <CommentModifyForm
+              :post-id="comment.postId"
+              :comment-id="comment.commentId"
+              :content="comment.content"
+              :toggle-modify-button="commentToggleStore.toggleModifyBtn"
+            />
+          </template>
+          <template v-else>
+            <p class="text-xs flex items-center">{{ comment.content }}</p>
+          </template>
         </span>
       </div>
       <div class="py-2 flex justify-between gap-2 text-xs">
         <button
           class="text-purple"
-          @click="toggleChildComment(comment.commentId)"
+          @click="createChildCommentStore.toggleChildComment(comment.commentId)"
         >
           {{
-            isChildCommentOpen.has(comment.commentId)
+            createChildCommentStore.isChildCommentOpen.has(comment.commentId)
               ? '- 답글 닫기'
               : '+ 답글 달기'
           }}
@@ -66,14 +73,20 @@ const toggleChildComment = (commentId: number) => {
           class="text-slate-400 flex gap-x-2"
           v-if="comment.writer.userId === userInfo.userId"
         >
-          <button>수정</button>
+          <button
+            @click="commentToggleStore.toggleModifyBtn(comment.commentId)"
+          >
+            수정
+          </button>
           <CommentDeleteBtn
             :postId="comment.postId"
             :commentId="comment.commentId"
           />
         </span>
       </div>
-      <div v-if="isChildCommentOpen.has(comment.commentId)">
+      <div
+        v-if="createChildCommentStore.isChildCommentOpen.has(comment.commentId)"
+      >
         <ChildCommentForm :postId="postId" :parentId="comment.commentId" />
       </div>
       <CommentChildrenList

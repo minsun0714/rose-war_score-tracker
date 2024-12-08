@@ -24,14 +24,15 @@ class CommentApiFacade {
     })
   }
 
-  static useUpdateComment(
-    postId: number,
-    commentId: number,
-    updatedComment: CommentRequest,
-  ) {
+  static useUpdateComment() {
     return useMutation({
-      mutationFn: () =>
-        CommentService.updateComment(postId, commentId, updatedComment),
+      mutationFn: ({ postId, commentId, content }: CommentRequest) =>
+        CommentService.updateComment(postId, commentId, content),
+      onSuccess: (_, variables) => {
+        queryClient.invalidateQueries({
+          queryKey: ['commentList', variables.postId],
+        })
+      },
     })
   }
 

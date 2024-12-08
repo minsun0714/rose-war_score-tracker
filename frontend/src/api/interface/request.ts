@@ -15,9 +15,7 @@ interface PostRequest extends Post {}
 // Comment
 export interface CommentRequest extends Comment {}
 
-export interface CommentDeleteRequest extends Omit<Comment, 'content'> {
-  commentId: number
-}
+export interface CommentDeleteRequest extends Omit<Comment, 'content'> {}
 
 // GameResult
 type GameBoard = number[][]

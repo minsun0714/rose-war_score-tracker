@@ -1,5 +1,4 @@
 import api from '../apiClient'
-import type { CommentRequest } from '../interface/request'
 import type { CommentResponse } from '../interface/response'
 
 class CommentService {
@@ -7,11 +6,11 @@ class CommentService {
   static async _createComment(
     postId: number,
     content: string,
-    parentId?: number
+    parentId?: number,
   ): Promise<CommentResponse> {
     const response = await api.post(`/api/posts/${postId}/comments`, {
       content,
-      parentId
+      parentId,
     })
     return response.data
   }
@@ -24,11 +23,13 @@ class CommentService {
   static async _updateComment(
     postId: number,
     commentId: number,
-    updatedComment: CommentRequest,
+    updatedComment: string,
   ): Promise<CommentResponse> {
     const response = await api.put(
       `/api/posts/${postId}/comments/${commentId}`,
-      updatedComment,
+      {
+        content: updatedComment,
+      },
     )
     return response.data
   }
@@ -56,7 +57,7 @@ class CommentService {
   static updateComment(
     postId: number,
     commentId: number,
-    updatedComment: CommentRequest,
+    updatedComment: string,
   ): Promise<CommentResponse> {
     return this._updateComment(postId, commentId, updatedComment)
   }
