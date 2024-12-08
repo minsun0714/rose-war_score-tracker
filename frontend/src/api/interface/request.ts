@@ -9,7 +9,6 @@ interface UpdateUserInfoRequest
 
 // Post
 interface PostRequest extends Post {
-  userId: string
 }
 
 // Comment

@@ -39,8 +39,8 @@ class PostApiFacade {
     })
   }
 
-  static useCreatePost(newPost: PostRequest) {
-    return useMutation({ mutationFn: () => PostService.createPost(newPost) })
+  static useCreatePost() {
+    return useMutation({ mutationFn: ({title, content}:PostRequest) => PostService.createPost(title, content) })
   }
 
   static useUpdatePost(postId: number, updatedPost: PostRequest) {

@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import SignatureBtn from '../common/SignatureBtn.vue'
+import PostApiFacade from '@/api/apiFacade/PostApiFacade'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -24,8 +25,10 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
+const { mutate } = PostApiFacade.useCreatePost()
+
 const onSubmit = form.handleSubmit(values => {
-  console.log('Form submitted!', values)
+  mutate(values)
 })
 </script>
 
