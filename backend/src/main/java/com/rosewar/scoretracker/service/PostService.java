@@ -11,6 +11,7 @@ import com.rosewar.scoretracker.util.DTOMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -58,13 +59,13 @@ public class PostService {
 
     // 모든 게시물 조회
     public PageResponseDTO<PostResponseDTO> getAllPosts(int page, int size, String keyword) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         Page<Post> postPage;
         if (keyword.isEmpty()){
             postPage = postRepository.findAll(pageRequest);
         } else {
-            postPage = postRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageRequest);
+            postPage = postRepository.findByTitleContainingOrContentContainingOrderByCreatedAtDesc(keyword, keyword, pageRequest);
         }
 
         List<PostResponseDTO> posts = postPage.stream()

@@ -2,6 +2,7 @@ package com.rosewar.scoretracker.repository;
 
 import com.rosewar.scoretracker.domain.Post;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -23,5 +24,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     // 인기글 5개 조회 (좋아요 개수 기준 내림차순 정렬)
     List<Post> findTop5ByOrderByLikeCountDesc();
 
-    Page<Post> findByTitleContainingOrContentContaining(String titleKeyword, String contentKeyword, Pageable pageable);
+    Page<Post> findByTitleContainingOrContentContainingOrderByCreatedAtDesc(String titleKeyword, String contentKeyword, Pageable pageable);
 }
