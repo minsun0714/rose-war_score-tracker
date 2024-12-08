@@ -61,7 +61,7 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
         // 모든 댓글을 조회
-        List<Comment> allComments = commentRepository.findByPostOrderByCreatedAtDesc(post);
+        List<Comment> allComments = commentRepository.findByPost(post);
 
         // Comment 객체를 CommentResponseDTO로 변환
         List<CommentResponseDTO> responseDTOs = allComments.stream()

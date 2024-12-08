@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByPostOrderByCreatedAtDesc(Post post); // 수정된 메서드
+    List<Comment> findByPost(Post post); // 수정된 메서드
 }
