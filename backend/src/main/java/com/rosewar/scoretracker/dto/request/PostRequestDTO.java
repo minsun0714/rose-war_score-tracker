@@ -13,7 +13,4 @@ public class PostRequestDTO {
 
     @NotBlank(message = "Content is required")
     private String content; // 게시물 내용
-
-    @NotBlank(message = "User ID is required")
-    private String userId; // 작성자 ID
 }

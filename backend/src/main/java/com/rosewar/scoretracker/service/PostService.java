@@ -11,11 +11,14 @@ import com.rosewar.scoretracker.util.DTOMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.rosewar.scoretracker.security.SecurityUtil.getAuthenticatedMemberId;
 import static com.rosewar.scoretracker.util.DTOMapper.toPostResponseDTO;
 
 @Service
@@ -33,7 +36,8 @@ public class PostService {
     // 게시물 생성
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO postDTO) {
-        Player player = userRepository.findById(postDTO.getUserId())
+        String userId = getAuthenticatedMemberId();
+        Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Post post = new Post();
