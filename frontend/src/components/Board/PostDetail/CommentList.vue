@@ -74,6 +74,7 @@ const createChildCommentStore = useCreateChildCommentStore()
           v-if="comment.writer.userId === userInfo.userId"
         >
           <button
+          v-if="!commentToggleStore.isModifying.has(comment.commentId)"
             @click="commentToggleStore.toggleModifyBtn(comment.commentId)"
           >
             수정

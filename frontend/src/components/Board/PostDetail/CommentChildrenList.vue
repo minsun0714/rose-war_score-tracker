@@ -54,6 +54,7 @@ const commentToggleStore = useModifyCommentStore()
 
         <span class="text-slate-400 flex justify-end gap-1"
           ><button
+          v-if="!commentToggleStore.isModifying.has(childComment.commentId)"
             @click="
               () => commentToggleStore.toggleModifyBtn(childComment.commentId)
             "
