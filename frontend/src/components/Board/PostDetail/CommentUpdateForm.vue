@@ -50,6 +50,7 @@ const onSubmit = form.handleSubmit(values => {
       <FormMessage />
     </FormField>
     <div class="flex justify-end h-20 items-center">
+      <button @click="() => toggleModifyButton(commentId)" class="flex justify-end items-center w-2/3 h-full text-purple pr-5">취소</button>
       <SignatureBtn text="댓글 수정" />
     </div>
   </form>
