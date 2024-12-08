@@ -9,9 +9,6 @@ public class CommentRequestDTO {
     @NotBlank(message = "Content is required")
     private String content; // 댓글 내용
 
-    @NotBlank(message = "User ID is required")
-    private String userId; // 작성자 ID
-
     @NotBlank(message = "Post ID is required")
     private Long postId; // 댓글이 속한 게시물 ID
 

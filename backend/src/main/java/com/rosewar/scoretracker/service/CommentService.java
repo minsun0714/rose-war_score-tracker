@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.rosewar.scoretracker.security.SecurityUtil.getAuthenticatedMemberId;
 import static com.rosewar.scoretracker.util.DTOMapper.toCommentResponseDTO;
 
 @Service
@@ -32,9 +33,10 @@ public class CommentService {
 
     @Transactional
     public CommentResponseDTO createComment(Long postId, CommentRequestDTO commentDTO) {
+        String userId = getAuthenticatedMemberId();
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        Player player = userRepository.findById(commentDTO.getUserId())
+        Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Comment comment = Comment.builder()
