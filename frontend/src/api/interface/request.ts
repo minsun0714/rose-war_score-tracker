@@ -1,4 +1,4 @@
-import type { Comment } from "./common"
+import type { Comment } from './common'
 
 // User
 interface SignUpRequest extends Omit<User, 'profileImg'>, Auth {}
@@ -10,12 +10,13 @@ interface UpdateUserInfoRequest
     Omit<Auth, 'userId'> {}
 
 // Post
-interface PostRequest extends Post {
-}
+interface PostRequest extends Post {}
 
 // Comment
-export interface CommentRequest extends Comment {
-  postId: number
+export interface CommentRequest extends Comment {}
+
+export interface CommentDeleteRequest extends Omit<Comment, 'content'> {
+  commentId: number
 }
 
 // GameResult

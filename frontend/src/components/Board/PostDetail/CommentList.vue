@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router'
 import ProfileImg from '@/assets/Male User.svg'
 import { ref } from 'vue'
 import ChildCommentForm from './ChildCommentForm.vue'
+import CommentDeleteBtn from './CommentDeleteBtn.vue'
 
 const route = useRoute()
 const postId = Number(route.params.id)
@@ -60,11 +61,11 @@ const toggleChildComment = (commentId: number) => {
         </button>
         <span class="text-slate-400 flex gap-x-2">
           <button>수정</button>
-          <button>삭제</button>
+          <CommentDeleteBtn :postId="comment.postId" :commentId="comment.commentId"/>
         </span>
       </div>
       <div v-if="isChildCommentOpen.has(comment.commentId)">
-        <ChildCommentForm :postId="postId" :parentId="comment.commentId"/>
+        <ChildCommentForm :postId="postId" :parentId="comment.commentId" />
       </div>
       <CommentChildrenList
         v-if="comment.childrenComments"
