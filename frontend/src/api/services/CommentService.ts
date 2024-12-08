@@ -1,5 +1,6 @@
 import api from '../apiClient'
 import type { CommentRequest } from '../interface/request'
+import type { CommentResponse } from '../interface/response'
 
 class CommentService {
   // Private 메서드로 API 호출 로직 관리

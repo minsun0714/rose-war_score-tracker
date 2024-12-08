@@ -1,5 +1,5 @@
 // 리소스 단위
-interface User {
+export interface User {
   name: string
   nickname: string
   profileImg: string

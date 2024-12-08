@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import CommentChildrenList from './CommentChildrenList.vue'
 import CommentApiFacade from '@/api/apiFacade/CommentApiFacade';
 import { useRoute } from 'vue-router';
+import ProfileImg from '@/assets/Male User.svg';
 
 const route = useRoute();
 const id = Number(route.params.id)
 const { data: commentList } = CommentApiFacade.useFetchCommentList(id)
+
+
+
 
 </script>
 
@@ -20,12 +26,12 @@ const { data: commentList } = CommentApiFacade.useFetchCommentList(id)
         <span
           class="flex flex-col items-center justify-center text-xs text-slate-400 w-20"
         >
-          <img :src="comment.writer.profileImg" />
+          <img :src="comment.writer.profileImg || ProfileImg" />
           <span> {{ comment.writer.nickname }}</span>
         </span>
         <span class="text-xs w-full flex flex-col gap-2">
           <span class="text-end text-slate-500">{{
-            comment.createdAt
+            formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: ko })
           }}</span>
           <p class="text-xs flex items-center">{{ comment.content }}</p>
         </span>

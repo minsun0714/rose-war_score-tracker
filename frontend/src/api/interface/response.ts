@@ -1,3 +1,5 @@
+import type { User } from "./common"
+
 interface UserResponse extends User {
   userId: string
 }
@@ -30,7 +32,7 @@ interface PagedPostResponse {
   last: boolean
 }
 
-interface CommentResponse extends Comment {
+export interface CommentResponse extends Comment {
   commentId: number
   postId: number
   writer: UserResponse
