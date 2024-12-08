@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import type { CommentResponse } from '@/api/interface/response';
 import CurvedArrow from '@/assets/Curved Arrow.svg'
+import { formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import ProfileImg from '@/assets/Male User.svg'
 
 
 const { commentChildren } = defineProps<{
@@ -19,14 +23,17 @@ const { commentChildren } = defineProps<{
       >
         <img :src="CurvedArrow" alt="대댓글" />
         <span>
-          <img :src="childComment.writer.profileImg" />
+          <img :src="childComment.writer.profileImg || ProfileImg" />
           <span> {{ childComment.writer.nickname }}</span></span
         >
       </span>
       <span class="text-xs w-full flex flex-col gap-2">
         <span class="text-end text-slate-500">{{
-          childComment.createdAt
-        }}</span>
+            formatDistanceToNow(new Date(childComment.createdAt), {
+              addSuffix: true,
+              locale: ko,
+            })
+          }}</span>
         <p class="text-xs flex items-center">
           {{ childComment.content }}
         </p>

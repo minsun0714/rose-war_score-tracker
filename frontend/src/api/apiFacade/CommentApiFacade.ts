@@ -14,8 +14,8 @@ class CommentApiFacade {
 
   static useCreateComment() {
     return useMutation({
-      mutationFn: ({ postId, content }: CommentRequest) =>
-        CommentService.createComment(postId, content),
+      mutationFn: ({ postId, content, parentId }: CommentRequest) =>
+        CommentService.createComment(postId, content, parentId),
       onSuccess: (response) => {
         queryClient.invalidateQueries({ queryKey: ['commentList', response.postId] })
       },

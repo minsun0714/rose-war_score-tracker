@@ -7,9 +7,11 @@ class CommentService {
   static async _createComment(
     postId: number,
     content: string,
+    parentId?: number
   ): Promise<CommentResponse> {
     const response = await api.post(`/api/posts/${postId}/comments`, {
       content,
+      parentId
     })
     return response.data
   }
@@ -42,8 +44,9 @@ class CommentService {
   static createComment(
     postId: number,
     content: string,
+    parentId?: number,
   ): Promise<CommentResponse> {
-    return this._createComment(postId, content)
+    return this._createComment(postId, content, parentId)
   }
 
   static fetchCommentList(postId: number): Promise<CommentResponse[]> {
