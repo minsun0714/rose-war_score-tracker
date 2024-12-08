@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import ProfileImg from '@/assets/Male User.svg'
 import { useModifyCommentStore } from '@/stores/modifyComment'
-import CommentUpdateForm from '../../common/CommentUpdateForm.vue'
+import CommentUpdateForm from './CommentUpdateForm.vue'
 import CommentDeleteBtn from './CommentDeleteBtn.vue'
 
 const { commentChildren } = defineProps<{

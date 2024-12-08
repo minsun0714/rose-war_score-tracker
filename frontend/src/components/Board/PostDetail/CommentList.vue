@@ -8,7 +8,7 @@ import ProfileImg from '@/assets/Male User.svg'
 import ChildCommentForm from './ChildCommentForm.vue'
 import CommentDeleteBtn from './CommentDeleteBtn.vue'
 import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
-import CommentModifyForm from '../../common/CommentUpdateForm.vue'
+import CommentModifyForm from './CommentUpdateForm.vue'
 import { useModifyCommentStore } from '@/stores/modifyComment'
 import { useCreateChildCommentStore } from '@/stores/createChildComment'
 

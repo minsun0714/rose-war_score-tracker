@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SignatureBtn from '@/components/common/SignatureBtn.vue'
-import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
-import { Textarea } from '../ui/textarea'
+import { FormControl, FormField, FormItem, FormMessage } from '../../ui/form'
+import { Textarea } from '../../ui/textarea'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
