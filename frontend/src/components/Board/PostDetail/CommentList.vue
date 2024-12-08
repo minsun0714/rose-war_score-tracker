@@ -8,6 +8,9 @@ import ProfileImg from '@/assets/Male User.svg'
 import { ref } from 'vue'
 import ChildCommentForm from './ChildCommentForm.vue'
 import CommentDeleteBtn from './CommentDeleteBtn.vue'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
+
+const { data: userInfo } = AuthApiFacade.useFetchUserInfo()
 
 const route = useRoute()
 const postId = Number(route.params.id)
@@ -59,9 +62,15 @@ const toggleChildComment = (commentId: number) => {
               : '+ 답글 달기'
           }}
         </button>
-        <span class="text-slate-400 flex gap-x-2">
+        <span
+          class="text-slate-400 flex gap-x-2"
+          v-if="comment.writer.userId === userInfo.userId"
+        >
           <button>수정</button>
-          <CommentDeleteBtn :postId="comment.postId" :commentId="comment.commentId"/>
+          <CommentDeleteBtn
+            :postId="comment.postId"
+            :commentId="comment.commentId"
+          />
         </span>
       </div>
       <div v-if="isChildCommentOpen.has(comment.commentId)">
