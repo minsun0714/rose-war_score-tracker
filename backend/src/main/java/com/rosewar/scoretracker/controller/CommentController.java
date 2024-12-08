@@ -34,6 +34,13 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    // 특정 게시물의 모든 댓글 개수 조회
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCommentsCountByPostId(@PathVariable Long postId) {
+         int commentTotalLength = commentService.getCommentsCountByPostId(postId);
+        return ResponseEntity.ok(commentTotalLength);
+    }
+
     // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(

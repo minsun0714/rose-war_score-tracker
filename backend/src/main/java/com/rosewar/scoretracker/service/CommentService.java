@@ -86,6 +86,10 @@ public class CommentService {
                 .toList();
     }
 
+    public int getCommentsCountByPostId(Long postId) {
+        return commentRepository.getCommentCountByPostId(postId);
+    }
+
 
     // 댓글 수정
     @Transactional
