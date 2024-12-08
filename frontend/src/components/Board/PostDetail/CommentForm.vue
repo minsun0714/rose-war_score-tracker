@@ -9,8 +9,8 @@ import CommentApiFacade from '@/api/apiFacade/CommentApiFacade'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const id = Number(route.params.id)
-const { data: commentData } = CommentApiFacade.useFetchCommentList(id);
+const postId = Number(route.params.id)
+const { data: commentData } = CommentApiFacade.useFetchCommentList(postId)
 
 const formSchema = toTypedSchema(
   z.object({
@@ -22,8 +22,11 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
+const { mutate } = CommentApiFacade.useCreateComment()
+
 const onSubmit = form.handleSubmit(values => {
-  console.log('Form submitted!', values)
+  console.log(postId)
+  mutate({ postId, content: values.comment })
 })
 </script>
 

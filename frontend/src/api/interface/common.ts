@@ -18,7 +18,7 @@ interface Post {
 }
 
 // Comment
-interface Comment {
+export interface Comment {
   content: string
   parentId?: number
 }

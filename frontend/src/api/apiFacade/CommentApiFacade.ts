@@ -1,5 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/vue-query';
 import CommentService from '../services/CommentService';
+import type { CommentRequest } from '../interface/request';
 
 class CommentApiFacade {
     // 게시물 관련 메서드
@@ -7,18 +8,18 @@ class CommentApiFacade {
         return useQuery({ queryKey: ['commentList', postId], queryFn: () => CommentService.fetchCommentList(postId) });
     }
 
-    static useCreatePost(postId: number, newComment: CommentRequest) {
-        return useMutation({ mutationFn: () => CommentService.createComment(postId, newComment) });
+    static useCreateComment() {
+        return useMutation({ mutationFn: ({postId, content}: CommentRequest) => CommentService.createComment(postId, content) });
     }
 
-    static useUpdatePost(postId: number, commentId: number, updatedComment: CommentRequest) {
+    static useUpdateComment(postId: number, commentId: number, updatedComment: CommentRequest) {
         return useMutation({
             mutationFn: () =>
                 CommentService.updateComment(postId, commentId, updatedComment)
         });
     }
 
-    static useDeletePost(postId: number, commentId: number) {
+    static useDeleteComment(postId: number, commentId: number) {
         return useMutation({
             mutationFn: () =>
                 CommentService.deleteComment(postId, commentId)
