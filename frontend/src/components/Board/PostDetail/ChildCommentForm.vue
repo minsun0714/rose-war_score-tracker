@@ -6,7 +6,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import SignatureBtn from '@/components/common/SignatureBtn.vue'
 import CommentApiFacade from '@/api/apiFacade/CommentApiFacade'
-
+import { useCreateChildCommentStore } from '@/stores/createChildComment'
 const { postId, parentId } = defineProps<{
   postId: number
   parentId: number
@@ -22,7 +22,11 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
+
+
 const { mutate } = CommentApiFacade.useCreateComment()
+
+const createChildCommentStore = useCreateChildCommentStore()
 
 const onSubmit = form.handleSubmit(values => {
   mutate(
@@ -30,6 +34,7 @@ const onSubmit = form.handleSubmit(values => {
     {
       onSuccess: () => {
         form.resetForm()
+        createChildCommentStore.toggleChildComment(parentId)
       },
     },
   )

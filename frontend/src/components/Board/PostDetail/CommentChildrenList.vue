@@ -31,7 +31,7 @@ const commentToggleStore = useModifyCommentStore()
           <span> {{ childComment.writer.nickname }}</span></span
         >
       </span>
-      <span class="text-xs w-full flex flex-col gap-2">
+      <div class="text-xs w-full flex flex-col gap-2">
         <span class="text-end text-slate-500">{{
           formatDistanceToNow(new Date(childComment.createdAt), {
             addSuffix: true,
@@ -65,7 +65,7 @@ const commentToggleStore = useModifyCommentStore()
             :comment-id="childComment.commentId"
           />
         </span>
-      </span>
+      </div>
     </li>
   </ul>
 </template>

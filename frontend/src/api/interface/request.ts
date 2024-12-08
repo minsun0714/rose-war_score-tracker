@@ -13,7 +13,9 @@ interface UpdateUserInfoRequest
 interface PostRequest extends Post {}
 
 // Comment
-export interface CommentRequest extends Comment {}
+export interface CommentCreateRequest extends Omit<Comment, 'commentId'> {}
+
+export interface CommentUpdateRequest extends Comment{}
 
 export interface CommentDeleteRequest extends Omit<Comment, 'content'> {}
 

@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/vue-query'
 import CommentService from '../services/CommentService'
-import type { CommentDeleteRequest, CommentRequest } from '../interface/request'
+import type { CommentCreateRequest, CommentDeleteRequest, CommentUpdateRequest } from '../interface/request'
 import { queryClient } from '@/main'
 
 class CommentApiFacade {
@@ -14,7 +14,7 @@ class CommentApiFacade {
 
   static useCreateComment() {
     return useMutation({
-      mutationFn: ({ postId, content, parentId }: CommentRequest) =>
+      mutationFn: ({ postId, content, parentId }: CommentCreateRequest) =>
         CommentService.createComment(postId, content, parentId),
       onSuccess: response => {
         queryClient.invalidateQueries({
@@ -26,7 +26,7 @@ class CommentApiFacade {
 
   static useUpdateComment() {
     return useMutation({
-      mutationFn: ({ postId, commentId, content }: CommentRequest) =>
+      mutationFn: ({ postId, commentId, content }: CommentUpdateRequest) =>
         CommentService.updateComment(postId, commentId, content),
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries({
