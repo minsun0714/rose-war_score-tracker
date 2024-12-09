@@ -17,7 +17,11 @@ const { mutateAsync: toggleLike } = PostLikeApiFacade.useTogglePostLike()
     v-if="postId"
     class="flex flex-row items-center gap-1 text-xs border border-gray-500 px-2 py-1 rounded-2xl"
     :class="isLiked ? 'bg-purple text-white' : 'bg-gray-200 text-black'"
-    @click="() => toggleLike({ postId }).then(() => refetch())"
+    @click="
+      () =>
+        toggleLike({ postId })
+          .then(() => refetch())
+    "
   >
     <IoMdHeart v-if="isLiked" />
     <IoIosHeartEmpty v-else />
