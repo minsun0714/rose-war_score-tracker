@@ -33,7 +33,7 @@ const elapsedTime = computed(() => {
       </span>
       <span class="flex items-center">
         <img :src="Comments" alt="Comments" class="w-8 h-8" />
-        {{ card.likeCount }}
+        {{ card.commentCount }}
       </span>
     </div>
   </div>

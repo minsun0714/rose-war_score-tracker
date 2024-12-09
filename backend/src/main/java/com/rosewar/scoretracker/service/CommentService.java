@@ -53,6 +53,8 @@ public class CommentService {
         }
 
         Comment savedComment = commentRepository.save(comment);
+        post.setCommentCount(post.getCommentCount() + 1);
+        System.out.println(post.getCommentCount());
         return toCommentResponseDTO(savedComment);
     }
 
@@ -105,9 +107,13 @@ public class CommentService {
     // 댓글 삭제
     @Transactional
     public void deleteComment(Long commentId) {
-        if (!commentRepository.existsById(commentId)) {
-            throw new IllegalArgumentException("Comment not found");
-        }
-        commentRepository.deleteById(commentId);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+        Post post = postRepository.findById(comment.getPost().getPostId())
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        commentRepository.deleteById(comment.getCommentId());
+        post.setCommentCount(post.getCommentCount() - 1);
     }
 }

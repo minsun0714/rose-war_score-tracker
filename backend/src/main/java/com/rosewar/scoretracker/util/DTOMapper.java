@@ -37,6 +37,7 @@ public class DTOMapper {
                 .writer(toUserInfoDTO(post.getPlayer())) // 중첩된 변환
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
+                .commentCount(post.getCommentCount())
                 .likeCount(post.getLikeCount())
                 .build();
     }

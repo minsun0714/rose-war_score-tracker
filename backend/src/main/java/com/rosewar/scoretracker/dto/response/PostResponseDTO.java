@@ -20,5 +20,6 @@ public class PostResponseDTO {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private int commentCount;
     private int likeCount;
 }
