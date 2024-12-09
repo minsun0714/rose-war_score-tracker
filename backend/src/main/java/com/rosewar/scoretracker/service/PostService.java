@@ -45,6 +45,7 @@ public class PostService {
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
         post.setPlayer(player);
+        post.setLikeCount(0);
 
         Post savedPost = postRepository.save(post);
         return toPostResponseDTO(savedPost);
