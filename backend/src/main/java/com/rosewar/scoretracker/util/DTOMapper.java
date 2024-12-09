@@ -1,9 +1,6 @@
 package com.rosewar.scoretracker.util;
 
-import com.rosewar.scoretracker.domain.Stat;
-import com.rosewar.scoretracker.domain.Player;
-import com.rosewar.scoretracker.domain.Post;
-import com.rosewar.scoretracker.domain.Comment;
+import com.rosewar.scoretracker.domain.*;
 import com.rosewar.scoretracker.dto.response.*;
 
 public class DTOMapper {
@@ -34,13 +31,13 @@ public class DTOMapper {
     // Post -> PostResponseDTO 변환
     public static PostResponseDTO toPostResponseDTO(Post post) {
         return PostResponseDTO.builder()
-                .postId(post.getPostId().toString())
+                .postId(post.getPostId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .writer(toUserInfoDTO(post.getPlayer())) // 중첩된 변환
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
-                .likeCount(post.getLikeCount())
+                .likeCount(post.getLikes().size())
                 .build();
     }
 
@@ -69,4 +66,11 @@ public class DTOMapper {
                 .build();
     }
 
+    public static PostLikeResponseDTO toPostLikeResponseDTO(PostLike postLike){
+        return PostLikeResponseDTO.builder()
+                .postLikeId(postLike.getLikeId())
+                .post(postLike.getPost())
+                .player(postLike.getPlayer())
+                .build();
+    }
 }

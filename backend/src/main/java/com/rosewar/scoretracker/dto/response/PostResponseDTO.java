@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class PostResponseDTO {
 
-    private String postId;
+    private Long postId;
     private String title;
     private UserInfoDTO writer; // 게시글 작성자
     private String content;

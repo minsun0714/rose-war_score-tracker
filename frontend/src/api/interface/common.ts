@@ -17,6 +17,10 @@ interface Post {
   content: string
 }
 
+export interface PostLike {
+  postId: number
+}
+
 // Comment
 export interface Comment {
   commentId: number

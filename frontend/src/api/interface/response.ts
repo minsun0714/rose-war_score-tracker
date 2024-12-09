@@ -1,4 +1,4 @@
-import type { User } from "./common"
+import type { PostLike, User } from "./common"
 
 interface UserResponse extends User {
   userId: string
@@ -21,6 +21,11 @@ interface PostResponse extends Post {
   createdAt: Date
   updatedAt: Date
   likeCount: number
+}
+
+export interface PostLikeResponse {
+  result: boolean
+
 }
 
 interface PagedPostResponse {

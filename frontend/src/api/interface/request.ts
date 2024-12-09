@@ -1,4 +1,4 @@
-import type { Comment } from './common'
+import type { Comment, PostLike } from './common'
 
 // User
 interface SignUpRequest extends Omit<User, 'profileImg'>, Auth {}
@@ -11,6 +11,9 @@ interface UpdateUserInfoRequest
 
 // Post
 interface PostRequest extends Post {}
+
+// PostLike
+export interface PostLikeRequest extends PostLike {}
 
 // Comment
 export interface CommentCreateRequest extends Omit<Comment, 'commentId'> {}

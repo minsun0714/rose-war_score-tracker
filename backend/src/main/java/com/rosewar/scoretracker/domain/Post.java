@@ -38,7 +38,11 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private int likeCount;
+    @Column(nullable = false)
+    private int likeCount; // 좋아요 수 추가
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> likes; // 댓글 리스트
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 댓글 리스트

@@ -13,13 +13,13 @@ class PostApiFacade {
 
     watch(
       () => route.query.keyword,
-      (newKeyword) => {
-        keyword.value = newKeyword || '';
+      newKeyword => {
+        keyword.value = newKeyword || ''
       },
-      { immediate: true }
-    );
+      { immediate: true },
+    )
 
-    const debouncedKeyword = useDebounce(keyword, 300);
+    const debouncedKeyword = useDebounce(keyword, 300)
 
     return useInfiniteQuery({
       queryKey: computed(() => ['posts', debouncedKeyword.value]),
@@ -40,7 +40,10 @@ class PostApiFacade {
   }
 
   static useCreatePost() {
-    return useMutation({ mutationFn: ({title, content}:PostRequest) => PostService.createPost(title, content) })
+    return useMutation({
+      mutationFn: ({ title, content }: PostRequest) =>
+        PostService.createPost(title, content),
+    })
   }
 
   static useUpdatePost(postId: number, updatedPost: PostRequest) {
