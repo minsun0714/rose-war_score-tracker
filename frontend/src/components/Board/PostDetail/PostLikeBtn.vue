@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PostLikeApiFacade from '@/api/apiFacade/PostLikeApiFacade'
-import LikeIcon from '@/assets/Like.svg'
 import { IoIosHeartEmpty, IoMdHeart } from 'vue3-icons/io'
 
 const { postId } = defineProps<{
