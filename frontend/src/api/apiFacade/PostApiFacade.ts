@@ -3,7 +3,12 @@ import PostService from '../services/PostService'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import { useDebounce } from '@vueuse/core'
-import type { PostDeleteRequest, PostRequest } from '../interface/request'
+import type {
+  PostDeleteRequest,
+  PostRequest,
+  PostUpdateRequest,
+} from '../interface/request'
+import { queryClient } from '@/main'
 
 class PostApiFacade {
   // 게시물 관련 메서드
@@ -49,9 +54,13 @@ class PostApiFacade {
     })
   }
 
-  static useUpdatePost(postId: number, updatedPost: PostRequest) {
+  static useUpdatePost() {
+    const router = useRouter()
     return useMutation({
-      mutationFn: () => PostService.updatePost(postId, updatedPost),
+      mutationFn: ({ postId, title, content }: PostUpdateRequest) =>
+        PostService.updatePost(postId, title, content),
+      onSuccess: (_, variables) =>
+        router.push(`/board/${variables.postId}`)
     })
   }
 

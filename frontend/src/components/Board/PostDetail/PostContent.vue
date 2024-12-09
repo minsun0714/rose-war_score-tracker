@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import PostApiFacade from '@/api/apiFacade/PostApiFacade'
 import { format } from 'date-fns'
 import ProfileImg from '@/assets/Male User.svg'
@@ -11,6 +11,8 @@ const { data: userInfo } = AuthApiFacade.useFetchUserInfo()
 const route = useRoute()
 const id = Number(route.params.id)
 const { data: postData } = PostApiFacade.useFetchPost(Number(id))
+
+const router = useRouter()
 </script>
 
 <template>
@@ -19,7 +21,7 @@ const { data: postData } = PostApiFacade.useFetchPost(Number(id))
     class="flex justify-end text-gray-500 text-sm gap-1 pt-3"
     v-if="userInfo?.userId === postData?.writer.userId"
   >
-    <button>수정</button>
+    <button @click="router.push(`/board/update/${postData?.postId}`)">수정</button>
     <PostDeleteBtn :post-id="postData?.postId" />
   </div>
   <div class="flex justify-between items-center text-xs text-slate-400 py-4">

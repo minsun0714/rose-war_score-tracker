@@ -12,6 +12,10 @@ interface UpdateUserInfoRequest
 // Post
 export interface PostRequest extends Post {}
 
+export interface PostUpdateRequest extends Post {
+  postId: number
+}
+
 export interface PostDeleteRequest {
   postId: number
 }

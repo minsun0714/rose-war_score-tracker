@@ -33,9 +33,14 @@ class PostService {
 
   static async _updatePost(
     postId: number,
-    updatedPost: PostRequest,
+    title: string,
+    updatedPost: string,
   ): Promise<PostResponse> {
-    const response = await api.put(`/api/posts/${postId}`, updatedPost)
+    console.log(title, updatedPost)
+    const response = await api.put(`/api/posts/${postId}`, {
+      title,
+      content: updatedPost,
+    })
     return response.data
   }
 
@@ -61,9 +66,10 @@ class PostService {
 
   static updatePost(
     postId: number,
-    updatedPost: PostRequest,
+    title: string,
+    updatedPost: string,
   ): Promise<PostResponse> {
-    return this._updatePost(postId, updatedPost)
+    return this._updatePost(postId, title, updatedPost)
   }
 
   static deletePost(postId: number): Promise<void> {
