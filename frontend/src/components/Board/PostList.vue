@@ -8,7 +8,7 @@ const router = useRouter()
 
 const { mergedCardData, hasNextPage } = useInfiniteScroll()
 
-const navigateToPost = (postId: string) => router.push(`/board/${postId}`)
+const navigateToPost = (postId: string) => postId && router.push(`/board/${postId}`)
 </script>
 
 <template>

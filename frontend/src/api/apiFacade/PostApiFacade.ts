@@ -1,8 +1,9 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/vue-query'
 import PostService from '../services/PostService'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import { useDebounce } from '@vueuse/core'
+import type { PostDeleteRequest, PostRequest } from '../interface/request'
 
 class PostApiFacade {
   // 게시물 관련 메서드
@@ -40,9 +41,11 @@ class PostApiFacade {
   }
 
   static useCreatePost() {
+    const router = useRouter()
     return useMutation({
       mutationFn: ({ title, content }: PostRequest) =>
         PostService.createPost(title, content),
+      onSuccess: response => router.push(`/board/${response.postId}`),
     })
   }
 
@@ -52,8 +55,14 @@ class PostApiFacade {
     })
   }
 
-  static useDeletePost(postId: number) {
-    return useMutation({ mutationFn: () => PostService.deletePost(postId) })
+  static useDeletePost() {
+    const router = useRouter()
+    return useMutation({
+      mutationFn: async ({ postId }: PostDeleteRequest) => {
+        return await PostService.deletePost(postId)
+      },
+      onSuccess: () => router.push('/board/list'),
+    })
   }
 }
 
