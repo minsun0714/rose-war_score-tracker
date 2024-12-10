@@ -43,6 +43,7 @@ public class PostController {
             @RequestParam(defaultValue = "") String keyword
     ) {
         PageResponseDTO<PostResponseDTO> response = postService.getAllPosts(page, size, keyword);
+        System.out.println(response);
         return ResponseEntity.ok(response);
     }
 

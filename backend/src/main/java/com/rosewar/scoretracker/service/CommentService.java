@@ -56,7 +56,7 @@ public class CommentService {
 
         Comment savedComment = commentRepository.save(comment);
         post.setCommentCount(post.getCommentCount() + 1);
-        System.out.println(post.getCommentCount());
+        postRepository.save(post);
         return toCommentResponseDTO(savedComment);
     }
 
@@ -120,5 +120,6 @@ public class CommentService {
 
         commentRepository.deleteById(comment.getCommentId());
         post.setCommentCount(post.getCommentCount() - 1);
+        postRepository.save(post);
     }
 }
