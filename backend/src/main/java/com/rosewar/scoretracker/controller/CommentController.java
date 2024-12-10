@@ -2,6 +2,7 @@ package com.rosewar.scoretracker.controller;
 
 import com.rosewar.scoretracker.dto.request.CommentRequestDTO;
 import com.rosewar.scoretracker.dto.response.CommentResponseDTO;
+import com.rosewar.scoretracker.dto.response.CommentResponseWrapperDTO;
 import com.rosewar.scoretracker.service.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,8 @@ public class CommentController {
 
     // 특정 게시물의 모든 댓글 조회
     @GetMapping
-    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable Long postId) {
-        List<CommentResponseDTO> comments = commentService.getCommentsByPostId(postId);
+    public ResponseEntity<CommentResponseWrapperDTO> getCommentsByPostId(@PathVariable Long postId) {
+        CommentResponseWrapperDTO comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 

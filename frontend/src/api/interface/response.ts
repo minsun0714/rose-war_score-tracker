@@ -1,4 +1,4 @@
-import type { PostLike, User } from "./common"
+import type { PostLike, User } from './common'
 
 interface UserResponse extends User {
   userId: string
@@ -25,7 +25,6 @@ interface PostResponse extends Post {
 
 export interface PostLikeResponse {
   result: boolean
-
 }
 
 interface PagedPostResponse {
@@ -46,6 +45,11 @@ export interface CommentResponse extends Comment {
   updatedAt: Date
   likeCount: number
   childrenComments: CommentResponse[]
+}
+
+export interface CommentResponseWithCount {
+  topLevelComments: CommentResponse[]
+  totalComments: number
 }
 
 interface GameResultResponse {

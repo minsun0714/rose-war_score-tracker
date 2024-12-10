@@ -1,5 +1,5 @@
 import api from '../apiClient'
-import type { CommentResponse } from '../interface/response'
+import type { CommentResponse, CommentResponseWithCount } from '../interface/response'
 
 class CommentService {
   // Private 메서드로 API 호출 로직 관리
@@ -15,7 +15,7 @@ class CommentService {
     return response.data
   }
 
-  static async _fetchCommentList(postId: number): Promise<CommentResponse[]> {
+  static async _fetchCommentList(postId: number): Promise<CommentResponseWithCount> {
     const response = await api.get(`/api/posts/${postId}/comments`)
     return response.data
   }
@@ -50,7 +50,7 @@ class CommentService {
     return this._createComment(postId, content, parentId)
   }
 
-  static fetchCommentList(postId: number): Promise<CommentResponse[]> {
+  static fetchCommentList(postId: number): Promise<CommentResponseWithCount> {
     return this._fetchCommentList(postId)
   }
 

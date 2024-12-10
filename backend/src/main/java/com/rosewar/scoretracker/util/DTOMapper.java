@@ -3,6 +3,11 @@ package com.rosewar.scoretracker.util;
 import com.rosewar.scoretracker.domain.*;
 import com.rosewar.scoretracker.dto.response.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class DTOMapper {
 
     private DTOMapper() {} // 인스턴스화 방지
@@ -54,6 +59,45 @@ public class DTOMapper {
                 .likeCount(comment.getLikeCount())
                 .parentCommentId(comment.getParent() != null ? comment.getParent().getCommentId() : null)
                 .build();
+    }
+
+    public static CommentResponseWrapperDTO toCommentResponseWrapperDTO(List<CommentResponseDTO> allComments, int totalCount) {
+        // Map 생성: 부모 댓글 ID를 키로, 자식 댓글 리스트를 값으로 저장
+        Map<Long, List<CommentResponseDTO>> map = new HashMap<>();
+
+        // 부모 댓글을 미리 초기화
+        for (CommentResponseDTO comment : allComments) {
+            if (comment.getParentCommentId() == null) {
+                map.put(comment.getCommentId(), new ArrayList<>());
+            }
+        }
+
+        // 자식 댓글을 부모 ID에 매핑
+        for (CommentResponseDTO comment : allComments) {
+            if (comment.getParentCommentId() != null) {
+                List<CommentResponseDTO> children = map.get(comment.getParentCommentId());
+                if (children != null) {
+                    children.add(comment);
+                }
+            }
+        }
+
+        // 부모 댓글에 자식 댓글 리스트를 설정
+        for (CommentResponseDTO parent : allComments) {
+            if (map.containsKey(parent.getCommentId())) {
+                parent.setChildrenComments(map.get(parent.getCommentId()));
+            }
+        }
+
+        // 최상위 댓글만 필터링
+        List<CommentResponseDTO> topLevelComments = allComments.stream()
+                .filter(comment -> comment.getParentCommentId() == null)
+                .toList();
+
+        System.out.println("toplevelcomments" + topLevelComments);
+
+        // 최상위 댓글과 전체 댓글 수를 DTO로 반환
+        return new CommentResponseWrapperDTO(topLevelComments, totalCount);
     }
 
     // Stat을 StatResponseDTO로 변환하는 헬퍼 메서드

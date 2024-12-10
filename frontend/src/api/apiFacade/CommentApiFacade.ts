@@ -42,7 +42,7 @@ class CommentApiFacade {
         CommentService.deleteComment(postId, commentId),
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries({
-          queryKey: ['commentList', variables.postId],
+          queryKey: ['commentList', variables.postId]
         })
       },
     })

@@ -34,7 +34,7 @@ const onSubmit = form.handleSubmit(values => {
 </script>
 
 <template>
-  <h2 class="h-8">댓글 총 {{ commentData?.length }}개</h2>
+  <h2 class="h-8">댓글 총 {{ commentData?.totalComments }}개</h2>
   <form @submit="onSubmit">
     <FormField v-slot="{ componentField }" name="comment">
       <FormItem>

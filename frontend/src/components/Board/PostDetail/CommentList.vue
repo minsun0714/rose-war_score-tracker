@@ -25,7 +25,7 @@ const createChildCommentStore = useCreateChildCommentStore()
 <template>
   <ul>
     <li
-      v-for="(comment, index) in commentList"
+      v-for="(comment, index) in commentList?.topLevelComments"
       :key="index"
       class="border-t py-2 flex flex-col justify-between"
     >
@@ -33,12 +33,12 @@ const createChildCommentStore = useCreateChildCommentStore()
         <span
           class="flex flex-col items-center justify-center text-xs text-slate-400 w-20"
         >
-          <img :src="comment.writer.profileImg || ProfileImg" />
-          <span> {{ comment.writer.nickname }}</span>
+          <img :src="comment?.writer?.profileImg || ProfileImg" />
+          <span> {{ comment?.writer?.nickname }}</span>
         </span>
         <span class="text-xs w-full flex flex-col gap-2">
           <span class="text-end text-slate-500">{{
-            formatDistanceToNow(new Date(comment.createdAt), {
+            formatDistanceToNow(new Date(comment?.createdAt), {
               addSuffix: true,
               locale: ko,
             })

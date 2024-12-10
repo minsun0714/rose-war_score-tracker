@@ -18,7 +18,7 @@ export const queryClient = new QueryClient({
   });
 
 app.use(createPinia())
-app.use(router)
+app?.use(router)
 app.use(VueQueryPlugin, { queryClient })
 
 app.mount('#app')

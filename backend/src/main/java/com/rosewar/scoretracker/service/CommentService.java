@@ -5,6 +5,7 @@ import com.rosewar.scoretracker.domain.Post;
 import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.CommentRequestDTO;
 import com.rosewar.scoretracker.dto.response.CommentResponseDTO;
+import com.rosewar.scoretracker.dto.response.CommentResponseWrapperDTO;
 import com.rosewar.scoretracker.repository.CommentRepository;
 import com.rosewar.scoretracker.repository.PostRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static com.rosewar.scoretracker.security.SecurityUtil.getAuthenticatedMemberId;
 import static com.rosewar.scoretracker.util.DTOMapper.toCommentResponseDTO;
+import static com.rosewar.scoretracker.util.DTOMapper.toCommentResponseWrapperDTO;
 
 @Service
 public class CommentService {
@@ -58,7 +60,7 @@ public class CommentService {
         return toCommentResponseDTO(savedComment);
     }
 
-    public List<CommentResponseDTO> getCommentsByPostId(Long postId) {
+    public CommentResponseWrapperDTO getCommentsByPostId(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
@@ -69,23 +71,26 @@ public class CommentService {
         List<CommentResponseDTO> responseDTOs = allComments.stream()
                 .map(DTOMapper::toCommentResponseDTO)
                 .toList();
+        System.out.println(responseDTOs);
 
-        // 부모-자식 관계 매칭
-        for (CommentResponseDTO parent : responseDTOs) {
-            for (CommentResponseDTO child : responseDTOs) {
-                if (child.getParentCommentId() != null && child.getParentCommentId().equals(parent.getCommentId())) {
-                    if (parent.getChildrenComments() == null) {
-                        parent.setChildrenComments(new ArrayList<>());
-                    }
-                    parent.getChildrenComments().add(child);
-                }
-            }
-        }
+        return toCommentResponseWrapperDTO(responseDTOs, allComments.size());
 
-        // 최상위 댓글만 반환
-        return responseDTOs.stream()
-                .filter(comment -> comment.getParentCommentId() == null)
-                .toList();
+//        // 부모-자식 관계 매칭
+//        for (CommentResponseDTO parent : responseDTOs) {
+//            for (CommentResponseDTO child : responseDTOs) {
+//                if (child.getParentCommentId() != null && child.getParentCommentId().equals(parent.getCommentId())) {
+//                    if (parent.getChildrenComments() == null) {
+//                        parent.setChildrenComments(new ArrayList<>());
+//                    }
+//                    parent.getChildrenComments().add(child);
+//                }
+//            }
+//        }
+//
+//        // 최상위 댓글만 반환
+//        return responseDTOs.stream()
+//                .filter(comment -> comment.getParentCommentId() == null)
+//                .toList();
     }
 
     public int getCommentsCountByPostId(Long postId) {
