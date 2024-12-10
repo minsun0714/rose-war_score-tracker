@@ -7,8 +7,15 @@ defineProps<{
 }>()
 
 const { mutate } = CommentApiFacade.useDeleteComment()
+
+const handleDeleteComment = (postId: number, commentId: number) => {
+  const isConfirmed = confirm('정말로 삭제하시겠습니까?')
+  if (isConfirmed) {
+    mutate({ postId, commentId })
+  }
+}
 </script>
 
 <template>
-  <button @click="() => mutate({ postId, commentId })">삭제</button>
+  <button @click="() => handleDeleteComment(postId, commentId)">삭제</button>
 </template>
