@@ -4,6 +4,7 @@ import { ko } from 'date-fns/locale';
 import Like from '../../assets/Like.svg'
 import Comments from '../../assets/Comments.svg'
 import { computed } from 'vue';
+import type { PostResponse } from '@/api/interface/response';
 
 const { card } = defineProps<{
   card: PostResponse
