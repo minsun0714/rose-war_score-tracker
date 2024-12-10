@@ -7,6 +7,7 @@ import * as z from 'zod'
 import SignatureBtn from '@/components/common/SignatureBtn.vue'
 import CommentApiFacade from '@/api/apiFacade/CommentApiFacade'
 import { useRoute } from 'vue-router'
+import { useHandleAuth } from '@/lib/hooks/useHandleAuth'
 
 const route = useRoute()
 const postId = Number(route.params.id)
@@ -24,12 +25,19 @@ const form = useForm({
 
 const { mutate } = CommentApiFacade.useCreateComment()
 
+const { handleAuth } = useHandleAuth()
+
 const onSubmit = form.handleSubmit(values => {
-  mutate({ postId, content: values.comment }, {
-    onSuccess: () => {
-      form.resetForm()
-    },
-  })
+  handleAuth(() =>
+    mutate(
+      { postId, content: values.comment },
+      {
+        onSuccess: () => {
+          form.resetForm()
+        },
+      },
+    ),
+  )
 })
 </script>
 

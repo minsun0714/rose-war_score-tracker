@@ -7,6 +7,7 @@ import * as z from 'zod'
 import SignatureBtn from '@/components/common/SignatureBtn.vue'
 import CommentApiFacade from '@/api/apiFacade/CommentApiFacade'
 import { useCreateChildCommentStore } from '@/stores/createChildComment'
+import { useHandleAuth } from '@/lib/hooks/useHandleAuth'
 const { postId, parentId } = defineProps<{
   postId: number
   parentId: number
@@ -22,21 +23,23 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
-
-
 const { mutate } = CommentApiFacade.useCreateComment()
 
 const createChildCommentStore = useCreateChildCommentStore()
 
+const { handleAuth } = useHandleAuth()
+
 const onSubmit = form.handleSubmit(values => {
-  mutate(
-    { postId, parentId, content: values.comment },
-    {
-      onSuccess: () => {
-        form.resetForm()
-        createChildCommentStore.toggleChildComment(parentId)
+  handleAuth(() =>
+    mutate(
+      { postId, parentId, content: values.comment },
+      {
+        onSuccess: () => {
+          form.resetForm()
+          createChildCommentStore.toggleChildComment(parentId)
+        },
       },
-    },
+    ),
   )
 })
 </script>
