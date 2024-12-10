@@ -1,9 +1,9 @@
-import type { Comment, Post, PostLike } from './common'
+import type { Auth, Comment, Post, PostLike } from './common'
 
 // User
 interface SignUpRequest extends Omit<User, 'profileImg'>, Auth {}
 
-interface LoginRequest extends Omit<Auth, 'passwordConfirm'> {}
+export interface LoginRequest extends Omit<Auth, 'passwordConfirm'> {}
 
 interface UpdateUserInfoRequest
   extends Omit<User, 'name'>,

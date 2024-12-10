@@ -73,10 +73,19 @@ const router = createRouter({
         {
           path: 'write',
           component: () => import('../views/Board/WriteView.vue'),
+          beforeEnter: (to, from, next) => {
+            const isAuthenticated = localStorage.getItem('token')
+            if (!isAuthenticated)
+              next({
+                path: '/auth/login',
+                query: { redirect: to.fullPath },
+              })
+            else next()
+          },
         },
         {
           path: 'update/:id',
-          component: () => import('../views/Board/UpdateView.vue')
+          component: () => import('../views/Board/UpdateView.vue'),
         },
         {
           path: ':id',

@@ -5,7 +5,7 @@ export interface User {
   profileImg: string
 }
 
-interface Auth {
+export interface Auth {
   userId: string
   password: string
   passwordConfirm: string
