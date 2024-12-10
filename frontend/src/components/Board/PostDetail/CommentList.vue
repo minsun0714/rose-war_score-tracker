@@ -71,7 +71,7 @@ const createChildCommentStore = useCreateChildCommentStore()
         </button>
         <span
           class="text-slate-400 flex gap-x-2"
-          v-if="comment.writer.userId === userInfo.userId"
+          v-if="userInfo && comment.writer.userId === userInfo.userId"
         >
           <button
           v-if="!commentToggleStore.isModifying.has(comment.commentId)"

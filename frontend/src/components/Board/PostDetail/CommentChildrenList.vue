@@ -7,10 +7,13 @@ import ProfileImg from '@/assets/Male User.svg'
 import { useModifyCommentStore } from '@/stores/modifyComment'
 import CommentUpdateForm from './CommentUpdateForm.vue'
 import CommentDeleteBtn from './CommentDeleteBtn.vue'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 
 const { commentChildren } = defineProps<{
   commentChildren?: CommentResponse[]
 }>()
+
+const { data: userInfo } = AuthApiFacade.useFetchUserInfo()
 
 const commentToggleStore = useModifyCommentStore()
 </script>
@@ -52,9 +55,11 @@ const commentToggleStore = useModifyCommentStore()
           <p class="text-xs flex items-center">{{ childComment.content }}</p>
         </template>
 
-        <span class="text-slate-400 flex justify-end gap-1"
+        <span
+          class="text-slate-400 flex justify-end gap-1"
+          v-if="userInfo && childComment.writer.userId === userInfo.userId"
           ><button
-          v-if="!commentToggleStore.isModifying.has(childComment.commentId)"
+            v-if="!commentToggleStore.isModifying.has(childComment.commentId)"
             @click="
               () => commentToggleStore.toggleModifyBtn(childComment.commentId)
             "
