@@ -7,6 +7,7 @@ import com.rosewar.scoretracker.dto.response.GameResultResponseDTO;
 import com.rosewar.scoretracker.repository.GameRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,17 +20,12 @@ import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class GameService {
 
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final StatService statService;
-
-    public GameService(GameRepository gameRepository, UserRepository userRepository, StatService statService) {
-        this.gameRepository = gameRepository;
-        this.userRepository = userRepository;
-        this.statService = statService;
-    }
 
     // 게임 생성
     @Transactional
@@ -39,15 +35,16 @@ public class GameService {
         Player player1 = getUserOrCreateGuest(player1Id); // 로그인한 경우에는 실제 userId, 그렇지 않은 경우에는 UUID 부여
         Player player2 = createGuestUser();
 
-        Game game = new Game();
-        game.setPlayer1(player1);
-        game.setPlayer2(player2);
 
         int[][] gameBoard = gameRequestDTO.getGameBoard();
         int[] scores = getScores(gameBoard);
 
-        game.setScore1(scores[0]);
-        game.setScore2(scores[1]);
+        Game game = Game.builder()
+                .player1(player1)
+                .player2(player2)
+                .score1(scores[0])
+                .score2(scores[1])
+                .build();
 
         if (!player1.getUserId().startsWith("guest-")){
             statService.updateStat(player1.getUserId(), scores[0], scores[0] > scores[1]);
@@ -124,7 +121,7 @@ public class GameService {
                         }
                     }
                 }
-                int score = (int) Math.pow(totalDepth, 2);
+                int score = totalDepth * totalDepth;
                 if (gameBoard[i][j] == 1) player1Score += score;
                 else player2Score += score;
             }
