@@ -5,6 +5,7 @@ import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.request.GameResultRequestDTO;
 import com.rosewar.scoretracker.dto.response.GameResultResponseDTO;
 import com.rosewar.scoretracker.repository.GameRepository;
+import com.rosewar.scoretracker.repository.RankingRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final StatService statService;
+    private final RankingService rankingService;
 
     // 게임 생성
     @Transactional
@@ -46,11 +48,10 @@ public class GameService {
                 .score2(scores[1])
                 .build();
 
-        if (!player1.getUserId().startsWith("guest-")){
-            statService.updateStat(player1.getUserId(), scores[0], scores[0] > scores[1]);
-        }
 
         Game savedGame = gameRepository.save(game);
+        statService.updateStat(player1Id, scores[0], scores[0] > scores[1], scores[0] == scores[1]);
+        rankingService.updateRanking();
         return toGameResponseDTO(savedGame);
     }
 
