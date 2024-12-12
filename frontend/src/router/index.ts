@@ -58,11 +58,6 @@ const router = createRouter({
       component: () => import('../views/PlayView.vue'),
     },
     {
-      path: '/ranking',
-      name: 'ranking',
-      component: () => import('../views/RankingView.vue'),
-    },
-    {
       path: '/board',
       name: 'board',
       children: [
