@@ -97,14 +97,14 @@ public class GameService {
                 int totalDepth = 0;
 
                 if (!visited[i][j] && gameBoard[i][j] != 0){
+                    System.out.println(i + " " + j);
                     Stack<int[]> stack = new Stack<>();
-                    stack.push(new int[]{i, j, 1});
+                    stack.push(new int[]{i, j});
                     visited[i][j] = true;
+                    totalDepth++;
 
                     while (!stack.empty()){
                         int[] cell = stack.pop();
-
-                        totalDepth = cell[2];
 
                         for (int k=0 ; k< 4; k++){
                             int nx = cell[0] + dx[k], ny = cell[1] + dy[k];
@@ -114,13 +114,14 @@ public class GameService {
                             if (visited[nx][ny]) continue;
 
                             if (gameBoard[nx][ny] != gameBoard[cell[0]][cell[1]]) continue;
-
                             visited[nx][ny] = true;
-                            stack.push(new int[]{nx, ny, cell[2] + 1});
+                            totalDepth++;
+                            stack.push(new int[]{nx, ny});
 
                         }
                     }
                 }
+                System.out.println(totalDepth);
                 int score = totalDepth * totalDepth;
                 if (gameBoard[i][j] == 1) player1Score += score;
                 else player2Score += score;

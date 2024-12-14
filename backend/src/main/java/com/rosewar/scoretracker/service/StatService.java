@@ -62,8 +62,6 @@ public class StatService {
         Stat stat = statRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Stat not found for user: " + userId));
 
-        System.out.println(player1Score + " " + player2Score);
-
         stat.setTotalPlayCount(stat.getTotalPlayCount() + 1);
         stat.setMaxScore(Math.max(stat.getMaxScore(), player1Score));
 
