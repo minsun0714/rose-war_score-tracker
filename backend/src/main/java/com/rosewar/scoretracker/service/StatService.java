@@ -58,22 +58,22 @@ public class StatService {
 
     // 특정 사용자의 통계 업데이트 (예: 승리, 패배, 최고 점수 업데이트)
     @Transactional
-    public StatResponseDTO updateStat(String userId, int newScore, boolean isWin) {
+    public StatResponseDTO updateStat(String userId, int player1Score, int player2Score) {
         Stat stat = statRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Stat not found for user: " + userId));
 
-        stat.setTotalPlayCount(stat.getTotalPlayCount() + 1);
-        stat.setMaxScore(Math.max(stat.getMaxScore(), newScore));
+        System.out.println(player1Score + " " + player2Score);
 
-        if (isWin) {
+        stat.setTotalPlayCount(stat.getTotalPlayCount() + 1);
+        stat.setMaxScore(Math.max(stat.getMaxScore(), player1Score));
+
+        if (player1Score > player2Score) {
             stat.setWinCount(stat.getWinCount() + 1);
-        } else {
+        } else if (player1Score < player2Score) {
             stat.setFailCount(stat.getFailCount() + 1);
         }
 
         Stat updatedStat = statRepository.save(stat);
         return toStatResponseDTO(updatedStat);
     }
-
-
 }

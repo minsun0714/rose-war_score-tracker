@@ -47,7 +47,7 @@ public class GameService {
                 .build();
 
         if (!player1.getUserId().startsWith("guest-")){
-            statService.updateStat(player1.getUserId(), scores[0], scores[0] > scores[1]);
+            statService.updateStat(player1.getUserId(), scores[0], scores[1]);
         }
 
         Game savedGame = gameRepository.save(game);
