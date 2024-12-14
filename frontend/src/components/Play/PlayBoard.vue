@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ProfileImg from '../../assets/Male User.svg'
-import GameResultChckButton from './GameResultChckButton.vue';
+import GameResultChckButton from './GameResultChckButton.vue'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 
-const user1 = { profileImg: ProfileImg, nickname: 'minsun', userId: "guest" }
-const user2 = { profileImg: ProfileImg, nickname: 'kangmin', userId: "guest" }
+const { data: user1 } = AuthApiFacade.useFetchUserInfo()
+const user2 = { profileImg: ProfileImg, nickname: 'guest', userId: 'guest' }
 
 const board = ref(
   Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => 0)),
@@ -36,7 +37,7 @@ const clickCell = (user: 1 | 2, rowIdx: number, colIdx: number) => {
       class="flex justify-center items-center h-12 gap-2 border border-slate-700"
     >
       <img
-        :src="user1.profileImg"
+        :src="user1.profileImg || ProfileImg"
         alt=""
         class="border border-white rounded-full h-6 w-6"
       />
@@ -78,8 +79,8 @@ const clickCell = (user: 1 | 2, rowIdx: number, colIdx: number) => {
     </button>
   </div>
   <GameResultChckButton
-  :player1Id="user1.userId"
-  :player2Id="user2.userId"
-  :gameBoard="board"
+    :player1Id="user1.userId"
+    :player2Id="user2.userId"
+    :gameBoard="board"
   />
 </template>
