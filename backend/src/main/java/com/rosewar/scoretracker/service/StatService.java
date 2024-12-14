@@ -3,10 +3,12 @@ package com.rosewar.scoretracker.service;
 import com.rosewar.scoretracker.domain.Stat;
 import com.rosewar.scoretracker.domain.Player;
 import com.rosewar.scoretracker.dto.response.StatResponseDTO;
+import com.rosewar.scoretracker.event.UserCreatedEvent;
 import com.rosewar.scoretracker.repository.StatRepository;
 import com.rosewar.scoretracker.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import static com.rosewar.scoretracker.util.DTOMapper.toStatResponseDTO;
@@ -21,6 +23,12 @@ public class StatService {
     public StatService(StatRepository statRepository, UserRepository userRepository) {
         this.statRepository = statRepository;
         this.userRepository = userRepository;
+    }
+
+    @EventListener
+    public void handleUserCreated(UserCreatedEvent event) {
+        String userId = event.getUserId();
+        createStat(userId); // 통계 생성 로직 호출
     }
 
     // 특정 사용자의 통계 조회

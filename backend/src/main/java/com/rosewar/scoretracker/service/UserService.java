@@ -5,13 +5,16 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
+import com.rosewar.scoretracker.event.UserCreatedEvent;
 import com.rosewar.scoretracker.exception.UserNotAuthenticatedException;
 import com.rosewar.scoretracker.repository.UserRepository;
 import com.rosewar.scoretracker.security.AuthService;
 import com.rosewar.scoretracker.security.JwtToken;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,20 +25,13 @@ import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
 import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final AuthService authService;
     private final UserRepository userRepository;
-    private final StatService statService;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserService(AuthService authService, UserRepository userRepository, StatService statService, PasswordEncoder passwordEncoder) {
-        this.authService = authService;
-        this.userRepository = userRepository;
-        this.statService = statService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final ApplicationEventPublisher eventPublisher;
 
     // 사용자 생성
     @Transactional
@@ -51,8 +47,7 @@ public class UserService {
 
         Player savedPlayer = userRepository.save(player);
 
-        // 통계 생성 (의존성 낮추는 방법 검토 가능)
-        statService.createStat(savedPlayer.getUserId());
+        eventPublisher.publishEvent(new UserCreatedEvent(savedPlayer.getUserId()));
 
         JwtToken jwtToken = authService.authenticateAndGenerateToken(userRequestDTO.getUserId(), userRequestDTO.getPassword());
 
