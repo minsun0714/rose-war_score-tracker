@@ -59,7 +59,7 @@ public class StatService {
     // 특정 사용자의 통계 업데이트 (예: 승리, 패배, 최고 점수 업데이트)
     @Transactional
     public StatResponseDTO updateStat(String userId, int player1Score, int player2Score) {
-        Stat stat = statRepository.findById(userId)
+        Stat stat = statRepository.findByIdWithLock(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Stat not found for user: " + userId));
 
         stat.setTotalPlayCount(stat.getTotalPlayCount() + 1);
