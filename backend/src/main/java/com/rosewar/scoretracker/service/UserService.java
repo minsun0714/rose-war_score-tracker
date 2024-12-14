@@ -22,7 +22,6 @@ import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
 import static com.rosewar.scoretracker.util.DTOMapper.toUserInfoDTO;
 
 @Service
-@Transactional
 public class UserService {
 
     private final AuthService authService;
@@ -47,6 +46,8 @@ public class UserService {
                 .name(userRequestDTO.getName())
                 .nickname(userRequestDTO.getNickname())
                 .build();
+
+        System.out.println(player.getUserId());
 
         Player savedPlayer = userRepository.save(player);
 
