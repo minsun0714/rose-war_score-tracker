@@ -8,7 +8,8 @@
 
 **사용스택**
 
-`Java` `Spring Boot` `JPA` `MySQL` `Spring Security` `Vue.js`
+`Vue.js` `Typescript` `Tanstack-Query`
+`Java` `Spring Boot` `JPA` `MySQL` `Spring Security`
 
 **구현 기능**
 
