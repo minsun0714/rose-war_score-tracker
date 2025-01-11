@@ -30,11 +30,9 @@
 - 초기에는 게임 참가자 릴레이션 내에서 PK인 유저 아이디가 닉네임의 종속자가 되고, 닉네임은 게임 승·패·무의 종속자가 되는 구조여서 이행적 함수 종속이 발생했습니다.
 - 로그인하지 않은 게스트 유저도 UUID를 부여받아 게임에 참여할 수 있어야 했습니다.
     
-    ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/5b96a253-9683-47a0-abff-8b3389749e8d/5d199aa4-0a82-4275-9918-1cce7596df98/image.png)
     
 - 이행적 함수 종속은 이상 현상의 원인이 될 수 있음을 학습한 경험이 있으며, 유저의 개인정보와 게임 통계 정보가 한 릴레이션의 존재할 경우 유지보수가 어려울 것이라는 생각도 들었습니다.
-    
-    ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/5b96a253-9683-47a0-abff-8b3389749e8d/bed3624b-e6f0-4a02-bd55-84ec7faf2105/image.png)
+
     
 
 해결 과정
@@ -98,7 +96,6 @@ event publisher를 사용하여 서비스 간 의존성을 낮춤
 
 - 한 사용자가 다중 기기로 동시에 점수 계산을 요청하는 시나리오에서 동시성 문제가 발생할 수 있음을 인지하였습니다.
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/5b96a253-9683-47a0-abff-8b3389749e8d/69b959dc-f143-4047-a62d-cf5fbf4b48e1/image.png)
 
 ```java
     // 특정 사용자의 통계 업데이트 (예: 승리, 패배, 최고 점수 업데이트)
