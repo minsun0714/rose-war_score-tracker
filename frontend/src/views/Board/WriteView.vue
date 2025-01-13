@@ -3,7 +3,7 @@ import WriteForm from '@/components/Board/WriteForm.vue'
 </script>
 
 <template>
-  <main class="flex flex-col justify-center items-center h-full">
+  <main class="flex flex-col justify-center items-center h-full mx-auto tablet:max-w-[640px]">
     <h1 class="h-20 flex items-center">글쓰기</h1>
     <WriteForm />
   </main>

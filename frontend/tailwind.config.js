@@ -89,6 +89,11 @@ module.exports = {
         'collapsible-up': 'collapsible-up 0.2s ease-in-out',
       },
     },
+    screens: {
+			mobile: "320px",
+			tablet: "640px",
+			laptop: "1024px",
+		},
   },
   plugins: [animate],
 }
