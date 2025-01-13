@@ -6,15 +6,10 @@ export const accordionItems = [
   },
   {
     value: 'item-2',
-    title: 'Ranking',
-    children: [{ value: 'item-2-1', title: '랭킹', path: '/ranking' }],
-  },
-  {
-    value: 'item-3',
     title: 'Talk',
     children: [
-      { value: 'item-3-1', title: '전체글', path: '/board/list' },
-      { value: 'item-3-2', title: '글쓰기', path: '/board/write' },
+      { value: 'item-2-1', title: '전체글', path: '/board/list' },
+      { value: 'item-2-2', title: '글쓰기', path: '/board/write' },
     ],
   },
 ]
