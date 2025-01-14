@@ -37,11 +37,11 @@ const clickCell = (user: 1 | 2, rowIdx: number, colIdx: number) => {
       class="flex justify-center items-center h-12 gap-2 border border-slate-700"
     >
       <img
-        :src="user1.profileImg || ProfileImg"
+        :src="user1?.profileImg || ProfileImg"
         alt=""
         class="border border-white rounded-full h-6 w-6"
       />
-      {{ user1.nickname }}
+      {{ user1?.nickname || 'guest' }}
     </button>
 
     <ul class="flex bg-purple gap-y-1 p-2 justify-center">
@@ -75,11 +75,11 @@ const clickCell = (user: 1 | 2, rowIdx: number, colIdx: number) => {
         alt=""
         class="border border-white rounded-full h-6 w-6"
       />
-      {{ user2.nickname }}
+      {{ user2.userId }}
     </button>
   </div>
   <GameResultChckButton
-    :player1Id="user1.userId"
+    :player1Id="user1?.userId"
     :player2Id="user2.userId"
     :gameBoard="board"
   />

@@ -11,6 +11,7 @@ class AuthApiFacade {
       queryKey: ['user'],
       queryFn: () => AuthService.fetchUserInfo(),
       enabled: () => !!localStorage.getItem('token'),
+      retry: 0,
     })
   }
 
