@@ -36,8 +36,11 @@ const accordionStore = useAccordionStore()
           v-if="userInfo"
           class="h-full flex flex-row items-center justify-center gap-1 p-2 text-xs whitespace-nowrap"
         >
+        <RouterLink to="/mypage/gameinfo">
           <img :src="userInfo?.profileImg || ProfileImg" alt="" />
+        </RouterLink>
           <p>{{ userInfo?.nickname }}</p>
+
           <button @click="logout">로그아웃</button>
         </div>
         <div
