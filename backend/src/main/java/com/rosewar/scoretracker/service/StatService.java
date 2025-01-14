@@ -9,6 +9,7 @@ import com.rosewar.scoretracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import static com.rosewar.scoretracker.security.SecurityUtil.getAuthenticatedMemberId;
 import static com.rosewar.scoretracker.util.DTOMapper.toStatResponseDTO;
 
 @Service
@@ -24,7 +25,8 @@ public class StatService {
     }
 
     // 특정 사용자의 통계 조회
-    public StatResponseDTO getStatByUserId(String userId) {
+    public StatResponseDTO getStatInfo() {
+        String userId = getAuthenticatedMemberId();
         Stat stat = statRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Stat not found for user: " + userId));
         return toStatResponseDTO(stat);

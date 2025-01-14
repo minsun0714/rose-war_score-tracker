@@ -16,9 +16,9 @@ public class StatController {
     }
 
     // 특정 사용자의 통계 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<StatResponseDTO> getStatByUserId(@PathVariable String userId) {
-        StatResponseDTO stat = statService.getStatByUserId(userId);
+    @GetMapping()
+    public ResponseEntity<StatResponseDTO> getStatInfo() {
+        StatResponseDTO stat = statService.getStatInfo();
         return ResponseEntity.ok(stat);
     }
 }

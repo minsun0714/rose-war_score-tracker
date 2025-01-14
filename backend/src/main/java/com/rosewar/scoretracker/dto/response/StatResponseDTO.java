@@ -15,5 +15,6 @@ public class StatResponseDTO {
     private int maxScore;
     private int totalPlayCount;
     private int winCount;
-    private int failCount;
+    private int loseCount;
+    private int drawCount;
 }

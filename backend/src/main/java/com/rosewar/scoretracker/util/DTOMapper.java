@@ -103,11 +103,11 @@ public class DTOMapper {
     // Stat을 StatResponseDTO로 변환하는 헬퍼 메서드
     public static StatResponseDTO toStatResponseDTO(Stat stat) {
         return StatResponseDTO.builder()
-                .userId(stat.getPlayer().getUserId())
                 .maxScore(stat.getMaxScore())
                 .totalPlayCount(stat.getTotalPlayCount())
                 .winCount(stat.getWinCount())
-                .failCount(stat.getFailCount())
+                .loseCount(stat.getFailCount())
+                .drawCount(stat.getTotalPlayCount() - stat.getWinCount() - stat.getFailCount())
                 .build();
     }
 
