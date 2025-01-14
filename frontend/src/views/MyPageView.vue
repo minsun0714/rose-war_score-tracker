@@ -3,7 +3,7 @@ import MenuTab from '@/components/MyPage/MenuTab.vue'
 </script>
 
 <template>
-  <main>
+  <main class="max-w-[360px] mx-auto">
     <MenuTab />
   </main>
 </template>
