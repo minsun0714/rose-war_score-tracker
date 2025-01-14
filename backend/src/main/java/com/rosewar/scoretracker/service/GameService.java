@@ -104,7 +104,7 @@ public class GameService {
                     while (!stack.empty()){
                         int[] cell = stack.pop();
 
-                        totalDepth = cell[2];
+                        totalDepth++;
 
                         for (int k=0 ; k< 4; k++){
                             int nx = cell[0] + dx[k], ny = cell[1] + dy[k];
