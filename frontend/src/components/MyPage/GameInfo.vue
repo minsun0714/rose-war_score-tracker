@@ -1,14 +1,8 @@
 <script setup lang="ts">
+import StatApiFacade from '@/api/apiFacade/StatApiFacade';
 import { gameInfoKey } from '@/lib/types'
 
-const gameInfo = {
-  rank: 1,
-  maxScore: 500,
-  winCount: 150,
-  loseCount: 150,
-  drawCount: 46,
-  playCount: 346,
-}
+const {data: gameInfo} = StatApiFacade.useFetchStat()
 </script>
 
 <template>
