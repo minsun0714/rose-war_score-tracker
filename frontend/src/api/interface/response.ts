@@ -1,19 +1,19 @@
 import type { Post, PostLike, User } from './common'
 
-interface UserResponse extends User {
+export interface UserResponse extends User {
   userId: string
 }
 
-interface SignUpResponse extends UserResponse {
+export interface SignUpResponse extends UserResponse {
   accessToken: string
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   grantType: 'Bearer'
   accessToken: string
 }
 
-interface UpdateUserInfoResponse extends UserResponse {}
+export interface UpdateUserInfoResponse extends UserResponse {}
 
 export interface PostResponse extends Post {
   postId: string

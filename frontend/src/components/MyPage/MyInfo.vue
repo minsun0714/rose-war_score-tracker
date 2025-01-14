@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { MyInfoKey } from '@/lib/types'
-import ProfilePic from '../../assets/Male User.svg'
+import ProfileImg from '@/assets/Male User.svg'
 import SignatureBtn from '../common/SignatureBtn.vue'
 import { ref, watch } from 'vue'
+import AuthApiFacade from '@/api/apiFacade/AuthApiFacade'
 
 const router = useRouter()
 const route = useRoute()
-const myInfo = {
-  profilePic: ProfilePic,
-  name: '이민선',
-  id: 'minsun',
-  nickname: 'minsun',
-}
-
+const { data: myInfo } = AuthApiFacade.useFetchUserInfo()
 const isEditing = ref(false)
 
 watch(
@@ -45,7 +40,7 @@ const navigateTo = (name: string) => {
             {{ MyInfoKey[key] }}
           </li>
           <li class="flex justify-center">
-            <img :src="value" alt="프로필 사진" v-if="key === 'profilePic'" />
+            <img :src="value || ProfileImg" alt="프로필 사진" v-if="String(key) === 'profileImg'" />
             <span v-else>{{ value }}</span>
           </li>
         </template>

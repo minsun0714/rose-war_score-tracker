@@ -7,9 +7,9 @@ export enum gameInfoKey {
   playCount = 'play 횟수',
 }
 
-export enum MyInfoKey {
-  profilePic = '프로필 사진',
-  name = '이름',
-  id = '아이디',
-  nickname = '닉네임',
+export const MyInfoKey: { [key: string]: string } = {
+  profileImg: '프로필 사진',
+  name: '이름',
+  userId: '아이디',
+  nickname: '닉네임',
 }
