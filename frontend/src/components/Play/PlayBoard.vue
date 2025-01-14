@@ -55,7 +55,7 @@ const clickCell = (user: 1 | 2, rowIdx: number, colIdx: number) => {
             'bg-yellow-400': cell === 2,
             'bg-white': cell === 0,
           }"
-          class="w-6 h-6 border border-gray-300 flex items-center justify-center text-transparent"
+          class="w-6 h-6 border border-gray-300 flex items-center justify-center text-transparent cursor-pointer"
         >
           {{ cell }}
         </span>
