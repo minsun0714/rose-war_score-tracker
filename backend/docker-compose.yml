@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: minsun
+      MYSQL_DATABASE: rosewar_scoretracker
+    ports:
+      - "3307:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  scoretracker:
+    image: scoretracker:latest
+    container_name: scoretracker-container
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/rosewar_scoretracker
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: minsun
+      JWT_SECRET: U29tZVZlcnlMb25nU2VjcmV0U3RyaW5nVGhhdE1lZXRzQmFzZTY0U3RhbmRhcmRz
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
