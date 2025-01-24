@@ -9,7 +9,7 @@
 **사용스택**
 
 `Vue.js` `Typescript` `Tanstack-Query`
-`Java` `Spring Boot` `JPA` `MySQL` `Spring Security`
+`Java` `Spring Boot` `JPA` `MySQL` `Spring Security` `docker` `EC2`
 
 **구현 기능**
 
@@ -19,6 +19,8 @@
     - 비회원도 점수 계산 서비스 이용 가능하도록 설계
 - 보드게임에 대해 이야기를 나눌 수 있는 게시판을 구축하였습니다.
     - 대댓글 기능 구현
+- AWS EC2 배포 후 Docker를 이용하여 백그라운드에서 실행되도록 했습니다.
+    - Application Load Balancer(ALB)가 클라이언트의 HTTPS 요청을 처리하고, 이를 복호화하여 대상 그룹의 8080 포트로 전달하도록 설정했습니다.
 
 **의사 결정 과정 및 배운 점**
 
