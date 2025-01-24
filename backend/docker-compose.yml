@@ -6,7 +6,7 @@ services:
     container_name: mysql-container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: minsun
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: rosewar_scoretracker
     ports:
       - "3307:3306"
@@ -21,9 +21,9 @@ services:
     restart: always
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/rosewar_scoretracker
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: minsun
-      JWT_SECRET: U29tZVZlcnlMb25nU2VjcmV0U3RyaW5nVGhhdE1lZXRzQmFzZTY0U3RhbmRhcmRz
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "8080:8080"
     networks:
