@@ -5,6 +5,7 @@ import com.rosewar.scoretracker.dto.request.MyInfoUpdateDTO;
 import com.rosewar.scoretracker.dto.request.SignUpFormDTO;
 import com.rosewar.scoretracker.dto.response.SignUpResponseDTO;
 import com.rosewar.scoretracker.dto.response.UserInfoDTO;
+import com.rosewar.scoretracker.event.UserCreatedEvent;
 import com.rosewar.scoretracker.exception.UserNotAuthenticatedException;
 import com.rosewar.scoretracker.repository.UserRepository;
 import com.rosewar.scoretracker.security.AuthService;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
 
 import static com.rosewar.scoretracker.util.CookieUtils.setRefreshTokenCookie;
 import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
@@ -27,14 +29,14 @@ public class UserService {
 
     private final AuthService authService;
     private final UserRepository userRepository;
-    private final StatService statService;
+    private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(AuthService authService, UserRepository userRepository, StatService statService, PasswordEncoder passwordEncoder) {
+    public UserService(AuthService authService, UserRepository userRepository, ApplicationEventPublisher eventPublisher, PasswordEncoder passwordEncoder) {
         this.authService = authService;
         this.userRepository = userRepository;
-        this.statService = statService;
+        this.eventPublisher = eventPublisher;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -51,7 +53,8 @@ public class UserService {
         Player savedPlayer = userRepository.save(player);
 
         // 통계 생성 (의존성 낮추는 방법 검토 가능)
-        statService.createStat(savedPlayer.getUserId());
+//        statService.createStat(savedPlayer.getUserId());
+        eventPublisher.publishEvent(new UserCreatedEvent(savedPlayer.getUserId()));
 
         JwtToken jwtToken = authService.authenticateAndGenerateToken(userRequestDTO.getUserId(), userRequestDTO.getPassword());
 
