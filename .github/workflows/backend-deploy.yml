@@ -56,11 +56,16 @@ jobs:
           echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
           echo "EC2_KEY: ${{ secrets.EC2_KEY }}"
 
+      - name: Save EC2 private key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > nineth.pem
+          chmod 600 nineth.pem
+
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_KEY }} ec2-user@${{ secrets.EC2_HOST }} "
-            docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }} &&
-            docker stop myapp || true &&
-            docker rm myapp || true &&
-            docker run -d -p 8080:8080 --name myapp ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
-          "
+          ssh -o StrictHostKeyChecking=no -i nineth.pem ec2-user@${{ secrets.EC2_HOST }} "
+          docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }} &&
+          docker stop myapp || true &&
+          docker rm myapp || true &&
+          docker run -d -p 8080:8080 --name myapp ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
+    "
