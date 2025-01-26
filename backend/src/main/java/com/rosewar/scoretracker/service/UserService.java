@@ -89,9 +89,7 @@ public class UserService {
 
         String fileUrl = s3Service.uploadFile(file, userId);
 
-        Player.builder()
-                .profileImg(fileUrl)
-                .nickname(userRequestDTO.getNickname());
+        player.setProfileImg(fileUrl);
 
         Player updatedPlayer = userRepository.save(player);
         return toUserInfoDTO(updatedPlayer);
