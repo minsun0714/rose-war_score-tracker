@@ -90,7 +90,6 @@ public class UserService {
         String fileUrl = s3Service.uploadFile(file, userId);
 
         player.setProfileImg(fileUrl);
-
         Player updatedPlayer = userRepository.save(player);
         return toUserInfoDTO(updatedPlayer);
     }
