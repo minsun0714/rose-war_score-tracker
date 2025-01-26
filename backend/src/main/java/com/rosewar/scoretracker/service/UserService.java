@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.rosewar.scoretracker.util.CookieUtils.setRefreshTokenCookie;
 import static com.rosewar.scoretracker.util.DTOMapper.toSignUpResponseDTO;
@@ -31,13 +32,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
+    private final S3Service s3Service;
 
     @Autowired
-    public UserService(AuthService authService, UserRepository userRepository, ApplicationEventPublisher eventPublisher, PasswordEncoder passwordEncoder) {
+    public UserService(AuthService authService, UserRepository userRepository, ApplicationEventPublisher eventPublisher, PasswordEncoder passwordEncoder, S3Service s3Service) {
         this.authService = authService;
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
         this.passwordEncoder = passwordEncoder;
+        this.s3Service = s3Service;
     }
 
     // 사용자 생성
@@ -74,18 +77,20 @@ public class UserService {
 
     // 사용자 정보 업데이트
     @Transactional
-    public UserInfoDTO updateUser(MyInfoUpdateDTO userRequestDTO) {
+    public UserInfoDTO updateUser(MyInfoUpdateDTO userRequestDTO, MultipartFile file) {
         String userId = getAuthenticatedUserId();
         Player player = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if (userRequestDTO.getPassword() != null) {
             validatePasswordMatch(userRequestDTO.getPassword(), userRequestDTO.getConfirmPassword());
-            player.setPassword(passwordEncoder.encode(userRequestDTO.getPassword())); // 보안상 해시 처리 필요
+            player.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         }
 
+        String fileUrl = s3Service.uploadFile(file, userId);
+
         Player.builder()
-                .profileImg(userRequestDTO.getProfileImg())
+                .profileImg(fileUrl)
                 .nickname(userRequestDTO.getNickname());
 
         Player updatedPlayer = userRepository.save(player);

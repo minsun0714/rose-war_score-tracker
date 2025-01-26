@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/users")
@@ -40,8 +41,10 @@ public class UserController {
     @PutMapping
     public ResponseEntity<UserInfoDTO> updateUser(
             @Valid
-            @RequestBody MyInfoUpdateDTO myInfoUpdateDTO) {
-        UserInfoDTO updatedUser = userService.updateUser(myInfoUpdateDTO);
+            @ModelAttribute MyInfoUpdateDTO myInfoUpdateDTO,
+            @RequestParam("file") MultipartFile file
+    ) {
+        UserInfoDTO updatedUser = userService.updateUser(myInfoUpdateDTO, file);
         return ResponseEntity.ok(updatedUser);
     }
 
