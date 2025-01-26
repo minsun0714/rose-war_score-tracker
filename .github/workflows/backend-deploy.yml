@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t myapp:${{ github.sha }} ./backend
+          docker build -t scoretracker:${{ github.sha }} ./backend
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -48,8 +48,8 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag myapp:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
+          docker tag myapp:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
 
       # 1. SSH 키를 파일로 저장
       - name: Save EC2 private key
@@ -67,9 +67,9 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} "
-            docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }} &&
-            docker stop myapp || true &&
-            docker rm myapp || true &&
-            docker run -d -p 8080:8080 --name myapp ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }} &&
+            docker stop scoretracker || true &&
+            docker rm scoretracker || true &&
+            docker run -d -p 8080:8080 --name scoretracker ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
           "
 
