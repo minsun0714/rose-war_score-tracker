@@ -48,7 +48,7 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag myapp:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+          docker tag scoretracker:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
 
       # 1. SSH 키를 파일로 저장
