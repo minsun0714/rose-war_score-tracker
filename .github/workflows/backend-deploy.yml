@@ -56,6 +56,7 @@ jobs:
           echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
           echo "EC2_KEY: ${{ secrets.EC2_KEY }}"
 
+      
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_KEY }} ec2-user@${{ secrets.EC2_HOST }} "
@@ -63,4 +64,4 @@ jobs:
           docker stop myapp || true &&
           docker rm myapp || true &&
           docker run -d -p 8080:8080 --name myapp ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
-    "
+          "
