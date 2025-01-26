@@ -33,6 +33,7 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
+        working-directory: backend
 
       # 4. Docker 빌드
       - name: Build Docker image
