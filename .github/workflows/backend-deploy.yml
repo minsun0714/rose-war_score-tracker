@@ -70,6 +70,6 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }} &&
             docker stop scoretracker || true &&
             docker rm scoretracker || true &&
-            docker run -d -p 8080:8080 --name scoretracker ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+            docker run -d -p 8081:8080 --name scoretracker ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
           "
 
