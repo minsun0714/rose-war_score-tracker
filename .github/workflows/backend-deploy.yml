@@ -54,7 +54,7 @@ jobs:
       # 1. SSH 키를 파일로 저장
       - name: Save EC2 private key
         run: |
-          echo "${{ secrets.EC2_KEY }}" > ec2_key.pem
+          echo "${{ secrets.EC2_KEY }}" | base64 --decode > ec2_key.pem
           chmod 600 ec2_key.pem
       
       # 2. 디버깅: 환경 변수 출력
