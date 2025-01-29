@@ -50,12 +50,16 @@ jobs:
         run: |
           docker tag scoretracker:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+          
 
       # 1. SSH 키를 파일로 저장
       - name: Save EC2 private key
         run: |
           echo "${{ secrets.EC2_KEY }}" > ec2_key.pem
           chmod 600 ec2_key.pem
+
+      - name: Debug EC2 Key
+        run: cat ec2_key.pem
       
       # 2. 디버깅: 환경 변수 출력
       - name: Debug Deploy to EC2
