@@ -44,9 +44,18 @@ public class UserController {
             @ModelAttribute MyInfoUpdateDTO myInfoUpdateDTO,
             @RequestParam("file") MultipartFile file
     ) {
-        UserInfoDTO updatedUser = userService.updateUser(myInfoUpdateDTO, file);
-        return ResponseEntity.ok(updatedUser);
+        try {
+            UserInfoDTO updatedUser = userService.updateUser(myInfoUpdateDTO, file);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            // 예외 로그 출력
+            e.printStackTrace();
+            // 적절한 HTTP 상태 코드와 메시지 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
+
 
     // 유저 삭제
     @DeleteMapping
