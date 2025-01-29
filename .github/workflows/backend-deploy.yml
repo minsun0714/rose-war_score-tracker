@@ -50,7 +50,6 @@ jobs:
         run: |
           docker tag scoretracker:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
-          
 
       # 1. SSH 키를 파일로 저장
       - name: Save EC2 private key
@@ -58,22 +57,18 @@ jobs:
           echo "${{ secrets.EC2_KEY }}" > nineth.pem
           chmod 600 nineth.pem
 
-      - name: Debug EC2 Key
-        run: cat nineth.pem
-      
       # 2. 디버깅: 환경 변수 출력
       - name: Debug Deploy to EC2
         run: |
           echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
           echo "EC2_KEY: Saved to nineth.pem"
-      
-      # 3. EC2에 Docker 이미지 배포
+
+      # 3. EC2에 Docker 이미지 배포 (scoretracker-container 반영)
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -i nineth.pem ec2-user@${{ secrets.EC2_HOST }} "
             docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }} &&
-            docker stop scoretracker || true &&
-            docker rm scoretracker || true &&
-            docker run -d -p 8081:8080 --name scoretracker ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+            docker stop scoretracker-container || true &&
+            docker rm scoretracker-container || true &&
+            docker run -d -p 8081:8080 --name scoretracker-container ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
           "
-
