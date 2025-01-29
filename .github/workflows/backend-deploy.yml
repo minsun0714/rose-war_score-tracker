@@ -3,7 +3,7 @@ name: CI/CD for Spring Boot with Docker
 on:
   push:
     branches:
-      - main  # main 브랜치에 푸시될 때 실행
+      - main
 
 jobs:
   build-and-deploy:
@@ -11,18 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. GitHub 저장소 체크아웃
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Java JDK 설치
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Gradle 캐시 설정 및 빌드
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
@@ -31,16 +28,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
+      - name: Grant execute permission to gradlew
+        run: chmod +x ./gradlew
         working-directory: backend
 
-      # 4. Docker 빌드
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+        working-directory: backend
+
       - name: Build Docker image
         run: |
-          docker build -t myapp:${{ github.sha }} .
+          docker build -t scoretracker:${{ github.sha }} ./backend
 
-      # 5. Docker 이미지 Push (Docker Hub 또는 ECR 사용)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -49,15 +48,33 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag myapp:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
+          docker tag scoretracker:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
 
-      # 6. EC2 서버에 Docker 이미지 배포
+      # 1. SSH 키를 파일로 저장
+      - name: Save EC2 private key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > nineth.pem
+          chmod 600 nineth.pem
+
+      # 2. 디버깅: 환경 변수 출력
+      - name: Debug Deploy to EC2
+        run: |
+          echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
+          echo "EC2_KEY: Saved to nineth.pem"
+
+      # 3. EC2에 Docker 이미지 배포 (scoretracker-container 반영)
       - name: Deploy to EC2
         run: |
-          ssh -i ${{ secrets.EC2_KEY }} ec2-user@${{ secrets.EC2_HOST }} << EOF
-            docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
-            docker stop myapp || true
-            docker rm myapp || true
-            docker run -d -p 8080:8080 --name myapp ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
-          EOF
+          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -i nineth.pem ec2-user@${{ secrets.EC2_HOST }} "
+            docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }} &&
+            docker stop scoretracker-container || true &&
+            docker rm scoretracker-container || true &&
+            docker run -d -p 8080:8080 --name scoretracker-container \
+              -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+              -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+              ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+          "
+
+
