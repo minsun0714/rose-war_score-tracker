@@ -55,8 +55,6 @@ public class UserService {
 
         Player savedPlayer = userRepository.save(player);
 
-        // 통계 생성 (의존성 낮추는 방법 검토 가능)
-//        statService.createStat(savedPlayer.getUserId());
         eventPublisher.publishEvent(new UserCreatedEvent(savedPlayer.getUserId()));
 
         JwtToken jwtToken = authService.authenticateAndGenerateToken(userRequestDTO.getUserId(), userRequestDTO.getPassword());
