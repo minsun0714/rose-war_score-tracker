@@ -70,7 +70,7 @@ jobs:
       # 3. EC2에 Docker 이미지 배포
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} "
+          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -i nineth.pem ec2-user@${{ secrets.EC2_HOST }} "
             docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }} &&
             docker stop scoretracker || true &&
             docker rm scoretracker || true &&
