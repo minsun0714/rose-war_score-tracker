@@ -1,0 +1,21 @@
+# 빌드 아티팩트 제외
+target/
+build/
+dist/
+
+# 패키지 관리자 캐시 및 설치 디렉토리 제외
+node_modules/
+.gradle/
+.mvn/
+
+# Git 관련 파일 제외
+.git/
+.gitignore
+
+# 환경 설정 및 로컬 파일 제외
+.env
+*.local
+
+# 임시 및 로그 파일 제외
+*.log
+*.tmp
