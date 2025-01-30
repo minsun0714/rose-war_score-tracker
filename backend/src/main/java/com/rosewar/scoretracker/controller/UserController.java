@@ -46,6 +46,7 @@ public class UserController {
     ) {
         try {
             UserInfoDTO updatedUser = userService.updateUser(myInfoUpdateDTO, file);
+            System.out.println("배포 자동화 후 updatedUser 출력");
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
             // 예외 로그 출력
