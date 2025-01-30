@@ -36,9 +36,21 @@ jobs:
         run: ./gradlew clean build -x test
         working-directory: backend
 
+      # ✅ JAR 파일을 EC2로 전송
+      - name: Save EC2 private key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > nineth.pem
+          chmod 600 nineth.pem
+
+      - name: Transfer JAR file to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no -i nineth.pem backend/build/libs/*.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/scoretracker.jar
+
+
+      # ✅ Docker 이미지 빌드
       - name: Build Docker image
         run: |
-          docker build -t scoretracker:${{ github.sha }} ./backend
+          docker build -t scoretracker:latest ./backend  # ⚠️ Dockerfile 위치 확인 필요
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -48,36 +60,36 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag scoretracker:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+          docker tag scoretracker:latest ${{ secrets.DOCKER_USERNAME }}/scoretracker:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/scoretracker:latest
 
-      # 1. SSH 키를 파일로 저장
-      - name: Save EC2 private key
+      # ✅ 환경변수 디버깅
+      - name: Debug Environment Variables
         run: |
-          echo "${{ secrets.EC2_KEY }}" > nineth.pem
-          chmod 600 nineth.pem
+          echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}"
+          echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}"
+          echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}"
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}"
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
 
-      # 2. 디버깅: 환경 변수 출력
-      - name: Debug Deploy to EC2
-        run: |
-          echo "EC2_HOST: ${{ secrets.EC2_HOST }}"
-          echo "EC2_KEY: Saved to nineth.pem"
-
-      # 3. EC2에 Docker 이미지 배포 (scoretracker-container 반영)
+      # ✅ EC2 배포 (Docker 실행 네트워크 확인 및 생성)
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -i nineth.pem ec2-user@${{ secrets.EC2_HOST }} "
-            docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }} &&
+            docker pull ${{ secrets.DOCKER_USERNAME }}/scoretracker:latest &&
             docker stop scoretracker-container || true &&
             docker rm scoretracker-container || true &&
-            docker run -d -p 8080:8080 --name scoretracker-container \
+            docker network ls | grep ec2-user_app-network || docker network create ec2-user_app-network &&
+            docker run -d \
+              --name scoretracker-container \
+              --network ec2-user_app-network \
               -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
               -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
               -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
               -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              ${{ secrets.DOCKER_USERNAME }}/scoretracker:${{ github.sha }}
+              -p 8080:8080 \
+              scoretracker:latest
           "
-
-
