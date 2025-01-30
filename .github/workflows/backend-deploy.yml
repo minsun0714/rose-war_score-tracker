@@ -44,7 +44,8 @@ jobs:
 
       - name: Transfer JAR file to EC2
         run: |
-          scp -i nineth.pem backend/build/libs/*.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/scoretracker.jar
+          scp -o StrictHostKeyChecking=no -i nineth.pem backend/build/libs/*.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/scoretracker.jar
+
 
       # ✅ Docker 이미지 빌드
       - name: Build Docker image
