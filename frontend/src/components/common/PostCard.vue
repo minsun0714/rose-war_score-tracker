@@ -17,7 +17,7 @@ const elapsedTime = computed(() => {
 </script>
 
 <template>
-  <div class="bg-slate-100 p-4 text-sm">
+  <div class="bg-slate-100 p-4 text-sm cursor-pointer">
     <div class="flex flex-row items-center gap-x-2">
       <p class="text-gray-600">{{ '@' + card.writer.nickname }}</p>
       <h2
